@@ -10,10 +10,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.RunFeeder;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
 
@@ -26,6 +28,7 @@ public class RobotContainer {
     public final DriveSubsystem drive = TunerConstants.createDrivetrain();
 
     IntakeSubsystem intake = new IntakeSubsystem();
+    FeederSubsystem feeder = new FeederSubsystem();
 
     private final Telemetry logger = new Telemetry(drive.MaxSpeed);
 
@@ -50,6 +53,8 @@ public class RobotContainer {
         driverController.x().onTrue(new InstantCommand(() -> drive.setUseMT2(false)));
         
         operatorController.a().whileTrue(new RunIntake (intake));
+
+        driverController.rightTrigger(0.5).whileTrue(new RunFeeder (feeder));
 
         drive.registerTelemetry(logger::telemeterize);
     }
