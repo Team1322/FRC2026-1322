@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.LiftToPosition;
 import frc.robot.commands.RunFeeder;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunTurretToTarget;
@@ -20,6 +21,7 @@ import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
+import frc.robot.subsystems.LiftSubsystem;
 
 
 public class RobotContainer {
@@ -33,6 +35,8 @@ public class RobotContainer {
     IntakeSubsystem intake = new IntakeSubsystem();
     FeederSubsystem feeder = new FeederSubsystem();
 TurretSubsystem turret = new TurretSubsystem();
+    LiftSubsystem lift = new LiftSubsystem();
+
     private final Telemetry logger = new Telemetry(drive.MaxSpeed);
 
     /* Path follower */
@@ -52,13 +56,19 @@ TurretSubsystem turret = new TurretSubsystem();
         turret.setDefaultCommand(new RunTurretToTarget(turret));
         driverController.a().onTrue(new InstantCommand(() -> drive.setUseMT1(true)));
         driverController.b().onTrue(new InstantCommand(() -> drive.setUseMT2(true)));
-        driverController.x().onTrue(new InstantCommand(() -> drive.setUseMT1(false)));
-        driverController.x().onTrue(new InstantCommand(() -> drive.setUseMT2(false)));
+        driverController.x().onTrue(new InstantCommand(() -> {
+            drive.setUseMT1(false);
+            drive.setUseMT2(false);
+        }));
         
         operatorController.a().whileTrue(new RunIntake (intake));
 operatorController.x().onTrue(new InstantCommand(() -> turret.setTargetPosition(100))) ;
 operatorController.y().onTrue(new InstantCommand(() -> turret.setTargetPosition(0))) ;
 
+        
+        // TODO: Just an example, not meant to last into production 
+        operatorController.b().onTrue(new LiftToPosition(lift,100));
+        
         driverController.rightTrigger(0.5).whileTrue(new RunFeeder (feeder));
         
         drive.registerTelemetry(logger::telemeterize);

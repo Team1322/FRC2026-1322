@@ -1,24 +1,29 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.SystemVariables;
 
-public class IntakeSubsystem extends SubsystemBase{
+public class IntakeSubsystem extends SubsystemBase {
+  SparkMax intakeMotor0;
+  SparkMax intakeMotor1;
 
-    TalonFX intakeMotor=new TalonFX(20);
- 
-    public IntakeSubsystem() {
-TalonFXConfiguration config=new TalonFXConfiguration();
-config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-config.MotorOutput.NeutralMode=NeutralModeValue.Brake;
-intakeMotor.getConfigurator().apply(config);
+  public IntakeSubsystem() {
+  intakeMotor0 = new SparkMax(SystemVariables.IntakeConstants.INTAKE_MOTOR_0,MotorType.kBrushless);
+  intakeMotor1 = new SparkMax(SystemVariables.IntakeConstants.INTAKE_MOTOR_1,MotorType.kBrushless);
+  
+  SparkMaxConfig config1 = new SparkMaxConfig();
+  config1.inverted(true);
+  config1.follow(0);
+  intakeMotor1.configure(config1,ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-public void setPower (double power) {
-intakeMotor.set(power);
-}
+  public void setSpeed(double speed) {
+    intakeMotor0.set(speed);
+  }
 }
