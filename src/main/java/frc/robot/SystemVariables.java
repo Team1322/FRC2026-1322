@@ -25,6 +25,8 @@ public class SystemVariables {
         public static final double KP = 0.12;
         public static final double KI = 0.005;
         public static final double KD = 0.002;
+        public static final int INTAKE_MOTOR_0 = 0;
+        public static final int INTAKE_MOTOR_1 = 0;
     }
 
     public static final class DrivetrainConstants {
