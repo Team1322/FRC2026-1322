@@ -13,11 +13,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.LiftToPosition;
 import frc.robot.commands.RunFeeder;
 import frc.robot.commands.RunIntake;
+import frc.robot.commands.RunTurretToTarget;
 import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.TurretSubsystem;
+
 import frc.robot.subsystems.LiftSubsystem;
 
 
@@ -31,6 +34,7 @@ public class RobotContainer {
 
     IntakeSubsystem intake = new IntakeSubsystem();
     FeederSubsystem feeder = new FeederSubsystem();
+TurretSubsystem turret = new TurretSubsystem();
     LiftSubsystem lift = new LiftSubsystem();
 
     private final Telemetry logger = new Telemetry(drive.MaxSpeed);
@@ -49,7 +53,7 @@ public class RobotContainer {
     private void configureBindings() {
 
         drive.setDefaultCommand(new FieldCentricControl(drive, driverController));
-
+        turret.setDefaultCommand(new RunTurretToTarget(turret));
         driverController.a().onTrue(new InstantCommand(() -> drive.setUseMT1(true)));
         driverController.b().onTrue(new InstantCommand(() -> drive.setUseMT2(true)));
         driverController.x().onTrue(new InstantCommand(() -> {
@@ -58,12 +62,15 @@ public class RobotContainer {
         }));
         
         operatorController.a().whileTrue(new RunIntake (intake));
+operatorController.x().onTrue(new InstantCommand(() -> turret.setTargetPosition(100))) ;
+operatorController.y().onTrue(new InstantCommand(() -> turret.setTargetPosition(0))) ;
+
         
         // TODO: Just an example, not meant to last into production 
         operatorController.b().onTrue(new LiftToPosition(lift,100));
         
         driverController.rightTrigger(0.5).whileTrue(new RunFeeder (feeder));
-
+        
         drive.registerTelemetry(logger::telemeterize);
     }
 
