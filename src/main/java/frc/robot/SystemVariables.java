@@ -27,7 +27,16 @@ public class SystemVariables {
         public static final double KD = 0.002;
         public static final int INTAKE_MOTOR_0 = 0;
         public static final int INTAKE_MOTOR_1 = 0;
+        public static final int ShooterMotor = 0;
     }
+    
+
+    public static final class ShooterConstants {
+        public static final double HEIGHT = 0.0;
+        public static final double SHOOT_ANGLE = 0.0;
+        
+    }
+
 
 
      public static final class TurretConstants {
