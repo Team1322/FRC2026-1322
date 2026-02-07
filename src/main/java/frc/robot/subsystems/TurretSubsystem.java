@@ -21,12 +21,20 @@ public class TurretSubsystem extends SubsystemBase {
         config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         turretMotor.getConfigurator().apply(config);
+           SmartDashboard.putNumber("turret P",TurretConstants.KP );
+           SmartDashboard.putNumber("turret I", TurretConstants.KI);
+           SmartDashboard.putNumber("turret D",TurretConstants.KD);
     }
 
     @Override
     public void periodic(){
         SmartDashboard.putNumber("Target Turret Position", targetPosition);
         SmartDashboard.putNumber("Current Turret Position", getCurrentPosition());
+        turretController.setPID(
+            SmartDashboard.getNumber("turret P",TurretConstants.KP ),
+            SmartDashboard.getNumber("turret I", TurretConstants.KI),
+            SmartDashboard.getNumber( "turret D",TurretConstants.KD)
+        );
     } 
 
     public void setPower(double power) {
