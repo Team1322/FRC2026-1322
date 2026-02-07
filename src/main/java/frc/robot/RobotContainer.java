@@ -54,7 +54,8 @@ public class RobotContainer {
         
         operatorController.a().whileTrue(new RunIntake (intake));
 
-        operatorController.rightTrigger(0.5).whileTrue(new RunFeeder (feeder));
+        driverController.rightTrigger(0.5).whileTrue(new RunFeeder (feeder));
+
         drive.registerTelemetry(logger::telemeterize);
     }
 
