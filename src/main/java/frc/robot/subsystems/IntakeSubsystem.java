@@ -26,4 +26,9 @@ public class IntakeSubsystem extends SubsystemBase {
   public void setSpeed(double speed) {
     intakeMotor0.set(speed);
   }
+
+public void setPower(int i) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'setPower'");
+}
 }
