@@ -21,6 +21,5 @@ feederMotor.getConfigurator().apply(config);
 
 public void setPower (double power) {
 feederMotor.set(power);
-
 }
 }
