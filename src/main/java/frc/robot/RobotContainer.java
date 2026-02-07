@@ -56,8 +56,8 @@ TurretSubsystem turret = new TurretSubsystem();
         driverController.x().onTrue(new InstantCommand(() -> drive.setUseMT2(false)));
         
         operatorController.a().whileTrue(new RunIntake (intake));
-operatorController.x().onTrue(new InstantCommand(() -> turret.setTargetPositon(100))) ;
-operatorController.y().onTrue(new InstantCommand(() -> turret.setTargetPositon(0))) ;
+operatorController.x().onTrue(new InstantCommand(() -> turret.setTargetPosition(100))) ;
+operatorController.y().onTrue(new InstantCommand(() -> turret.setTargetPosition(0))) ;
 
         driverController.rightTrigger(0.5).whileTrue(new RunFeeder (feeder));
         

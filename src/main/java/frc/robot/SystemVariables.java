@@ -30,6 +30,14 @@ public class SystemVariables {
         public static final double KD = 0.002;
     }
 
+
+     public static final class TurretConstants {
+        public static final double KP = 0.12;
+        public static final double KI = 0.005;
+        public static final double KD = 0.002;
+        public static final int TURRET_MOTOR_ID = 41;
+    }
+
     public static final class DrivetrainConstants {
         
         public static final double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed

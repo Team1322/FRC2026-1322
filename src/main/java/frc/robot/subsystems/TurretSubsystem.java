@@ -6,32 +6,47 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.SystemVariables.TurretConstants;
+
 
 public class TurretSubsystem extends SubsystemBase {
-    TalonFX turretMotor=new TalonFX(41); 
-double targetPositon = 0;
-PIDController turretController=new PIDController(0.001, 0, 0);
+    TalonFX turretMotor = new TalonFX(TurretConstants.TURRET_MOTOR_ID);
+    double targetPosition = 0;
+    PIDController turretController = new PIDController(TurretConstants.KP, TurretConstants.KI, TurretConstants.KD);
+
     public TurretSubsystem() {
-TalonFXConfiguration config=new TalonFXConfiguration();
-config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-config.MotorOutput.NeutralMode=NeutralModeValue.Brake;
-turretMotor.getConfigurator().apply(config);
-  }
+        TalonFXConfiguration config = new TalonFXConfiguration();
+        config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        turretMotor.getConfigurator().apply(config);
+    }
 
-public void setPower (double power) {
-turretMotor.set(power);
+    @Override
+    public void periodic(){
+        SmartDashboard.putNumber("Target Turret Position", targetPosition);
+        SmartDashboard.putNumber("Current Turret Position", getCurrentPosition());
+    } 
 
-    
-}
-public double getCurrentPosition() {
-return turretMotor.getPosition().getValueAsDouble();
+    public void setPower(double power) {
+        turretMotor.set(power);
 
-}
-public void setTargetPositon(double targetPositon) {
-this.targetPositon = targetPositon;
-}
-public void runTurretToTarget(){
-    setPower( turretController.calculate(getCurrentPosition(),targetPositon));
-}
+    }
+
+    public double getCurrentPosition() {
+        return turretMotor.getPosition().getValueAsDouble();
+
+    }
+
+    public void setTargetPosition(double targetPositon) {
+        this.targetPosition = targetPositon;
+    }
+
+    public void runTurretToTarget() {
+        setPower(turretController.calculate(getCurrentPosition(), targetPosition));
+
+    }
+
+
 }
