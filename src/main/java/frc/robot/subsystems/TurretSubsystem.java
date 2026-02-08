@@ -30,6 +30,7 @@ public class TurretSubsystem extends SubsystemBase {
     public void periodic(){
         SmartDashboard.putNumber("Target Turret Position", targetPosition);
         SmartDashboard.putNumber("Current Turret Position", getCurrentPosition());
+
         turretController.setPID(
             SmartDashboard.getNumber("turret P",TurretConstants.KP ),
             SmartDashboard.getNumber("turret I", TurretConstants.KI),
@@ -53,8 +54,5 @@ public class TurretSubsystem extends SubsystemBase {
 
     public void runTurretToTarget() {
         setPower(turretController.calculate(getCurrentPosition(), targetPosition));
-
     }
-
-
 }
