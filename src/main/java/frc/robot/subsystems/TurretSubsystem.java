@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SystemVariables.TurretConstants;
 
-
 public class TurretSubsystem extends SubsystemBase {
     TalonFX turretMotor = new TalonFX(TurretConstants.TURRET_MOTOR_ID);
     double targetPosition = 0;
@@ -21,25 +20,25 @@ public class TurretSubsystem extends SubsystemBase {
         config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         turretMotor.getConfigurator().apply(config);
-           SmartDashboard.putNumber("turret P",TurretConstants.KP );
-           SmartDashboard.putNumber("turret I", TurretConstants.KI);
-           SmartDashboard.putNumber("turret D",TurretConstants.KD);
+        SmartDashboard.putNumber("Turret P", TurretConstants.KP);
+        SmartDashboard.putNumber("Turret I", TurretConstants.KI);
+        SmartDashboard.putNumber("Turret D", TurretConstants.KD);
     }
 
     @Override
-    public void periodic(){
+    public void periodic() {
         SmartDashboard.putNumber("Target Turret Position", targetPosition);
         SmartDashboard.putNumber("Current Turret Position", getCurrentPosition());
 
         turretController.setPID(
-            SmartDashboard.getNumber("turret P",TurretConstants.KP ),
-            SmartDashboard.getNumber("turret I", TurretConstants.KI),
-            SmartDashboard.getNumber( "turret D",TurretConstants.KD)
+            SmartDashboard.getNumber("Turret P", TurretConstants.KP),
+            SmartDashboard.getNumber("Turret I", TurretConstants.KI),
+            SmartDashboard.getNumber("Turret D", TurretConstants.KD)
         );
-    } 
+    }
 
-    public void setPower(double power) {
-        turretMotor.set(power);
+    public void setSpeed(double speed) {
+        turretMotor.set(speed);
 
     }
 
@@ -53,6 +52,6 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void runTurretToTarget() {
-        setPower(turretController.calculate(getCurrentPosition(), targetPosition));
+        setSpeed(turretController.calculate(getCurrentPosition(), targetPosition));
     }
 }

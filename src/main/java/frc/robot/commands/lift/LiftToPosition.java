@@ -18,6 +18,6 @@ public class LiftToPosition extends Command {
 
     @Override
     public void end(boolean finished) {
-        lift.setPower(0);
+        lift.setSpeed(0);
     }
 }

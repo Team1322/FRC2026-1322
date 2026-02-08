@@ -12,12 +12,12 @@ public class RunIntake extends Command{
 
     @Override
     public void execute() {
-        intake.setPower(1);
+        intake.setSpeed(1);
 
     }
 
     @Override
     public void end(boolean finished) {
-        intake.setPower(0);
+        intake.setSpeed(0);
     }
 }

@@ -6,9 +6,10 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.SystemVariables.FeederConstants;
 
 public class FeederSubsystem extends SubsystemBase {
-  TalonFX feederMotor = new TalonFX(30);
+  TalonFX feederMotor = new TalonFX(FeederConstants.FEEDER_MOTOR_ID);
 
   public FeederSubsystem() {
     TalonFXConfiguration config = new TalonFXConfiguration();
@@ -17,7 +18,7 @@ public class FeederSubsystem extends SubsystemBase {
     feederMotor.getConfigurator().apply(config);
   }
 
-  public void setPower(double power) {
-    feederMotor.set(power);
+  public void setSpeed(double speed) {
+    feederMotor.set(speed);
   }
 }

@@ -19,6 +19,6 @@ public class RunTurretToTarget extends Command {
 
     @Override
     public void end(boolean finished) {
-        turret.setPower(0);
+        turret.setSpeed(0);
     }
 }

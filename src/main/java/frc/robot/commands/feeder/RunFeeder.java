@@ -13,12 +13,12 @@ public class RunFeeder extends Command {
 
     @Override
     public void execute() {
-        feeder.setPower(1);
+        feeder.setSpeed(1);
 
     }
 
     @Override
     public void end(boolean finished) {
-        feeder.setPower(0);
+        feeder.setSpeed(0);
     }
 }
