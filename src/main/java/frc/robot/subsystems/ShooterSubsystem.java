@@ -7,7 +7,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.SystemVariables;
 import frc.robot.SystemVariables.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -29,7 +29,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     private double getShootVelocity() {
-        double distance = 0.0;
+        double distance = SystemVariables.turretDistanceFromGoal;
         double vel = Math.sqrt(
                 (-(distance * distance) * 10)
                         / (2 * ShooterConstants.HEIGHT - 2 * distance * Math.tan(ShooterConstants.SHOOT_ANGLE)))

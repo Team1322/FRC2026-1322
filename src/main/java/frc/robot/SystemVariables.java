@@ -4,12 +4,15 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import frc.robot.generated.TunerConstants;
 
 public class SystemVariables {
 
-    public static boolean elevatorAtTarget = false;
-    public static boolean armClearOfObstacles = true;
+    public static double turretDistanceFromGoal = 0;
 
     //public static boolean 
     public static final class DrivetrainConstants {
@@ -28,8 +31,8 @@ public class SystemVariables {
 
     public static final class ShooterConstants {
         public static final int SHOOT_MOTOR_ID = 40;
-        public static final double HEIGHT = 0.0;
-        public static final double SHOOT_ANGLE = 0.0;
+        public static final double HEIGHT = 1.8 - Units.inchesToMeters(12);
+        public static final double SHOOT_ANGLE = Units.degreesToRadians(90 - 25);
     }
 
      public static final class TurretConstants {
@@ -37,6 +40,11 @@ public class SystemVariables {
         public static final double KP = 0.12;
         public static final double KI = 0.005;
         public static final double KD = 0.002;
+        public static final Transform2d TURRET_LOCATION = new Transform2d(
+            Units.inchesToMeters(0),
+            Units.inchesToMeters(0), 
+            Rotation2d.kZero
+        );
     }
 
     public static final class LiftConstants {
@@ -46,6 +54,11 @@ public class SystemVariables {
         public static final double KI = 0.005;
         public static final double KD = 0.002;
         public static final double POSE_TOLERANCE = .25;
+    }
+
+    public static final class FieldConstants{
+        public static final Translation2d RED_GOAL = new Translation2d(Units.inchesToMeters(650.12 - 181.56),Units.inchesToMeters(158.32));
+        public static final Translation2d BLUE_GOAL = new Translation2d(Units.inchesToMeters(181.56),Units.inchesToMeters(158.32));
     }
 
 }

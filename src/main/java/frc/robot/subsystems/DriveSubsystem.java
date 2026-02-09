@@ -24,6 +24,9 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.LimelightHelpers;
+import frc.robot.SystemVariables;
+import frc.robot.SystemVariables.FieldConstants;
+import frc.robot.SystemVariables.TurretConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 
@@ -89,6 +92,8 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
 
     @Override
     public void periodic() {
+        //Update Shooter Handshake
+        SystemVariables.turretDistanceFromGoal = getDistanceFromShot();
 
         if (useMT1)
             updatePoseWithMT1();
@@ -117,15 +122,22 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         }
     }
 
-    /////////////////////////////////////////////////// Getters
-    /////////////////////////////////////////////////// //////////////////////////////////////////////////////////////////
-
+    /////////////////////////////////////////////////// Getters ///////////////////////////////////////////////////
+    
     public Pose2d getCurrentPose() {
         return this.getState().Pose;
     }
 
-    ////////////////////////////////////////////////// Drive To Pose Methods
-    ////////////////////////////////////////////////// //////////////////////////////////////////////////
+    public Pose2d getTurretPose() {
+        return this.getState().Pose.transformBy(TurretConstants.TURRET_LOCATION);
+    }
+
+    public double getDistanceFromShot() {
+        Translation2d goalTarget = DriverStation.getAlliance().get() == Alliance.Red ? FieldConstants.RED_GOAL : FieldConstants.BLUE_GOAL;
+        return goalTarget.getDistance(getTurretPose().getTranslation());
+    }
+
+    ////////////////////////////////////////////////// Drive To Pose Methods //////////////////////////////////////////////////
 
     /**
      * 
@@ -155,8 +167,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         return translationalController.atSetpoint();
     }
 
-    ///////////////////////////////////////////////// Limelight Methods
-    ///////////////////////////////////////////////// ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////// Limelight Methods /////////////////////////////////////////////////
 
     public void setUseMT1(boolean useMT1) {
         if (useMT1)
@@ -238,8 +249,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         m_simNotifier.startPeriodic(kSimLoopPeriod);
     }
 
-    /////////////////////////// Pose Utility Methods (TODO: Move to new location)
-    /////////////////////////// //////////////////////////////////////////////////
+    /////////////////////////// Pose Utility Methods /////////////////////////////////////////////////////////////////////////////
 
     /**
      * Method gets the distance of a specified point from another point using a
