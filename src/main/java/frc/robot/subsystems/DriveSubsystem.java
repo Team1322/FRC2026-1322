@@ -35,9 +35,6 @@ import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
  * Subsystem so it can easily be used in command-based projects.
  */
 public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
-    public double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    public double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max
-                                                                                     // angular velocity
 
     public final SwerveRequest.FieldCentric fieldCentric = new SwerveRequest.FieldCentric()
             .withDriveRequestType(DriveRequestType.Velocity); // Use open-loop control for drive motors

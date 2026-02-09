@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.SystemVariables.DrivetrainConstants;
 import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
@@ -36,7 +37,7 @@ public class RobotContainer {
     TurretSubsystem turret = new TurretSubsystem();
     LiftSubsystem lift = new LiftSubsystem();
 
-    private final Telemetry logger = new Telemetry(drive.MaxSpeed);
+    private final Telemetry logger = new Telemetry(DrivetrainConstants.MaxSpeed);
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
