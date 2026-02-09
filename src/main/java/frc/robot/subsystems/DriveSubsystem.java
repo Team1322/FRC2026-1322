@@ -137,6 +137,11 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         return goalTarget.getDistance(getTurretPose().getTranslation());
     }
 
+    public Rotation2d getAngleToGoal() {
+        Translation2d goalTarget = DriverStation.getAlliance().get() == Alliance.Red ? FieldConstants.RED_GOAL : FieldConstants.BLUE_GOAL;
+        return absoluteAngleFromPose(getTurretPose().getTranslation(), goalTarget);
+    }
+
     ////////////////////////////////////////////////// Drive To Pose Methods //////////////////////////////////////////////////
 
     /**
@@ -277,6 +282,11 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     }
 
     public Rotation2d absoluteAngleFromPose(Pose2d measurementPose, Pose2d origin) {
+        return Rotation2d.fromRadians(
+                Math.atan2(measurementPose.getY() - origin.getY(), measurementPose.getX() - origin.getX()));
+    }
+
+    public Rotation2d absoluteAngleFromPose(Translation2d measurementPose, Translation2d origin) {
         return Rotation2d.fromRadians(
                 Math.atan2(measurementPose.getY() - origin.getY(), measurementPose.getX() - origin.getX()));
     }
