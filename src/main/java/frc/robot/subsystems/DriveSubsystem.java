@@ -17,6 +17,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -25,6 +27,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.LimelightHelpers;
 import frc.robot.SystemVariables;
+import frc.robot.SystemVariables.DrivetrainConstants;
 import frc.robot.SystemVariables.FieldConstants;
 import frc.robot.SystemVariables.TurretConstants;
 import frc.robot.generated.TunerConstants;
@@ -42,14 +45,20 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     public final SwerveRequest.FieldCentricFacingAngle driveToPoseController = new SwerveRequest.FieldCentricFacingAngle()
             .withForwardPerspective(SwerveRequest.ForwardPerspectiveValue.BlueAlliance)
             .withDriveRequestType(DriveRequestType.Velocity)
-            .withHeadingPID(0.001, 0, 0);
+            .withHeadingPID(7, 0, 0);
 
     public final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
-    ///////////////////////////////////// Drive to Pose Controllers
-    ///////////////////////////////////// ////////////////////////////////////
-    private final PIDController translationalController = new PIDController(0.001, 0, 0);
-    private final SlewRateLimiter accelerationLimiter = new SlewRateLimiter(2); // 2 Meters per second per second
+    StructPublisher<Pose2d> turretPosePublisher = NetworkTableInstance.getDefault()
+        .getStructTopic("Turret Pose", Pose2d.struct).publish();
+
+        
+    StructPublisher<Pose2d> shootTargetPublisher = NetworkTableInstance.getDefault()
+        .getStructTopic("Shooting Target", Pose2d.struct).publish();
+
+    ///////////////////////////////////// Drive to Pose Controllers /////////////////////////////////////
+    private final PIDController translationalController = new PIDController(1.5, 0, 0);
+    private final SlewRateLimiter accelerationLimiter = new SlewRateLimiter(4); // 2 Meters per second per second
 
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
@@ -80,8 +89,6 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
             SwerveModuleConstants<?, ?, ?>... modules) {
         super(drivetrainConstants, modules);
 
-        translationalController.setTolerance(Units.inchesToMeters(0.5));
-
         if (Utils.isSimulation()) {
             startSimThread();
         }
@@ -98,6 +105,9 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
             updatePoseWithMT1();
         else if (useMT2)
             updatePoseWithMT2();
+
+        turretPosePublisher.set(new Pose2d(getTurretPose().getTranslation(), getAngleToGoal()));
+        shootTargetPublisher.set(new Pose2d(getShootTarget(), Rotation2d.kZero));
 
         /*
          * Periodically try to apply the operator perspective.
@@ -131,27 +141,18 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         return getCurrentPose().transformBy(TurretConstants.TURRET_LOCATION);
     }
 
-    public double getCurrentVelocity() {
-        return Math.sqrt(
-            (getState().Speeds.vxMetersPerSecond * getState().Speeds.vxMetersPerSecond) + 
-            (getState().Speeds.vyMetersPerSecond * getState().Speeds.vyMetersPerSecond)
-        );
-    }
-
-    public Rotation2d getVelocityAngle() {
-        return Rotation2d.fromRadians(Math.atan2(getState().Speeds.vyMetersPerSecond, getState().Speeds.vyMetersPerSecond));
-    }
-
     public double getDistanceFromShot() {
         return getShootTarget().getDistance(getTurretPose().getTranslation());
     }
 
     public Rotation2d getAngleToGoal() {
-        return absoluteAngleFromPose(getTurretPose().getTranslation(), getShootTarget());
+        return absoluteAngleFromPose(getShootTarget(), getTurretPose().getTranslation());
     }
 
     private Translation2d getShootTarget() {
-        return DriverStation.getAlliance().get() == Alliance.Red ? FieldConstants.RED_GOAL : FieldConstants.BLUE_GOAL;
+        Translation2d target = DriverStation.getAlliance().get() == Alliance.Red ? FieldConstants.RED_GOAL : FieldConstants.BLUE_GOAL;
+        target = target.minus(new Translation2d(getState().Speeds.vxMetersPerSecond * 0.3, getState().Speeds.vyMetersPerSecond * 0.3));
+        return target;
     }
 
     ////////////////////////////////////////////////// Drive To Pose Methods //////////////////////////////////////////////////
@@ -165,14 +166,16 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
 
     public void driveToPosition(Pose2d drivingPose, Pose2d anglePose, LinearVelocity maxSpeed) {
 
+        double distanceAway = distanceFromPose(drivingPose, getCurrentPose()) + distanceFromPose(drivingPose, anglePose);
+
         // Determine the sent velocity of the robot in meters per second
-        double translationalOutput = translationalController.calculate(distanceFromPose(drivingPose, getCurrentPose()));
+        double translationalOutput = translationalController.calculate(distanceAway);
         translationalOutput = MathUtil.clamp(translationalOutput, -maxSpeed.in(MetersPerSecond),
                 maxSpeed.in(MetersPerSecond));
         translationalOutput = accelerationLimiter.calculate(translationalOutput);
 
         // Apply velocity in the direction of the anglePose
-        Rotation2d angleToPose = absoluteAngleFromPose(anglePose, getCurrentPose());
+        Rotation2d angleToPose = absoluteAngleFromPose(getCurrentPose(), anglePose);
         setControl(
                 driveToPoseController
                         .withVelocityX(translationalOutput * Math.cos(angleToPose.getRadians()))
@@ -180,9 +183,6 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
                         .withTargetDirection(anglePose.getRotation()));
     }
 
-    public boolean isRobotAtTarget() {
-        return translationalController.atSetpoint();
-    }
 
     ///////////////////////////////////////////////// Limelight Methods /////////////////////////////////////////////////
 

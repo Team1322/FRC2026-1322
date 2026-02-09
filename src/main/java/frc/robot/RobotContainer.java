@@ -4,6 +4,11 @@
 
 package frc.robot;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -11,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.SystemVariables.DrivetrainConstants;
+import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
@@ -44,6 +50,14 @@ public class RobotContainer {
 
     public RobotContainer() {
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
+
+        autoChooser.addOption("Test", 
+            new DriveToPose(
+                drive, 
+                new DriveToPoseObject(new Pose2d(2,0, Rotation2d.kZero), MetersPerSecond.of(2)),
+                new DriveToPoseObject(new Pose2d(2,8, Rotation2d.k180deg), MetersPerSecond.of(2)),
+                new DriveToPoseObject(new Pose2d(2,0, Rotation2d.k180deg), MetersPerSecond.of(2))
+        ));
 
         SmartDashboard.putData("Auto Mode", autoChooser);
 
