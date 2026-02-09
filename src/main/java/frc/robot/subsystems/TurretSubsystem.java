@@ -45,11 +45,13 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public double getCurrentPosition() {
+        //TODO: Think about what value this will return, aka what units do we want and what is it giving us
         return turretMotor.getPosition().getValueAsDouble();
 
     }
 
     public void setTargetPosition(double targetPositon) {
+        //TODO: Think about limiting the range of turret, aka can we spin forever or is there a limit
         this.targetPosition = targetPositon;
     }
 
