@@ -94,6 +94,8 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     public void periodic() {
         //Update Shooter Handshake
         SystemVariables.turretDistanceFromGoal = getDistanceFromShot();
+        SystemVariables.turretAngleToGoal = getAngleToGoal();
+        SystemVariables.turretZeroDirection = getTurretPose().getRotation();
 
         if (useMT1)
             updatePoseWithMT1();
@@ -129,17 +131,30 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     }
 
     public Pose2d getTurretPose() {
-        return this.getState().Pose.transformBy(TurretConstants.TURRET_LOCATION);
+        return getCurrentPose().transformBy(TurretConstants.TURRET_LOCATION);
+    }
+
+    public double getCurrentVelocity() {
+        return Math.sqrt(
+            (getState().Speeds.vxMetersPerSecond * getState().Speeds.vxMetersPerSecond) + 
+            (getState().Speeds.vyMetersPerSecond * getState().Speeds.vyMetersPerSecond)
+        );
+    }
+
+    public Rotation2d getVelocityAngle() {
+        return Rotation2d.fromRadians(Math.atan2(getState().Speeds.vyMetersPerSecond, getState().Speeds.vyMetersPerSecond));
     }
 
     public double getDistanceFromShot() {
-        Translation2d goalTarget = DriverStation.getAlliance().get() == Alliance.Red ? FieldConstants.RED_GOAL : FieldConstants.BLUE_GOAL;
-        return goalTarget.getDistance(getTurretPose().getTranslation());
+        return getShootTarget().getDistance(getTurretPose().getTranslation());
     }
 
     public Rotation2d getAngleToGoal() {
-        Translation2d goalTarget = DriverStation.getAlliance().get() == Alliance.Red ? FieldConstants.RED_GOAL : FieldConstants.BLUE_GOAL;
-        return absoluteAngleFromPose(getTurretPose().getTranslation(), goalTarget);
+        return absoluteAngleFromPose(getTurretPose().getTranslation(), getShootTarget());
+    }
+
+    private Translation2d getShootTarget() {
+        return DriverStation.getAlliance().get() == Alliance.Red ? FieldConstants.RED_GOAL : FieldConstants.BLUE_GOAL;
     }
 
     ////////////////////////////////////////////////// Drive To Pose Methods //////////////////////////////////////////////////

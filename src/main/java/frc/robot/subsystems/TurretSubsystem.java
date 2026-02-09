@@ -6,8 +6,10 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.SystemVariables;
 import frc.robot.SystemVariables.TurretConstants;
 
 public class TurretSubsystem extends SubsystemBase {
@@ -53,5 +55,11 @@ public class TurretSubsystem extends SubsystemBase {
 
     public void runTurretToTarget() {
         setSpeed(turretController.calculate(getCurrentPosition(), targetPosition));
+    }
+
+    private Rotation2d getTargetAngle() {
+        double angleToGoal = SystemVariables.turretAngleToGoal.getDegrees(); //This is the angle from the turret to the goal
+        double angleOfRobot = SystemVariables.turretZeroDirection.getDegrees(); //This is the angle of the robot used to offset our math
+        return Rotation2d.fromDegrees(angleToGoal - angleOfRobot);
     }
 }

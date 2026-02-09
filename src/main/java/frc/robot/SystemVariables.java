@@ -13,6 +13,7 @@ import frc.robot.generated.TunerConstants;
 public class SystemVariables {
 
     public static double turretDistanceFromGoal = 0;
+    public static Rotation2d turretAngleToGoal, turretZeroDirection;
 
     //public static boolean 
     public static final class DrivetrainConstants {
