@@ -6,10 +6,11 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.SystemVariables;
 import frc.robot.SystemVariables.TurretConstants;
-
 
 public class TurretSubsystem extends SubsystemBase {
     TalonFX turretMotor = new TalonFX(TurretConstants.TURRET_MOTOR_ID);
@@ -21,40 +22,46 @@ public class TurretSubsystem extends SubsystemBase {
         config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         turretMotor.getConfigurator().apply(config);
-           SmartDashboard.putNumber("turret P",TurretConstants.KP );
-           SmartDashboard.putNumber("turret I", TurretConstants.KI);
-           SmartDashboard.putNumber("turret D",TurretConstants.KD);
+        SmartDashboard.putNumber("Turret P", TurretConstants.KP);
+        SmartDashboard.putNumber("Turret I", TurretConstants.KI);
+        SmartDashboard.putNumber("Turret D", TurretConstants.KD);
     }
 
     @Override
-    public void periodic(){
+    public void periodic() {
         SmartDashboard.putNumber("Target Turret Position", targetPosition);
         SmartDashboard.putNumber("Current Turret Position", getCurrentPosition());
-        turretController.setPID(
-            SmartDashboard.getNumber("turret P",TurretConstants.KP ),
-            SmartDashboard.getNumber("turret I", TurretConstants.KI),
-            SmartDashboard.getNumber( "turret D",TurretConstants.KD)
-        );
-    } 
 
-    public void setPower(double power) {
-        turretMotor.set(power);
+        turretController.setPID(
+            SmartDashboard.getNumber("Turret P", TurretConstants.KP),
+            SmartDashboard.getNumber("Turret I", TurretConstants.KI),
+            SmartDashboard.getNumber("Turret D", TurretConstants.KD)
+        );
+    }
+
+    public void setSpeed(double speed) {
+        turretMotor.set(speed);
 
     }
 
     public double getCurrentPosition() {
+        //TODO: Think about what value this will return, aka what units do we want and what is it giving us
         return turretMotor.getPosition().getValueAsDouble();
 
     }
 
     public void setTargetPosition(double targetPositon) {
+        //TODO: Think about limiting the range of turret, aka can we spin forever or is there a limit
         this.targetPosition = targetPositon;
     }
 
     public void runTurretToTarget() {
-        setPower(turretController.calculate(getCurrentPosition(), targetPosition));
-
+        setSpeed(turretController.calculate(getCurrentPosition(), targetPosition));
     }
 
-
+    private Rotation2d getTargetAngle() {
+        double angleToGoal = SystemVariables.turretAngleToGoal.getDegrees(); //This is the angle from the turret to the goal
+        double angleOfRobot = SystemVariables.turretZeroDirection.getDegrees(); //This is the angle of the robot used to offset our math
+        return Rotation2d.fromDegrees(angleToGoal - angleOfRobot);
+    }
 }

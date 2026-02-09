@@ -22,8 +22,8 @@ public class LiftSubsystem extends SubsystemBase {
         liftMotor.getConfigurator().apply(config);
     }
 
-    public void setPower(double power) {
-        liftMotor.set(power);
+    public void setSpeed(double speed) {
+        liftMotor.set(speed);
     }
 
     public double getCurrentPosition() {
@@ -35,7 +35,7 @@ public class LiftSubsystem extends SubsystemBase {
     }
 
     public void moveTowardPosition() {
-        setPower(liftController.calculate(getCurrentPosition(), targetPosition));
+        setSpeed(liftController.calculate(getCurrentPosition(), targetPosition));
     }
 
 }

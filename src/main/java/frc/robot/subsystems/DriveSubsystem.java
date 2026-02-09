@@ -16,7 +16,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -24,7 +25,9 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.LimelightHelpers;
-import frc.robot.generated.TunerConstants;
+import frc.robot.SystemVariables;
+import frc.robot.SystemVariables.FieldConstants;
+import frc.robot.SystemVariables.TurretConstants;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 
 /**
@@ -32,24 +35,28 @@ import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
  * Subsystem so it can easily be used in command-based projects.
  */
 public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
-    public double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    public double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
-    
-    
+
     public final SwerveRequest.FieldCentric fieldCentric = new SwerveRequest.FieldCentric()
             .withDriveRequestType(DriveRequestType.Velocity); // Use open-loop control for drive motors
 
     public final SwerveRequest.FieldCentricFacingAngle driveToPoseController = new SwerveRequest.FieldCentricFacingAngle()
             .withForwardPerspective(SwerveRequest.ForwardPerspectiveValue.BlueAlliance)
             .withDriveRequestType(DriveRequestType.Velocity)
-            .withHeadingPID(0.001, 0, 0); 
+            .withHeadingPID(7, 0, 0);
 
     public final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
-    ///////////////////////////////////// Drive to Pose Controllers ////////////////////////////////////
-    private final PIDController translationalController = new PIDController(0.001, 0, 0);
-    private final SlewRateLimiter accelerationLimiter = new SlewRateLimiter(2); // 2 Meters per second per second
-   
+    StructPublisher<Pose2d> turretPosePublisher = NetworkTableInstance.getDefault()
+        .getStructTopic("Turret Pose", Pose2d.struct).publish();
+
+        
+    StructPublisher<Pose2d> shootTargetPublisher = NetworkTableInstance.getDefault()
+        .getStructTopic("Shooting Target", Pose2d.struct).publish();
+
+    ///////////////////////////////////// Drive to Pose Controllers /////////////////////////////////////
+    private final PIDController translationalController = new PIDController(1.5, 0, 0);
+    private final SlewRateLimiter accelerationLimiter = new SlewRateLimiter(4); // 2 Meters per second per second
+
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
@@ -65,20 +72,19 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     /**
      * Constructs a CTRE SwerveDrivetrain using the specified constants.
      * <p>
-     * This constructs the underlying hardware devices, so users should not construct
-     * the devices themselves. If they need the devices, they can access them through
+     * This constructs the underlying hardware devices, so users should not
+     * construct
+     * the devices themselves. If they need the devices, they can access them
+     * through
      * getters in the classes.
      *
      * @param drivetrainConstants Drivetrain-wide constants for the swerve drive
      * @param modules             Constants for each specific module
      */
     public DriveSubsystem(
-        SwerveDrivetrainConstants drivetrainConstants,
-        SwerveModuleConstants<?, ?, ?>... modules
-    ) {
+            SwerveDrivetrainConstants drivetrainConstants,
+            SwerveModuleConstants<?, ?, ?>... modules) {
         super(drivetrainConstants, modules);
-
-        translationalController.setTolerance(Units.inchesToMeters(0.5));
 
         if (Utils.isSimulation()) {
             startSimThread();
@@ -87,126 +93,157 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
 
     @Override
     public void periodic() {
+        //Update Shooter Handshake
+        SystemVariables.turretDistanceFromGoal = getDistanceFromShot();
+        SystemVariables.turretAngleToGoal = getAngleToGoal();
+        SystemVariables.turretZeroDirection = getTurretPose().getRotation();
 
-        if (useMT1) updatePoseWithMT1();
-        else if (useMT2) updatePoseWithMT2();
-        
+        if (useMT1)
+            updatePoseWithMT1();
+        else if (useMT2)
+            updatePoseWithMT2();
+
+        turretPosePublisher.set(new Pose2d(getTurretPose().getTranslation(), getAngleToGoal()));
+        shootTargetPublisher.set(new Pose2d(getShootTarget(), Rotation2d.kZero));
+
         /*
          * Periodically try to apply the operator perspective.
-         * If we haven't applied the operator perspective before, then we should apply it regardless of DS state.
-         * This allows us to correct the perspective in case the robot code restarts mid-match.
-         * Otherwise, only check and apply the operator perspective if the DS is disabled.
-         * This ensures driving behavior doesn't change until an explicit disable event occurs during testing.
+         * If we haven't applied the operator perspective before, then we should apply
+         * it regardless of DS state.
+         * This allows us to correct the perspective in case the robot code restarts
+         * mid-match.
+         * Otherwise, only check and apply the operator perspective if the DS is
+         * disabled.
+         * This ensures driving behavior doesn't change until an explicit disable event
+         * occurs during testing.
          */
         if (!m_hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
             DriverStation.getAlliance().ifPresent(allianceColor -> {
                 setOperatorPerspectiveForward(
-                    allianceColor == Alliance.Red
-                        ? kRedAlliancePerspectiveRotation
-                        : kBlueAlliancePerspectiveRotation
-                );
+                        allianceColor == Alliance.Red
+                                ? kRedAlliancePerspectiveRotation
+                                : kBlueAlliancePerspectiveRotation);
                 m_hasAppliedOperatorPerspective = true;
             });
         }
     }
 
-    /////////////////////////////////////////////////// Getters //////////////////////////////////////////////////////////////////
-
+    /////////////////////////////////////////////////// Getters ///////////////////////////////////////////////////
+    
     public Pose2d getCurrentPose() {
         return this.getState().Pose;
+    }
+
+    public Pose2d getTurretPose() {
+        return getCurrentPose().transformBy(TurretConstants.TURRET_LOCATION);
+    }
+
+    public double getDistanceFromShot() {
+        return getShootTarget().getDistance(getTurretPose().getTranslation());
+    }
+
+    public Rotation2d getAngleToGoal() {
+        return absoluteAngleFromPose(getShootTarget(), getTurretPose().getTranslation());
+    }
+
+    private Translation2d getShootTarget() {
+        Translation2d target = DriverStation.getAlliance().get() == Alliance.Red ? FieldConstants.RED_GOAL : FieldConstants.BLUE_GOAL;
+        target = target.minus(new Translation2d(getState().Speeds.vxMetersPerSecond * 0.3, getState().Speeds.vyMetersPerSecond * 0.3));
+        return target;
     }
 
     ////////////////////////////////////////////////// Drive To Pose Methods //////////////////////////////////////////////////
 
     /**
      * 
-     * @param drivingPose Pose that will be the target pose for the translational controller
-     * @param anglePose Pose that will set the angle the robot will drive in
+     * @param drivingPose Pose that will be the target pose for the translational
+     *                    controller
+     * @param anglePose   Pose that will set the angle the robot will drive in
      */
-    
+
     public void driveToPosition(Pose2d drivingPose, Pose2d anglePose, LinearVelocity maxSpeed) {
 
-        //Determine the sent velocity of the robot in meters per second
-        double translationalOutput = translationalController.calculate(distanceFromPose(drivingPose, getCurrentPose()));
-        translationalOutput = MathUtil.clamp(translationalOutput, -maxSpeed.in(MetersPerSecond), maxSpeed.in(MetersPerSecond));
+        double distanceAway = distanceFromPose(drivingPose, getCurrentPose()) + distanceFromPose(drivingPose, anglePose);
+
+        // Determine the sent velocity of the robot in meters per second
+        double translationalOutput = translationalController.calculate(distanceAway);
+        translationalOutput = MathUtil.clamp(translationalOutput, -maxSpeed.in(MetersPerSecond),
+                maxSpeed.in(MetersPerSecond));
         translationalOutput = accelerationLimiter.calculate(translationalOutput);
 
-        //Apply velocity in the direction of the anglePose
-        Rotation2d angleToPose = absoluteAngleFromPose(anglePose, getCurrentPose());
+        // Apply velocity in the direction of the anglePose
+        Rotation2d angleToPose = absoluteAngleFromPose(getCurrentPose(), anglePose);
         setControl(
-            driveToPoseController
-                .withVelocityX(translationalOutput * Math.cos(angleToPose.getRadians()))
-                .withVelocityY(translationalOutput * Math.sin(angleToPose.getRadians()))
-                .withTargetDirection(anglePose.getRotation())
-        );
+                driveToPoseController
+                        .withVelocityX(translationalOutput * Math.cos(angleToPose.getRadians()))
+                        .withVelocityY(translationalOutput * Math.sin(angleToPose.getRadians()))
+                        .withTargetDirection(anglePose.getRotation()));
     }
 
-    public boolean isRobotAtTarget() {
-        return translationalController.atSetpoint();
-    }
 
-    ///////////////////////////////////////////////// Limelight Methods ///////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////// Limelight Methods /////////////////////////////////////////////////
 
     public void setUseMT1(boolean useMT1) {
-        if (useMT1) useMT2 = false;
+        if (useMT1)
+            useMT2 = false;
         this.useMT1 = useMT1;
     }
-    
+
     public void setUseMT2(boolean useMT2) {
-        if (useMT2) useMT1 = false;
+        if (useMT2)
+            useMT1 = false;
         this.useMT2 = useMT2;
     }
 
     public void updatePoseWithMT1() {
         boolean updateVision = true;
-        
+
         LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
 
-        if(mt1 != null) {
-          
-            if(mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
-                if(mt1.rawFiducials[0].ambiguity > .7)
-                {
+        if (mt1 != null) {
+
+            if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
+                if (mt1.rawFiducials[0].ambiguity > .7) {
                     updateVision = false;
                 }
-                if(mt1.rawFiducials[0].distToCamera > 3)
-                {
+                if (mt1.rawFiducials[0].distToCamera > 3) {
                     updateVision = false;
                 }
             }
-            if(mt1.tagCount == 0) {
+            if (mt1.tagCount == 0) {
                 updateVision = false;
             }
-            if(updateVision) {
-                setVisionMeasurementStdDevs(VecBuilder.fill(.5,.5,Math.toRadians(1)));
+            if (updateVision) {
+                setVisionMeasurementStdDevs(VecBuilder.fill(.5, .5, Math.toRadians(1)));
                 addVisionMeasurement(
-                    mt1.pose,
-                    Utils.fpgaToCurrentTime(mt1.timestampSeconds));
+                        mt1.pose,
+                        Utils.fpgaToCurrentTime(mt1.timestampSeconds));
             }
         }
     }
 
     public void updatePoseWithMT2() {
         boolean updateVision = true;
-        
+
         LimelightHelpers.SetRobotOrientation("limelight", getCurrentPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
         LimelightHelpers.PoseEstimate mt2_blue = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
-        if(Math.abs(getPigeon2().getAngularVelocityZWorld().getValueAsDouble()) > 720) { // if our angular velocity is greater than 720 degrees per second, ignore vision updates
-          updateVision = false;
+        if (Math.abs(getPigeon2().getAngularVelocityZWorld().getValueAsDouble()) > 720) { // if our angular velocity is
+                                                                                          // greater than 720 degrees
+                                                                                          // per second, ignore vision
+                                                                                          // updates
+            updateVision = false;
         }
 
         if (mt2_blue != null) {
-            if(mt2_blue.tagCount == 0)
-            {
+            if (mt2_blue.tagCount == 0) {
                 updateVision = false;
             }
-            if(updateVision)
-            {
-                
-                setVisionMeasurementStdDevs(VecBuilder.fill(0.15,0.15,9999999)); //x and Y were 0.7
+            if (updateVision) {
+
+                setVisionMeasurementStdDevs(VecBuilder.fill(0.15, 0.15, 9999999)); // x and Y were 0.7
                 addVisionMeasurement(
-                    mt2_blue.pose,
-                    Utils.fpgaToCurrentTime(mt2_blue.timestampSeconds));
+                        mt2_blue.pose,
+                        Utils.fpgaToCurrentTime(mt2_blue.timestampSeconds));
             }
         }
     }
@@ -226,12 +263,12 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         m_simNotifier.startPeriodic(kSimLoopPeriod);
     }
 
-
-
-    /////////////////////////// Pose Utility Methods (TODO: Move to new location) //////////////////////////////////////////////////
+    /////////////////////////// Pose Utility Methods /////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Method gets the distance of a specified point from another point using a third point as a rotational reference
+     * Method gets the distance of a specified point from another point using a
+     * third point as a rotational reference
+     * 
      * @param measurementPose
      * @param lineOrigin
      * @param lineXPos
@@ -242,19 +279,25 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         lineXPos = lineXPos.rotateAround(lineOrigin.getTranslation(), Rotation2d.fromRadians(-lineAngle));
         measurementPose = measurementPose.rotateAround(lineOrigin.getTranslation(), Rotation2d.fromRadians(-lineAngle));
 
-        lineXPos = lineXPos.transformBy(new Transform2d(lineOrigin.getTranslation(),  Rotation2d.kZero));
-        measurementPose = measurementPose.transformBy(new Transform2d(lineOrigin.getTranslation(),  Rotation2d.kZero));
+        lineXPos = lineXPos.transformBy(new Transform2d(lineOrigin.getTranslation(), Rotation2d.kZero));
+        measurementPose = measurementPose.transformBy(new Transform2d(lineOrigin.getTranslation(), Rotation2d.kZero));
 
         return measurementPose.getTranslation();
     }
 
-
-    public double distanceFromPose(Pose2d measurementPose, Pose2d origin){
-        return Math.sqrt(Math.pow(measurementPose.getX() - origin.getX(), 2) + Math.pow(measurementPose.getY() - origin.getY(), 2));
+    public double distanceFromPose(Pose2d measurementPose, Pose2d origin) {
+        return Math.sqrt(Math.pow(measurementPose.getX() - origin.getX(), 2)
+                + Math.pow(measurementPose.getY() - origin.getY(), 2));
     }
 
-    public Rotation2d absoluteAngleFromPose(Pose2d measurementPose, Pose2d origin){
-        return Rotation2d.fromRadians(Math.atan2(measurementPose.getY() - origin.getY(), measurementPose.getX() - origin.getX()));
+    public Rotation2d absoluteAngleFromPose(Pose2d measurementPose, Pose2d origin) {
+        return Rotation2d.fromRadians(
+                Math.atan2(measurementPose.getY() - origin.getY(), measurementPose.getX() - origin.getX()));
+    }
+
+    public Rotation2d absoluteAngleFromPose(Translation2d measurementPose, Translation2d origin) {
+        return Rotation2d.fromRadians(
+                Math.atan2(measurementPose.getY() - origin.getY(), measurementPose.getX() - origin.getX()));
     }
 
 }

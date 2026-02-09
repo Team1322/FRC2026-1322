@@ -2,6 +2,7 @@ package frc.robot.commands.drive;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.SystemVariables.DrivetrainConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class FieldCentricControl extends Command {
@@ -21,9 +22,9 @@ public class FieldCentricControl extends Command {
     @Override
     public void execute() {
         drive.setControl(
-            drive.fieldCentric.withVelocityX(joystickWithDeadband(driverController.getLeftX(), 0.1) * drive.MaxSpeed)
-                              .withVelocityY(joystickWithDeadband(driverController.getLeftY(), 0.1) * drive.MaxSpeed)
-                              .withRotationalRate(joystickWithDeadband(driverController.getRightX(), 0.1) * drive.MaxAngularRate)
+            drive.fieldCentric.withVelocityX(joystickWithDeadband(driverController.getLeftX(), 0.1) * DrivetrainConstants.MaxSpeed)
+                              .withVelocityY(joystickWithDeadband(driverController.getLeftY(), 0.1) * DrivetrainConstants.MaxSpeed)
+                              .withRotationalRate(joystickWithDeadband(driverController.getRightX(), 0.1) * DrivetrainConstants.MaxAngularRate)
             );
     }
 
