@@ -31,16 +31,18 @@ import frc.robot.subsystems.LiftSubsystem;
 
 public class RobotContainer {
     /*
-        TODO For 2/14/26 
+        TODO For Comp
 
         - Finish ShooterSubsystem
             - Build Commands
             - Add subsystem to RobotContainer
+            - Record height of shooter and shooter angle in constants
 
         - Make updates to turret
             - Create constants for limits in either direction
             - Change getCurrentPosition to convert motor rotations to degrees
             - Adjust command to utilize the getCurrentAngle method
+            - Record location of turret in constants
 
         - Improve code for comp
             - Create target 'states' for lift subsystem, aka Retracted, Intaking, and Climbed
@@ -48,7 +50,8 @@ public class RobotContainer {
                 - Turns chassis to brake mode
                 - Checks that shooter is up to speed
                 - Checks that turret is in position
-            - Create buttons for auto-driving over the bumps
+            - Create buttons for auto-driving over the bumps or trench (if we fit under trench)
+            - Determine shoot target when feeding instead of scoring
             - Create some autos we are likely to run
                 - Drive to shoot, shoot
                 - Drive to shoot, shoot, climb auto
@@ -67,6 +70,19 @@ public class RobotContainer {
             - Add overrides to turret angle if positional data is unknown
                 - Same as shooter, just do the same for turret
             - Add a zero button for field-centric
+
+        - ToDo on physical robot
+            - ID all motors
+            - Run through swerve generator and create TunerConstants.java file
+            - Tune turret PID
+            - Tune lift PID
+            - Tune flywheel PID
+            - Determine multiplier to convert velocity method from meters per second to rev per second
+            - Drive To Pose PID
+            - Drive To Poes Slew Rate Limit
+            - Lift positions for each state
+            - Full system tests to find potential issues
+
     */
 
     private final CommandXboxController driverController = new CommandXboxController(0);

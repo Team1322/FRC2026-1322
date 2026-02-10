@@ -33,15 +33,16 @@ public class SystemVariables {
 
     public static final class ShooterConstants {
         public static final int SHOOT_MOTOR_ID = 40;
-        public static final double HEIGHT = 1.8 - Units.inchesToMeters(12);
+        public static final double SHOOTER_HEIGHT = Units.inchesToMeters(12);
+        public static final double GOAL_HEIGHT = 1.8 - SHOOTER_HEIGHT;
         public static final double SHOOT_ANGLE = Units.degreesToRadians(90 - 25);
     }
 
      public static final class TurretConstants {
         public static final int TURRET_MOTOR_ID = 41;
-        public static final double KP = 0.12;
-        public static final double KI = 0.005;
-        public static final double KD = 0.002;
+        public static final double KP = 0.001;
+        public static final double KI = 0.0;
+        public static final double KD = 0.0;
         public static final Transform2d TURRET_LOCATION = new Transform2d(
             Units.inchesToMeters(0),
             Units.inchesToMeters(0), 
@@ -51,10 +52,9 @@ public class SystemVariables {
 
     public static final class LiftConstants {
         public static final int LIFT_MOTOR_ID = 50;
-        public static final double MAX_POWER = 1;
-        public static final double KP = 0.12;
-        public static final double KI = 0.005;
-        public static final double KD = 0.002;
+        public static final double KP = 0.001;
+        public static final double KI = 0.0;
+        public static final double KD = 0.0;
         public static final double POSE_TOLERANCE = .25;
     }
 

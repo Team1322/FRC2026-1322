@@ -13,7 +13,9 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -27,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.LimelightHelpers;
 import frc.robot.SystemVariables;
 import frc.robot.SystemVariables.FieldConstants;
+import frc.robot.SystemVariables.ShooterConstants;
 import frc.robot.SystemVariables.TurretConstants;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 
@@ -46,8 +49,8 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
 
     public final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
-    StructPublisher<Pose2d> turretPosePublisher = NetworkTableInstance.getDefault()
-        .getStructTopic("Turret Pose", Pose2d.struct).publish();
+    StructPublisher<Pose3d> turretPosePublisher = NetworkTableInstance.getDefault()
+        .getStructTopic("Turret Pose", Pose3d.struct).publish();
 
         
     StructPublisher<Pose2d> shootTargetPublisher = NetworkTableInstance.getDefault()
@@ -103,7 +106,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         else if (useMT2)
             updatePoseWithMT2();
 
-        turretPosePublisher.set(new Pose2d(getTurretPose().getTranslation(), getAngleToGoal()));
+        turretPosePublisher.set(new Pose3d(getTurretPose().getX(), getTurretPose().getY(), ShooterConstants.SHOOTER_HEIGHT, new Rotation3d(getAngleToGoal())));
         shootTargetPublisher.set(new Pose2d(getShootTarget(), Rotation2d.kZero));
 
         /*

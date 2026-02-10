@@ -32,7 +32,7 @@ public class ShooterSubsystem extends SubsystemBase {
         double distance = SystemVariables.turretDistanceFromGoal;
         double vel = Math.sqrt(
                 (-(distance * distance) * 10)
-                        / (2 * ShooterConstants.HEIGHT - 2 * distance * Math.tan(ShooterConstants.SHOOT_ANGLE)))
+                        / (2 * ShooterConstants.GOAL_HEIGHT - 2 * distance * Math.tan(ShooterConstants.SHOOT_ANGLE)))
                 / (Math.cos(ShooterConstants.SHOOT_ANGLE));
         return vel;
     }
