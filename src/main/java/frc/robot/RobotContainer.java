@@ -44,7 +44,10 @@ public class RobotContainer {
 
         - Improve code for comp
             - Create target 'states' for lift subsystem, aka Retracted, Intaking, and Climbed
-            - Make driver's shoot button put chassis into 'brake' mode and makes sure shooter is up to speed before firing
+            - Create handshaking for driver shoot button
+                - Turns chassis to brake mode
+                - Checks that shooter is up to speed
+                - Checks that turret is in position
             - Create buttons for auto-driving over the bumps
             - Create some autos we are likely to run
                 - Drive to shoot, shoot
