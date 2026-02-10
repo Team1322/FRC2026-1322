@@ -11,21 +11,21 @@ import frc.robot.SystemVariables;
 import frc.robot.SystemVariables.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
-    TalonFX ShooterMotor = new TalonFX(40);
+    TalonFX shooterMotor = new TalonFX(40);
 
     public ShooterSubsystem() {
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        ShooterMotor.getConfigurator().apply(config);
+        shooterMotor.getConfigurator().apply(config);
     }
 
     public void shoot() {
-        ShooterMotor.setControl(new VelocityVoltage(getShootVelocity()));
+        shooterMotor.setControl(new VelocityVoltage(getShootVelocity()));
     }
 
     public void stopShoot() {
-        ShooterMotor.stopMotor();
+        shooterMotor.stopMotor();
     }
 
     private double getShootVelocity() {

@@ -30,6 +30,41 @@ import frc.robot.subsystems.TurretSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 
 public class RobotContainer {
+    /*
+        TODO For 2/14/26 
+
+        - Finish ShooterSubsystem
+            - Build Commands
+            - Add subsystem to RobotContainer
+
+        - Make updates to turret
+            - Create constants for limits in either direction
+            - Change getCurrentPosition to convert motor rotations to degrees
+            - Adjust command to utilize the getCurrentAngle method
+
+        - Improve code for comp
+            - Create target 'states' for lift subsystem, aka Retracted, Intaking, and Climbed
+            - Make driver's shoot button put chassis into 'brake' mode and makes sure shooter is up to speed before firing
+            - Create buttons for auto-driving over the bumps
+            - Create some autos we are likely to run
+                - Drive to shoot, shoot
+                - Drive to shoot, shoot, climb auto
+                - Drive to human, pickup, drive to shoot, shoot
+                - Drive to human, pickup, drive to shoot, shoot, climb
+                - Drive to depot, pickup, drive to shoot, shoot
+                - Drive to depot, pickup, drive to shoot, shoot, climb
+            - If you are feeling up to it and everything else is done, create more complex autos
+                - Drive to shoot, shoot, drive to mid-field, pickup, drive back, shoot
+                - Drive to mid-field, pickup, drive back, shoot, maybe climb???
+                - Drive to human, pickup, Drive to depot, pickup, drive to shoot, shoot, climb
+
+        - Create fail-safes
+            - Add overrides to shoot power if positional data is unknown
+                - Create this as known spots to shoot and ignore vision data for this
+            - Add overrides to turret angle if positional data is unknown
+                - Same as shooter, just do the same for turret
+            - Add a zero button for field-centric
+    */
 
     private final CommandXboxController driverController = new CommandXboxController(0);
 
