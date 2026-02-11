@@ -85,12 +85,10 @@ public class RobotContainer {
 
     */
 
-    private final CommandXboxController driverController = new CommandXboxController(0);
-
+    CommandXboxController driverController = new CommandXboxController(0);
     CommandXboxController operatorController = new CommandXboxController(1);
 
-    public final DriveSubsystem drive = TunerConstants.createDrivetrain();
-
+    DriveSubsystem drive = TunerConstants.createDrivetrain();
     IntakeSubsystem intake = new IntakeSubsystem();
     FeederSubsystem feeder = new FeederSubsystem();
     TurretSubsystem turret = new TurretSubsystem();
