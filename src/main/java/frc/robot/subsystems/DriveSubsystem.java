@@ -23,6 +23,7 @@ import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
@@ -56,6 +57,8 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         
     StructPublisher<Pose2d> shootTargetPublisher = NetworkTableInstance.getDefault()
         .getStructTopic("Shooting Target", Pose2d.struct).publish();
+
+    SendableChooser<Pose2d> poseOptions = new SendableChooser<>();
 
     ///////////////////////////////////// Drive to Pose Controllers /////////////////////////////////////
     private final PIDController translationalController = new PIDController(1.5, 0, 0);
@@ -94,6 +97,17 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
             startSimThread();
         }
 
+        poseOptions.setDefaultOption("All Zeros", Pose2d.kZero);
+        poseOptions.addOption("Blue Goal", new Pose2d(3.7, 4, Rotation2d.kZero));
+        poseOptions.addOption("Blue Depot Side", new Pose2d(3.7, 6, Rotation2d.kZero));
+        poseOptions.addOption("Blue Outpost Side", new Pose2d(3.7, 2, Rotation2d.kZero));
+        poseOptions.addOption("Red Goal", new Pose2d(12.9, 4, Rotation2d.k180deg));
+        poseOptions.addOption("Red Depot Side", new Pose2d(12.9, 2, Rotation2d.k180deg));
+        poseOptions.addOption("Red Outpost Side", new Pose2d(12.9, 6, Rotation2d.k180deg));
+
+        SmartDashboard.putData("Pose Options/Option Selector", poseOptions);
+        SmartDashboard.putBoolean("Pose Options/Seed Pose?", false);
+
         SmartDashboard.putBoolean("PoseSeeding/Seed Pose?", false);
         SmartDashboard.putNumber("PoseSeeding/Seed Pose X", 0);
         SmartDashboard.putNumber("PoseSeeding/Seed Pose Y", 0);
@@ -108,6 +122,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         SystemVariables.turretZeroDirection = getTurretPose().getRotation();
 
         seedPoseFromDash();
+        seedPoseFromOptions();
 
         if (useMT1)
             updatePoseWithMT1();
@@ -177,6 +192,13 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
                 SmartDashboard.getNumber("PoseSeeding/Seed Pose Y", 0),
                 Rotation2d.fromDegrees(SmartDashboard.getNumber("PoseSeeding/Seed Pose Angle", 0))
             ));
+        }
+    }
+
+    public void seedPoseFromOptions() {
+         if (SmartDashboard.getBoolean("Pose Options/Seed Pose?", false)) {
+            SmartDashboard.putBoolean("Pose Options/Seed Pose?", false);
+            setPose(poseOptions.getSelected());
         }
     }
 
