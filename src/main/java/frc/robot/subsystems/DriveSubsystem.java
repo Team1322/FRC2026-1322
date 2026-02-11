@@ -51,10 +51,12 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
 
     public final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
+    StructPublisher<Pose2d> robotPosePublisher = NetworkTableInstance.getDefault()
+        .getStructTopic("Robot Pose", Pose2d.struct).publish();
+
     StructPublisher<Pose3d> turretPosePublisher = NetworkTableInstance.getDefault()
         .getStructTopic("Turret Pose", Pose3d.struct).publish();
 
-        
     StructPublisher<Pose2d> shootTargetPublisher = NetworkTableInstance.getDefault()
         .getStructTopic("Shooting Target", Pose2d.struct).publish();
 
@@ -98,9 +100,9 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         }
 
         poseOptions.setDefaultOption("All Zeros", Pose2d.kZero);
-        poseOptions.addOption("Blue Goal", new Pose2d(3.7, 4, Rotation2d.kZero));
-        poseOptions.addOption("Blue Depot Side", new Pose2d(3.7, 6, Rotation2d.kZero));
-        poseOptions.addOption("Blue Outpost Side", new Pose2d(3.7, 2, Rotation2d.kZero));
+        poseOptions.addOption("Blue Goal", new Pose2d(3.6, 4, Rotation2d.kZero));
+        poseOptions.addOption("Blue Depot Side", new Pose2d(3.6, 6, Rotation2d.kZero));
+        poseOptions.addOption("Blue Outpost Side", new Pose2d(3.6, 2, Rotation2d.kZero));
         poseOptions.addOption("Red Goal", new Pose2d(12.9, 4, Rotation2d.k180deg));
         poseOptions.addOption("Red Depot Side", new Pose2d(12.9, 2, Rotation2d.k180deg));
         poseOptions.addOption("Red Outpost Side", new Pose2d(12.9, 6, Rotation2d.k180deg));
@@ -129,6 +131,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         else if (useMT2)
             updatePoseWithMT2();
 
+        robotPosePublisher.set(getCurrentPose());
         turretPosePublisher.set(new Pose3d(getTurretPose().getX(), getTurretPose().getY(), ShooterConstants.SHOOTER_HEIGHT, new Rotation3d(getAngleToGoal())));
         shootTargetPublisher.set(new Pose2d(getShootTarget(), Rotation2d.kZero));
 

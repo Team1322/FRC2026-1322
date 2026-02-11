@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.SystemVariables.DrivetrainConstants;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.commands.feeder.RunFeeder;
@@ -94,7 +93,6 @@ public class RobotContainer {
     TurretSubsystem turret = new TurretSubsystem();
     LiftSubsystem lift = new LiftSubsystem();
 
-    private final Telemetry logger = new Telemetry(DrivetrainConstants.MaxSpeed);
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -135,8 +133,6 @@ public class RobotContainer {
         operatorController.b().onTrue(new InstantCommand(() -> lift.setTargetPosition(100)));
 
         driverController.rightTrigger(0.5).whileTrue(new RunFeeder(feeder));
-
-        drive.registerTelemetry(logger::telemeterize);
     }
 
     public Command getAutonomousCommand() {
