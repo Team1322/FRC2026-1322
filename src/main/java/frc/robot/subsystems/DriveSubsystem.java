@@ -23,6 +23,7 @@ import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -92,6 +93,11 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         if (Utils.isSimulation()) {
             startSimThread();
         }
+
+        SmartDashboard.putBoolean("PoseSeeding/Seed Pose?", false);
+        SmartDashboard.putNumber("PoseSeeding/Seed Pose X", 0);
+        SmartDashboard.putNumber("PoseSeeding/Seed Pose Y", 0);
+        SmartDashboard.putNumber("PoseSeeding/Seed Pose Angle", 0);
     }
 
     @Override
@@ -100,6 +106,8 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         SystemVariables.turretDistanceFromGoal = getDistanceFromShot();
         SystemVariables.turretAngleToGoal = getAngleToGoal();
         SystemVariables.turretZeroDirection = getTurretPose().getRotation();
+
+        seedPoseFromDash();
 
         if (useMT1)
             updatePoseWithMT1();
@@ -153,6 +161,23 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         Translation2d target = DriverStation.getAlliance().get() == Alliance.Red ? FieldConstants.RED_GOAL : FieldConstants.BLUE_GOAL;
         target = target.minus(new Translation2d(getState().Speeds.vxMetersPerSecond * 0.3, getState().Speeds.vyMetersPerSecond * 0.3));
         return target;
+    }
+
+    ////////////////////////////////////////////////// Setters ///////////////////////////////////////////////////////////////
+    
+    public void setPose(Pose2d newPose) {
+        resetPose(newPose);
+    }
+
+    public void seedPoseFromDash() {
+        if (SmartDashboard.getBoolean("PoseSeeding/Seed Pose?", false)) {
+            SmartDashboard.putBoolean("PoseSeeding/Seed Pose?", false);
+            setPose(new Pose2d(
+                SmartDashboard.getNumber("PoseSeeding/Seed Pose X", 0),
+                SmartDashboard.getNumber("PoseSeeding/Seed Pose Y", 0),
+                Rotation2d.fromDegrees(SmartDashboard.getNumber("PoseSeeding/Seed Pose Angle", 0))
+            ));
+        }
     }
 
     ////////////////////////////////////////////////// Drive To Pose Methods //////////////////////////////////////////////////
