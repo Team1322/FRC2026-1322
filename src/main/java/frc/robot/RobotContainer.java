@@ -71,8 +71,18 @@ public class RobotContainer {
                 - Same as shooter, just do the same for turret
             - Add a zero button for field-centric
 
+        - Software on computers
+            - Download DS 2026
+            - Download TunerX
+            - Download Rev Hardware Client
+            - Download Limelight Hardware Manager
+            - FMap for limelight
+
         - ToDo on physical robot
+            - Update RoboRIO
+            - Update Limelight firmware
             - ID all motors
+            - Update firmware on all motors
             - Run through swerve generator and create TunerConstants.java file
             - Tune turret PID
             - Tune lift PID
@@ -94,12 +104,14 @@ public class RobotContainer {
     TurretSubsystem turret = new TurretSubsystem();
     LiftSubsystem lift = new LiftSubsystem();
 
+    WaitCommand defaultCommand = new WaitCommand(1);
+
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
     public RobotContainer() {
-        autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
+        autoChooser.setDefaultOption("Do Nothing", defaultCommand);
 
         autoChooser.addOption("Tuning", 
             new SequentialCommandGroup(
@@ -130,7 +142,7 @@ public class RobotContainer {
                 new WaitCommand(2),
                 new DriveToPose(
                     drive, 
-                    new DriveToPoseObject(new Pose2d(1.25,3.3, Rotation2d.kZero))
+                    new DriveToPoseObject(new Pose2d(1.25,3.3, Rotation2d.kZero), MetersPerSecond.of(2))
                 )
 
         ));
@@ -165,5 +177,11 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */
         return autoChooser.getSelected();
+    }
+
+    public boolean readyForMatch() {
+        return 
+            !autoChooser.getSelected().equals(defaultCommand) && 
+            SmartDashboard.getBoolean("Match Setup/Precise Pose Setup", false);
     }
 }
