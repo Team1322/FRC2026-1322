@@ -33,7 +33,6 @@ import frc.robot.SystemVariables;
 import frc.robot.SystemVariables.FieldConstants;
 import frc.robot.SystemVariables.ShooterConstants;
 import frc.robot.SystemVariables.TurretConstants;
-import frc.robot.commands.drive.DriveToPose;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 
 /**
@@ -107,6 +106,9 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         poseOptions.addOption("Red Goal", new Pose2d(12.9, 4, Rotation2d.k180deg));
         poseOptions.addOption("Red Depot Side", new Pose2d(12.9, 2, Rotation2d.k180deg));
         poseOptions.addOption("Red Outpost Side", new Pose2d(12.9, 6, Rotation2d.k180deg));
+        
+        SmartDashboard.putBoolean("Match Setup/Initial Pose Setup", true);
+        SmartDashboard.putBoolean("Match Setup/Precise Pose Setup", false);
 
         SmartDashboard.putData("Pose Options/Option Selector", poseOptions);
         SmartDashboard.putBoolean("Pose Options/Seed Pose?", false);
@@ -130,6 +132,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
 
         seedPoseFromDash();
         seedPoseFromOptions();
+        setLimelightMode();
 
         if (useMT1)
             updatePoseWithMT1();
@@ -248,6 +251,16 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
 
 
     ///////////////////////////////////////////////// Limelight Methods /////////////////////////////////////////////////
+
+    public void setLimelightMode() {
+        if (SmartDashboard.getBoolean("Match Setup/Initial Pose Setup", true) && !useMT1) {
+            SmartDashboard.putBoolean("Match Setup/Precise Pose Setup", false);
+            setUseMT1(true);
+        } else if (SmartDashboard.getBoolean("Match Setup/Precise Pose Setup", false) && !useMT2) {
+            SmartDashboard.putBoolean("Match Setup/Initial Pose Setup", false);
+            setUseMT2(true);
+        }
+    }
 
     public void setUseMT1(boolean useMT1) {
         if (useMT1)
