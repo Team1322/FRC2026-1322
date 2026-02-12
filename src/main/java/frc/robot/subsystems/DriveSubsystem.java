@@ -33,6 +33,7 @@ import frc.robot.SystemVariables;
 import frc.robot.SystemVariables.FieldConstants;
 import frc.robot.SystemVariables.ShooterConstants;
 import frc.robot.SystemVariables.TurretConstants;
+import frc.robot.commands.drive.DriveToPose;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 
 /**
@@ -63,8 +64,8 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     SendableChooser<Pose2d> poseOptions = new SendableChooser<>();
 
     ///////////////////////////////////// Drive to Pose Controllers /////////////////////////////////////
-    private final PIDController translationalController = new PIDController(1.5, 0, 0);
-    private final SlewRateLimiter accelerationLimiter = new SlewRateLimiter(4); // 2 Meters per second per second
+    private final PIDController translationalController = new PIDController(5, 0, 0.08);
+    private final SlewRateLimiter accelerationLimiter = new SlewRateLimiter(100, -4, 0); 
 
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
@@ -114,6 +115,10 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         SmartDashboard.putNumber("PoseSeeding/Seed Pose X", 0);
         SmartDashboard.putNumber("PoseSeeding/Seed Pose Y", 0);
         SmartDashboard.putNumber("PoseSeeding/Seed Pose Angle", 0);
+
+        SmartDashboard.putNumber("DriveToPose/P", translationalController.getP());
+        SmartDashboard.putNumber("DriveToPose/I", translationalController.getI());
+        SmartDashboard.putNumber("DriveToPose/D", translationalController.getD());
     }
 
     @Override
@@ -216,7 +221,15 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
 
     public void driveToPosition(Pose2d drivingPose, Pose2d anglePose, LinearVelocity maxSpeed) {
 
+        translationalController.setPID(
+            SmartDashboard.getNumber("DriveToPose/P", translationalController.getP()),
+            SmartDashboard.getNumber("DriveToPose/I", translationalController.getI()),
+            SmartDashboard.getNumber("DriveToPose/D", translationalController.getD())
+        );
+
         double distanceAway = distanceFromPose(drivingPose, getCurrentPose()) + distanceFromPose(drivingPose, anglePose);
+
+        SmartDashboard.putNumber("DriveToPose/Distance Away", distanceAway);
 
         // Determine the sent velocity of the robot in meters per second
         double translationalOutput = translationalController.calculate(distanceAway);

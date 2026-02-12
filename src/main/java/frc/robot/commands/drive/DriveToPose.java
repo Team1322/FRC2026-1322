@@ -51,4 +51,9 @@ public class DriveToPose extends Command {
     public boolean isFinished() {
         return stepsCompleted == targetPoses.length;
     }
+
+    @Override
+    public void end(boolean finished) {
+        drive.setControl(drive.fieldCentric.withVelocityX(0).withVelocityY(0).withRotationalRate(0));
+    }
 }

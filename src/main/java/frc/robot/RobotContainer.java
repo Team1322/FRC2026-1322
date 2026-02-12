@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.drive.DriveToPose;
@@ -100,12 +101,38 @@ public class RobotContainer {
     public RobotContainer() {
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
 
+        autoChooser.addOption("Tuning", 
+            new SequentialCommandGroup(
+                new DriveToPose(
+                    drive, 
+                    new DriveToPoseObject(new Pose2d(1,1, Rotation2d.kZero)),
+                    new DriveToPoseObject(new Pose2d(0,0, Rotation2d.kZero)),
+                    new DriveToPoseObject(new Pose2d(2,2, Rotation2d.kZero)),
+                    new DriveToPoseObject(new Pose2d(0,0, Rotation2d.kZero)),
+                    new DriveToPoseObject(new Pose2d(4,4, Rotation2d.kZero)),
+                    new DriveToPoseObject(new Pose2d(0,0, Rotation2d.kZero)),
+                    new DriveToPoseObject(new Pose2d(8,8, Rotation2d.kZero)),
+                    new DriveToPoseObject(new Pose2d(0,0, Rotation2d.kZero))
+                )
+        ));
+
         autoChooser.addOption("Test", 
-            new DriveToPose(
-                drive, 
-                new DriveToPoseObject(new Pose2d(2,0, Rotation2d.kZero), MetersPerSecond.of(2)),
-                new DriveToPoseObject(new Pose2d(2,8, Rotation2d.k180deg), MetersPerSecond.of(2)),
-                new DriveToPoseObject(new Pose2d(2,0, Rotation2d.k180deg), MetersPerSecond.of(2))
+            new SequentialCommandGroup(
+                new DriveToPose(
+                    drive, 
+                    new DriveToPoseObject(new Pose2d(0.25,0.5, Rotation2d.kZero))
+                ),
+                new WaitCommand(2),
+                new DriveToPose(
+                    drive, 
+                    new DriveToPoseObject(new Pose2d(2,3.3, Rotation2d.kZero))
+                ),
+                new WaitCommand(2),
+                new DriveToPose(
+                    drive, 
+                    new DriveToPoseObject(new Pose2d(1.25,3.3, Rotation2d.kZero))
+                )
+
         ));
 
         SmartDashboard.putData("Auto Mode", autoChooser);
