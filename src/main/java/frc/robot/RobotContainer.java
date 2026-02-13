@@ -33,6 +33,8 @@ public class RobotContainer {
     /*
         TODO For Comp
 
+        START HERE 2/14/26
+
         - Finish ShooterSubsystem
             - Build Commands
             - Add subsystem to RobotContainer
@@ -43,6 +45,32 @@ public class RobotContainer {
             - Change getCurrentPosition to convert motor rotations to degrees
             - Adjust command to utilize the getCurrentAngle method
             - Record location of turret in constants
+
+        - Software on computers
+            - Download DS 2026
+            - Download TunerX
+            - Download Rev Hardware Client
+            - Download Limelight Hardware Manager
+            - FMap for limelight
+
+        Do this as soon as we have a robot
+
+        - ToDo on physical robot
+            - Update RoboRIO
+            - Update Limelight firmware
+            - ID all motors
+            - Update firmware on all motors
+            - Run through swerve generator and create TunerConstants.java file
+            - Tune turret PID
+            - Tune lift PID
+            - Tune flywheel PID
+            - Determine multiplier to convert velocity method from meters per second to rev per second
+            - Drive To Pose PID
+            - Drive To Poes Slew Rate Limit
+            - Lift positions for each state
+            - Full system tests to find potential issues
+
+        If DONE with above and we don't have a robot, contine here
 
         - Improve code for comp
             - Create target 'states' for lift subsystem, aka Retracted, Intaking, and Climbed
@@ -71,28 +99,6 @@ public class RobotContainer {
                 - Same as shooter, just do the same for turret
             - Add a zero button for field-centric
 
-        - Software on computers
-            - Download DS 2026
-            - Download TunerX
-            - Download Rev Hardware Client
-            - Download Limelight Hardware Manager
-            - FMap for limelight
-
-        - ToDo on physical robot
-            - Update RoboRIO
-            - Update Limelight firmware
-            - ID all motors
-            - Update firmware on all motors
-            - Run through swerve generator and create TunerConstants.java file
-            - Tune turret PID
-            - Tune lift PID
-            - Tune flywheel PID
-            - Determine multiplier to convert velocity method from meters per second to rev per second
-            - Drive To Pose PID
-            - Drive To Poes Slew Rate Limit
-            - Lift positions for each state
-            - Full system tests to find potential issues
-
     */
 
     CommandXboxController driverController = new CommandXboxController(0);
@@ -104,7 +110,7 @@ public class RobotContainer {
     TurretSubsystem turret = new TurretSubsystem();
     LiftSubsystem lift = new LiftSubsystem();
 
-    WaitCommand defaultCommand = new WaitCommand(1);
+    Command defaultCommand = new WaitCommand(1);
 
 
     /* Path follower */
