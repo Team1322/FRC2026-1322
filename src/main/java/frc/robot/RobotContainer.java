@@ -42,9 +42,6 @@ public class RobotContainer {
        
 
         - Software on computers
-            - Download DS 2026
-            - Download TunerX
-            - Download Rev Hardware Client
             - Download Limelight Hardware Manager
             - FMap for limelight
 
