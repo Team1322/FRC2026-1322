@@ -45,21 +45,27 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public double getCurrentPosition() {
-        //TODO: Think about what value this will return, aka what units do we want and what is it giving us
-        return turretMotor.getPosition().getValueAsDouble();
+        return turretMotor.getPosition().getValueAsDouble()  * TurretConstants.CONVERSION_FACTOR;
 
     }
 
     public void setTargetPosition(double targetPositon) {
-        //TODO: Think about limiting the range of turret, aka can we spin forever or is there a limit
+       
+        if (targetPositon < TurretConstants.RIGHT_LIMIT) {
+            targetPositon = TurretConstants.RIGHT_LIMIT;
+        }
+        if (targetPositon > TurretConstants.LEFT_LIMIT) {
+            targetPositon = TurretConstants.LEFT_LIMIT;
+        }
         this.targetPosition = targetPositon;
+        
     }
 
     public void runTurretToTarget() {
         setSpeed(turretController.calculate(getCurrentPosition(), targetPosition));
     }
 
-    private Rotation2d getTargetAngle() {
+    public Rotation2d getTargetAngle() {
         double angleToGoal = SystemVariables.turretAngleToGoal.getDegrees(); //This is the angle from the turret to the goal
         double angleOfRobot = SystemVariables.turretZeroDirection.getDegrees(); //This is the angle of the robot used to offset our math
         return Rotation2d.fromDegrees(angleToGoal - angleOfRobot);
