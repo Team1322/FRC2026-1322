@@ -59,7 +59,7 @@ public class TurretSubsystem extends SubsystemBase {
         setSpeed(turretController.calculate(getCurrentPosition(), targetPosition));
     }
 
-    private Rotation2d getTargetAngle() {
+    public Rotation2d getTargetAngle() {
         double angleToGoal = SystemVariables.turretAngleToGoal.getDegrees(); //This is the angle from the turret to the goal
         double angleOfRobot = SystemVariables.turretZeroDirection.getDegrees(); //This is the angle of the robot used to offset our math
         return Rotation2d.fromDegrees(angleToGoal - angleOfRobot);
