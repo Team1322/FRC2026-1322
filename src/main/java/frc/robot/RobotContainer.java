@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.SystemVariables.ShooterConstants;
+import frc.robot.commands.Shooter.RunShooter;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.commands.feeder.RunFeeder;
@@ -29,6 +31,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
 import frc.robot.subsystems.LiftSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class RobotContainer {
     /*
@@ -36,10 +39,7 @@ public class RobotContainer {
 
         START HERE 2/14/26
 
-        - Finish ShooterSubsystem
-            - Build Commands
-            - Add subsystem to RobotContainer
-            - Record height of shooter and shooter angle in constants
+       
 
         - Software on computers
             - Download DS 2026
@@ -104,6 +104,7 @@ public class RobotContainer {
     FeederSubsystem feeder = new FeederSubsystem();
     TurretSubsystem turret = new TurretSubsystem();
     LiftSubsystem lift = new LiftSubsystem();
+    ShooterSubsystem Shoot = new ShooterSubsystem();
 
     Command defaultCommand = new WaitCommand(1);
 
@@ -169,6 +170,8 @@ public class RobotContainer {
         operatorController.a().whileTrue(new RunIntake(intake));
         operatorController.x().onTrue(new InstantCommand(() -> turret.setTargetPosition(100)));
         operatorController.y().onTrue(new InstantCommand(() -> turret.setTargetPosition(0)));
+
+        operatorController.povUp().whileTrue(new RunShooter(Shoot));
 
         operatorController.b().onTrue(new InstantCommand(() -> lift.setTargetPosition(100)));
 
