@@ -27,6 +27,9 @@ public class ShooterSubsystem extends SubsystemBase {
     public void stopShoot() {
         shooterMotor.stopMotor();
     }
+    public boolean isShooterSpunUp()  {
+        return s.getVelocity().getValueAsDouble()
+    }
 
     private double getShootVelocity() {
         double distance = SystemVariables.turretDistanceFromGoal;
