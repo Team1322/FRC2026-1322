@@ -23,6 +23,7 @@ import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.lift.LiftToPosition;
 import frc.robot.commands.turret.RunTurretToTarget;
+import frc.robot.commands.turret.RunTurretToWin;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
@@ -38,11 +39,7 @@ public class RobotContainer {
 
         START HERE 2/14/26
 
-        - Make updates to turret
-            - Create constants for limits in either direction
-            - Change getCurrentPosition to convert motor rotations to degrees
-            - Adjust command to utilize the getCurrentAngle method
-            - Record location of turret in constants
+       
 
         - Software on computers
             - Download DS 2026
@@ -160,7 +157,7 @@ public class RobotContainer {
     private void configureBindings() {
 
         drive.setDefaultCommand(new FieldCentricControl(drive, driverController));
-        turret.setDefaultCommand(new RunTurretToTarget(turret));
+        turret.setDefaultCommand(new RunTurretToWin(turret));
         lift.setDefaultCommand(new LiftToPosition(lift));
 
         driverController.a().onTrue(new InstantCommand(() -> drive.setUseMT1(true)));
