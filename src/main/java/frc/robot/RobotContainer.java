@@ -41,11 +41,6 @@ public class RobotContainer {
             - Add subsystem to RobotContainer
             - Record height of shooter and shooter angle in constants
 
-        - Make updates to turret
-            - Create constants for limits in either direction
-            - Change getCurrentPosition to convert motor rotations to degrees
-            - Record location of turret in constants
-
         - Software on computers
             - Download DS 2026
             - Download TunerX
