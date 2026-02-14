@@ -38,9 +38,6 @@ public class RobotContainer {
 
         START HERE 2/14/26
 
-        - Finish ShooterSubsystem
-            - Record height of shooter and shooter angle in constants
-
         - Make updates to turret
             - Create constants for limits in either direction
             - Change getCurrentPosition to convert motor rotations to degrees
