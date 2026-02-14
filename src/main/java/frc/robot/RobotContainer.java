@@ -6,12 +6,16 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
+import edu.wpi.first.epilogue.logging.NullBackend;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -148,6 +152,25 @@ public class RobotContainer {
                 )
 
         ));
+
+        autoChooser.addOption("Null", 
+            new SequentialCommandGroup(
+                new DriveToPose (drive, 
+                    new DriveToPoseObject(new Pose2d(1.275, 6.943, Rotation2d.kCCW_90deg),0.25),
+                    new DriveToPoseObject(new Pose2d(0.412, 6.928,Rotation2d.kCCW_90deg))
+                ),
+                new ParallelRaceGroup(
+                    new RunIntake (intake), 
+                    new DriveToPose (drive,
+                    new DriveToPoseObject(new Pose2d(0.421, 4.941, Rotation2d.kCCW_90deg))
+                    )
+                ),
+                new DriveToPose  (drive,
+                    new DriveToPoseObject(new Pose2d(1.509, 4.956, Rotation2d.kZero),0.25),
+                    new DriveToPoseObject(new Pose2d(1.509,4.188, Rotation2d.kZero) )
+                )
+        )   );
+        
 
         SmartDashboard.putData("Auto Mode", autoChooser);
 
