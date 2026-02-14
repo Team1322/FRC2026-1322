@@ -127,23 +127,24 @@ public class RobotContainer {
                 )
         ));
 
-        autoChooser.addOption("Test", 
+        autoChooser.addOption("human blue", 
             new SequentialCommandGroup(
                 new DriveToPose(
                     drive, 
-                    new DriveToPoseObject(new Pose2d(0.25,0.5, Rotation2d.kZero))
+                    new DriveToPoseObject(new Pose2d(0.407,0.702, Rotation2d.kZero))
+                   
                 ),
                 new WaitCommand(2),
                 new DriveToPose(
-                    drive, 
-                    new DriveToPoseObject(new Pose2d(2,3.3, Rotation2d.kZero))
-                ),
-                new WaitCommand(2),
-                new DriveToPose(
-                    drive, 
-                    new DriveToPoseObject(new Pose2d(1.25,3.3, Rotation2d.kZero), MetersPerSecond.of(2))
-                )
+                    drive,
+                    new DriveToPoseObject(new Pose2d(2.017,0.623, Rotation2d.kZero)),
+                    new DriveToPoseObject(new Pose2d(2.017,3.144, Rotation2d.kZero))
 
+                ),
+  new DriveToPose(
+                    drive,
+                     new DriveToPoseObject(new Pose2d(1.605,3.144, Rotation2d.kZero))
+  )
         ));
 
         SmartDashboard.putData("Auto Mode", autoChooser);

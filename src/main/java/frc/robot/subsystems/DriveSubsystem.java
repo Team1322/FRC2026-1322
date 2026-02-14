@@ -102,7 +102,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         poseOptions.setDefaultOption("All Zeros", Pose2d.kZero);
         poseOptions.addOption("Blue Goal", new Pose2d(3.6, 4, Rotation2d.kZero));
         poseOptions.addOption("Blue Depot Side", new Pose2d(3.6, 6, Rotation2d.kZero));
-        poseOptions.addOption("Blue Outpost Side", new Pose2d(3.6, 2, Rotation2d.kZero));
+        poseOptions.addOption("Blue Outpost Side", new Pose2d(3.570, 0.641, Rotation2d.kZero));
         poseOptions.addOption("Red Goal", new Pose2d(12.9, 4, Rotation2d.k180deg));
         poseOptions.addOption("Red Depot Side", new Pose2d(12.9, 2, Rotation2d.k180deg));
         poseOptions.addOption("Red Outpost Side", new Pose2d(12.9, 6, Rotation2d.k180deg));
