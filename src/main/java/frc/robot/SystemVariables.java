@@ -33,9 +33,9 @@ public class SystemVariables {
 
     public static final class ShooterConstants {
         public static final int SHOOT_MOTOR_ID = 40;
-        public static final double SHOOTER_HEIGHT = Units.inchesToMeters(12);
+        public static final double SHOOTER_HEIGHT = Units.inchesToMeters(22);
         public static final double GOAL_HEIGHT = 1.8 - SHOOTER_HEIGHT;
-        public static final double SHOOT_ANGLE = Units.degreesToRadians(90 - 25);
+        public static final double SHOOT_ANGLE = Units.degreesToRadians(90 - 30);
     }
 
      public static final class TurretConstants {
