@@ -14,7 +14,7 @@ public class RunShooter extends Command  {
 
     @Override
     public void execute() {
-        Shooter.shoot();
+        Shooter.setShootFromDistance();
 
     }
 

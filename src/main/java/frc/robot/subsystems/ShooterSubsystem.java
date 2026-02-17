@@ -12,6 +12,7 @@ import frc.robot.SystemVariables.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
     TalonFX shooterMotor = new TalonFX(40);
+    double velo = 0;
 
     public ShooterSubsystem() {
         TalonFXConfiguration config = new TalonFXConfiguration();
@@ -20,12 +21,21 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterMotor.getConfigurator().apply(config);
     }
 
-    public void shoot() {
-        shooterMotor.setControl(new VelocityVoltage(getShootVelocity()));
+    public void setShootFromDistance() {
+        setShootVelocity(getShootVelocity());
+    }
+
+    public void setShootVelocity(double velo) {
+        this.velo = velo;
+        shooterMotor.setControl(new VelocityVoltage(velo));
     }
 
     public void stopShoot() {
         shooterMotor.stopMotor();
+    }
+    
+    public boolean isShooterSpunUp()  {
+        return false;
     }
 
     private double getShootVelocity() {
