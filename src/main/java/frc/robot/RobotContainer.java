@@ -43,22 +43,15 @@ public class RobotContainer {
 
         START HERE 2/14/26
 
-       
-
-        - Software on computers
-            - Download DS 2026
-            - Download TunerX
-            - Download Rev Hardware Client
-            - Download Limelight Hardware Manager
-            - FMap for limelight
+       - Shoot Command
+            - Change the isShootSpunUp method to actually check if it is at the target velo
 
         Do this as soon as we have a robot
 
         - ToDo on physical robot
-            - Update RoboRIO
             - Update Limelight firmware
-            - ID all motors
-            - Update firmware on all motors
+            - ID NEOs
+            - Update firmware on NEOs
             - Run through swerve generator and create TunerConstants.java file
             - Tune turret PID
             - Tune lift PID
