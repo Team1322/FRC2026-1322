@@ -20,12 +20,12 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.SystemVariables.ShooterConstants;
-import frc.robot.commands.Shooter.RunShooter;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.lift.LiftToPosition;
+import frc.robot.commands.shooter.RunShooter;
 import frc.robot.commands.turret.RunTurretToTarget;
 import frc.robot.commands.turret.RunTurretToWin;
 import frc.robot.generated.TunerConstants;
@@ -101,7 +101,7 @@ public class RobotContainer {
     FeederSubsystem feeder = new FeederSubsystem();
     TurretSubsystem turret = new TurretSubsystem();
     LiftSubsystem lift = new LiftSubsystem();
-    ShooterSubsystem Shoot = new ShooterSubsystem();
+    ShooterSubsystem shooter = new ShooterSubsystem();
 
     Command defaultCommand = new WaitCommand(1);
 
@@ -188,7 +188,7 @@ public class RobotContainer {
         operatorController.x().onTrue(new InstantCommand(() -> turret.setTargetPosition(100)));
         operatorController.y().onTrue(new InstantCommand(() -> turret.setTargetPosition(0)));
 
-        operatorController.povUp().whileTrue(new RunShooter(Shoot));
+        operatorController.povUp().whileTrue(new RunShooter(shooter));
 
         operatorController.b().onTrue(new InstantCommand(() -> lift.setTargetPosition(100)));
 
