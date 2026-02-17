@@ -17,11 +17,12 @@ public class EmptyHopper extends ParallelRaceGroup  {
     public EmptyHopper(FeederSubsystem feeder, ShooterSubsystem shooter)  {
         addCommands(
             new RunShooter(shooter),
-            new ConditionalCommand(new RunFeeder (feeder),
-            new WaitCommand(0),
-            () -> shooter.
+            new ConditionalCommand(
+                new RunFeeder (feeder),
+                new WaitCommand(0),
+                () -> shooter.isShooterSpunUp()
             )
-            );
+        );
 
     }
 }

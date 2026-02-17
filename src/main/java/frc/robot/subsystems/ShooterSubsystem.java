@@ -28,7 +28,7 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterMotor.stopMotor();
     }
     public boolean isShooterSpunUp()  {
-        return s.getVelocity().getValueAsDouble()
+        return false;
     }
 
     private double getShootVelocity() {
