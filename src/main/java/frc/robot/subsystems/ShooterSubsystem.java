@@ -8,6 +8,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SystemVariables;
 import frc.robot.SystemVariables.ShooterConstants;
@@ -20,10 +21,19 @@ public class ShooterSubsystem extends SubsystemBase {
     public ShooterSubsystem() {
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        config.Slot0.kP = 1;
         shooterMotor.getConfigurator().apply(config);
         shooterFollower.getConfigurator().apply(config);
         shooterFollower.setControl(new Follower(shooterMotor.getDeviceID(), MotorAlignmentValue.Opposed));
+
+        SmartDashboard.putNumber("Shoot Velo", 0);
+
+    }
+
+    @Override
+    public void periodic(){
+        SmartDashboard.putNumber("Current Shoot Velocity", shooterMotor.getVelocity().getValueAsDouble());
     }
 
     public void setShootFromDistance() {

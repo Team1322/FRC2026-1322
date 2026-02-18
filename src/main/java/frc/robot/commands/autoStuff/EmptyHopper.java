@@ -3,8 +3,8 @@ package frc.robot.commands.autoStuff;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.RunShooter;
 import frc.robot.commands.feeder.RunFeeder;
-import frc.robot.commands.shooter.RunShooter;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 

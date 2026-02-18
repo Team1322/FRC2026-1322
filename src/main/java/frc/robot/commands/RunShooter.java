@@ -1,5 +1,6 @@
-package frc.robot.commands.shooter;
+package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -14,7 +15,8 @@ public class RunShooter extends Command  {
 
     @Override
     public void execute() {
-        shooter.setShootFromDistance();
+        shooter.setShootVelocity(SmartDashboard.getNumber("Shoot Velo", 0));
+        //shooter.setShootFromDistance();
 
     }
 

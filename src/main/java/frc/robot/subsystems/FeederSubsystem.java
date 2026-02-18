@@ -16,11 +16,11 @@ public class FeederSubsystem extends SubsystemBase {
 
   public FeederSubsystem() {
     TalonFXConfiguration config = new TalonFXConfiguration();
-    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     feederMotor.getConfigurator().apply(config);
     feederFollower.getConfigurator().apply(config);
-    feederFollower.setControl(new Follower(feederMotor.getDeviceID(), MotorAlignmentValue.Aligned));
+    feederFollower.setControl(new Follower(feederMotor.getDeviceID(), MotorAlignmentValue.Opposed));
   }
 
   public void setSpeed(double speed) {

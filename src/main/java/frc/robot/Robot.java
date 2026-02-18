@@ -25,7 +25,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
 
-    SmartDashboard.putBoolean("Match Setup/Ready for Match?", m_robotContainer.readyForMatch());
+    //SmartDashboard.putBoolean("Match Setup/Ready for Match?", m_robotContainer.readyForMatch());
   }
 
   @Override
