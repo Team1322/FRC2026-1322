@@ -6,22 +6,26 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
+import edu.wpi.first.epilogue.logging.NullBackend;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.SystemVariables.ShooterConstants;
-import frc.robot.commands.Shooter.RunShooter;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.lift.LiftToPosition;
+import frc.robot.commands.shooter.RunShooter;
 import frc.robot.commands.turret.RunTurretToTarget;
 import frc.robot.commands.turret.RunTurretToWin;
 import frc.robot.generated.TunerConstants;
@@ -39,19 +43,15 @@ public class RobotContainer {
 
         START HERE 2/14/26
 
-       
-
-        - Software on computers
-            - Download Limelight Hardware Manager
-            - FMap for limelight
+       - Shoot Command
+            - Change the isShootSpunUp method to actually check if it is at the target velo
 
         Do this as soon as we have a robot
 
         - ToDo on physical robot
-            - Update RoboRIO
             - Update Limelight firmware
-            - ID all motors
-            - Update firmware on all motors
+            - ID NEOs
+            - Update firmware on NEOs
             - Run through swerve generator and create TunerConstants.java file
             - Tune turret PID
             - Tune lift PID
@@ -101,7 +101,7 @@ public class RobotContainer {
     FeederSubsystem feeder = new FeederSubsystem();
     TurretSubsystem turret = new TurretSubsystem();
     LiftSubsystem lift = new LiftSubsystem();
-    ShooterSubsystem Shoot = new ShooterSubsystem();
+    ShooterSubsystem shooter = new ShooterSubsystem();
 
     Command defaultCommand = new WaitCommand(1);
 
@@ -147,6 +147,25 @@ public class RobotContainer {
                 )
         ));
 
+        autoChooser.addOption("Null", 
+            new SequentialCommandGroup(
+                new DriveToPose (drive, 
+                    new DriveToPoseObject(new Pose2d(1.275, 6.943, Rotation2d.kCCW_90deg),0.25),
+                    new DriveToPoseObject(new Pose2d(0.412, 6.928,Rotation2d.kCCW_90deg))
+                ),
+                new ParallelRaceGroup(
+                    new RunIntake (intake), 
+                    new DriveToPose (drive,
+                    new DriveToPoseObject(new Pose2d(0.421, 4.941, Rotation2d.kCCW_90deg))
+                    )
+                ),
+                new DriveToPose  (drive,
+                    new DriveToPoseObject(new Pose2d(1.509, 4.956, Rotation2d.kZero),0.25),
+                    new DriveToPoseObject(new Pose2d(1.509,4.188, Rotation2d.kZero) )
+                )
+        )   );
+        
+
         SmartDashboard.putData("Auto Mode", autoChooser);
 
         configureBindings();
@@ -169,7 +188,7 @@ public class RobotContainer {
         operatorController.x().onTrue(new InstantCommand(() -> turret.setTargetPosition(100)));
         operatorController.y().onTrue(new InstantCommand(() -> turret.setTargetPosition(0)));
 
-        operatorController.povUp().whileTrue(new RunShooter(Shoot));
+        operatorController.povUp().whileTrue(new RunShooter(shooter));
 
         operatorController.b().onTrue(new InstantCommand(() -> lift.setTargetPosition(100)));
 
