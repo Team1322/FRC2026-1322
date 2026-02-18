@@ -24,15 +24,17 @@ public class SystemVariables {
     
     public static final class IntakeConstants {
         public static final int INTAKE_MOTOR_0 = 20;
-        public static final int INTAKE_MOTOR_1 = 21;
+        //public static final int INTAKE_MOTOR_1 = 21;
     }
 
     public static final class FeederConstants {
         public static final int FEEDER_MOTOR_ID = 30;
+        public static final int FEEDER_FOLLOWER_ID = 31;
     }
 
     public static final class ShooterConstants {
         public static final int SHOOT_MOTOR_ID = 40;
+        public static final int SHOOT_FOLLWER_ID = 41;
         public static final double SHOOTER_HEIGHT = Units.inchesToMeters(22);
         public static final double GOAL_HEIGHT = 1.8 - SHOOTER_HEIGHT;
         public static final double SHOOT_ANGLE = Units.degreesToRadians(90 - 30);
@@ -45,7 +47,7 @@ public class SystemVariables {
         public static final double KD = 0.0;
        public static final double RIGHT_LIMIT = -90;
        public static final double LEFT_LIMIT = 90;
-        public static final double CONVERSION_FACTOR = 1/700 * 360;
+        public static final double CONVERSION_FACTOR = 1/21 * 360;
         public static final Transform2d TURRET_LOCATION = new Transform2d(
             Units.inchesToMeters(8),
             Units.inchesToMeters(0), 

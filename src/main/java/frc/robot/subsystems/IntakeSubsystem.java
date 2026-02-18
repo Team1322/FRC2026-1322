@@ -15,12 +15,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public IntakeSubsystem() {
     intakeMotor0 = new SparkMax(IntakeConstants.INTAKE_MOTOR_0, MotorType.kBrushless);
-    intakeMotor1 = new SparkMax(IntakeConstants.INTAKE_MOTOR_1, MotorType.kBrushless);
 
     SparkMaxConfig config1 = new SparkMaxConfig();
     config1.inverted(true);
-    config1.follow(intakeMotor0.getDeviceId());
-    intakeMotor1.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    intakeMotor0.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   public void setSpeed(double speed) {

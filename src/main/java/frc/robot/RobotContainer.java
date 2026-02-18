@@ -141,10 +141,10 @@ public class RobotContainer {
                     new DriveToPoseObject(new Pose2d(2.017,3.144, Rotation2d.kZero))
 
                 ),
-  new DriveToPose(
+                new DriveToPose(
                     drive,
                      new DriveToPoseObject(new Pose2d(1.605,3.144, Rotation2d.kZero))
-  )
+                )
         ));
 
         SmartDashboard.putData("Auto Mode", autoChooser);
