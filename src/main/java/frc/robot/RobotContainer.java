@@ -18,6 +18,7 @@ import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.shooter.RunShooter;
+import frc.robot.commands.turret.MoveTurretWithJoystick;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
@@ -163,6 +164,7 @@ public class RobotContainer {
 
         //drive.setDefaultCommand(new FieldCentricControl(drive, driverController));
         //turret.setDefaultCommand(new RunTurretToWin(turret));
+        turret.setDefaultCommand(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
         //lift.setDefaultCommand(new LiftToPosition(lift));
 
         // driverController.a().onTrue(new InstantCommand(() -> drive.setUseMT1(true)));
@@ -171,6 +173,7 @@ public class RobotContainer {
         //     drive.setUseMT1(false);
         //     drive.setUseMT2(false);
         // }));
+
 
         operatorController.a().whileTrue(new RunIntake(intake));
         operatorController.x().onTrue(new InstantCommand(() -> turret.setTargetPosition(100)));
