@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
+import frc.robot.commands.lift.MoveLiftWithJoystick;
 import frc.robot.commands.shooter.RunShooter;
 import frc.robot.commands.turret.MoveTurretWithJoystick;
 import frc.robot.generated.TunerConstants;
@@ -165,6 +166,7 @@ public class RobotContainer {
         //drive.setDefaultCommand(new FieldCentricControl(drive, driverController));
         //turret.setDefaultCommand(new RunTurretToWin(turret));
         turret.setDefaultCommand(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
+        lift.setDefaultCommand(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
         //lift.setDefaultCommand(new LiftToPosition(lift));
 
         // driverController.a().onTrue(new InstantCommand(() -> drive.setUseMT1(true)));
