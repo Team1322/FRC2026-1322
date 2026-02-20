@@ -58,9 +58,9 @@ public class LiftSubsystem extends SubsystemBase {
             case COMPACT:
                 setTargetPosition(0);
             case INTAKE:
-                setTargetPosition(0.5);
+                setTargetPosition(70);
             case CLIMBED:
-                setTargetPosition(0.5);
+                setTargetPosition(70);
         }
     }
 
