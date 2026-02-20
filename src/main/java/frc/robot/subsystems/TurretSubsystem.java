@@ -30,6 +30,10 @@ public class TurretSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Turret P", TurretConstants.KP);
         SmartDashboard.putNumber("Turret I", TurretConstants.KI);
         SmartDashboard.putNumber("Turret D", TurretConstants.KD);
+
+        turretAbsoluteEncoder.setOffsetDegrees(0);
+        
+        resetMotorEncoder();
     }
 
     @Override
@@ -42,7 +46,6 @@ public class TurretSubsystem extends SubsystemBase {
         //     SmartDashboard.getNumber("Turret I", TurretConstants.KI),
         //     SmartDashboard.getNumber("Turret D", TurretConstants.KD)
         // );
-        resetMotorEncoder();
     }
 
     public void setSpeed(double speed) {

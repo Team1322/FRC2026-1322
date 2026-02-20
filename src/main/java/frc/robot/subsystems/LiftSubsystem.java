@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.andymark.jni.AM_CAN_HexBoreEncoder;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -14,6 +15,8 @@ public class LiftSubsystem extends SubsystemBase {
     TalonFX liftMotor = new TalonFX(50);
 
     PIDController liftController = new PIDController(LiftConstants.KP, LiftConstants.KI, LiftConstants.KD);
+    
+    AM_CAN_HexBoreEncoder liftAbsoluteEncoder = new AM_CAN_HexBoreEncoder(LiftConstants.LIFT_SENSOR_ID);
 
     double targetPosition = 0;
 
@@ -22,6 +25,8 @@ public class LiftSubsystem extends SubsystemBase {
         config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         liftMotor.getConfigurator().apply(config);
+
+        //liftAbsoluteEncoder.setOffsetDegrees(0);
 
         SmartDashboard.putNumber("Lift P", LiftConstants.KP);
         SmartDashboard.putNumber("Lift I", LiftConstants.KI);
@@ -45,6 +50,7 @@ public class LiftSubsystem extends SubsystemBase {
     }
 
     public double getCurrentPosition() {
+        //return liftAbsoluteEncoder.getAngleDegrees();
         return liftMotor.getPosition().getValueAsDouble();
     }
 
