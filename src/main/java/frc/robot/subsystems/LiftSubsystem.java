@@ -5,13 +5,16 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.SystemVariables.LiftConstants;
+import frc.robot.SystemVariables.TurretConstants;
 
 public class LiftSubsystem extends SubsystemBase {
 
     TalonFX liftMotor = new TalonFX(50);
 
-    PIDController liftController = new PIDController(0.001, 0, 0);
+    PIDController liftController = new PIDController(LiftConstants.KP, LiftConstants.KI, LiftConstants.KD);
 
     double targetPosition = 0;
 
@@ -20,6 +23,22 @@ public class LiftSubsystem extends SubsystemBase {
         config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         liftMotor.getConfigurator().apply(config);
+
+        SmartDashboard.putNumber("Lift P", LiftConstants.KP);
+        SmartDashboard.putNumber("Lift I", LiftConstants.KI);
+        SmartDashboard.putNumber("Lift D", LiftConstants.KD);
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Target Lift Position", targetPosition);
+        SmartDashboard.putNumber("Current Lift Position", getCurrentPosition());
+
+        liftController.setPID(
+            SmartDashboard.getNumber("Lift P", LiftConstants.KP),
+            SmartDashboard.getNumber("Lift I", LiftConstants.KI),
+            SmartDashboard.getNumber("Lift D", LiftConstants.KD)
+        );
     }
 
     public void setSpeed(double speed) {

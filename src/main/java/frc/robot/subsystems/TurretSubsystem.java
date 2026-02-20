@@ -19,8 +19,10 @@ public class TurretSubsystem extends SubsystemBase {
 
     public TurretSubsystem() {
         TalonFXConfiguration config = new TalonFXConfiguration();
-        config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        config.MotorOutput.PeakForwardDutyCycle = 0.3;
+        config.MotorOutput.PeakReverseDutyCycle = -0.3;
         turretMotor.getConfigurator().apply(config);
         SmartDashboard.putNumber("Turret P", TurretConstants.KP);
         SmartDashboard.putNumber("Turret I", TurretConstants.KI);
@@ -32,11 +34,11 @@ public class TurretSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Target Turret Position", targetPosition);
         SmartDashboard.putNumber("Current Turret Position", getCurrentPosition());
 
-        turretController.setPID(
-            SmartDashboard.getNumber("Turret P", TurretConstants.KP),
-            SmartDashboard.getNumber("Turret I", TurretConstants.KI),
-            SmartDashboard.getNumber("Turret D", TurretConstants.KD)
-        );
+        // turretController.setPID(
+        //     SmartDashboard.getNumber("Turret P", TurretConstants.KP),
+        //     SmartDashboard.getNumber("Turret I", TurretConstants.KI),
+        //     SmartDashboard.getNumber("Turret D", TurretConstants.KD)
+        // );
     }
 
     public void setSpeed(double speed) {

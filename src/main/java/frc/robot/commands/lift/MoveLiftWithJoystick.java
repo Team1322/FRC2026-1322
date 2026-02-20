@@ -17,7 +17,7 @@ public class MoveLiftWithJoystick extends Command{
 
     @Override
     public void execute() {
-        lift.setSpeed(opLeftY.getAsDouble() * 0.1);
+        lift.setSpeed(-opLeftY.getAsDouble() * 1);
     }
 
     @Override
