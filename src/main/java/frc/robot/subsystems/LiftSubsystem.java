@@ -52,7 +52,7 @@ public class LiftSubsystem extends SubsystemBase {
         this.targetPosition = targetPosition;
     }
 
-    public void moveTowardPosition() {
+    public void runLiftToTarget() {
         setSpeed(liftController.calculate(getCurrentPosition(), targetPosition));
     }
 
