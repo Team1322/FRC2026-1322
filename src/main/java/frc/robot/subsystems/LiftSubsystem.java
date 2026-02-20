@@ -12,7 +12,7 @@ import frc.robot.SystemVariables.LiftConstants.LiftStates;
 
 public class LiftSubsystem extends SubsystemBase {
 
-    TalonFX liftMotor = new TalonFX(50);
+    TalonFX liftMotor = new TalonFX(LiftConstants.LIFT_MOTOR_ID);
 
     PIDController liftController = new PIDController(LiftConstants.KP, LiftConstants.KI, LiftConstants.KD);
 
