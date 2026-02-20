@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SystemVariables.LiftConstants;
+import frc.robot.SystemVariables.LiftConstants.LiftStates;
 
 public class LiftSubsystem extends SubsystemBase {
 
@@ -50,6 +51,17 @@ public class LiftSubsystem extends SubsystemBase {
 
     public void setTargetPosition(double targetPosition) {
         this.targetPosition = targetPosition;
+    }
+
+    public void setTargetState(LiftStates targetState) {
+        switch (targetState) {
+            case COMPACT:
+                setTargetPosition(0);
+            case INTAKE:
+                setTargetPosition(0.5);
+            case CLIMBED:
+                setTargetPosition(0.5);
+        }
     }
 
     public void moveTowardPosition() {

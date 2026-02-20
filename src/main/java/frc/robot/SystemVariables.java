@@ -63,6 +63,12 @@ public class SystemVariables {
         public static final double KI = 0.0;
         public static final double KD = 0.0;
         public static final double POSE_TOLERANCE = .25;
+
+        public static enum LiftStates{
+            COMPACT,
+            INTAKE,
+            CLIMBED
+        }
     }
 
     public static final class FieldConstants{
