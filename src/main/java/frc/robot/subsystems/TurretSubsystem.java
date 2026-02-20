@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.andymark.jni.AM_CAN_HexBoreEncoder;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -16,6 +17,8 @@ public class TurretSubsystem extends SubsystemBase {
     TalonFX turretMotor = new TalonFX(TurretConstants.TURRET_MOTOR_ID);
     double targetPosition = 0;
     PIDController turretController = new PIDController(TurretConstants.KP, TurretConstants.KI, TurretConstants.KD);
+    AM_CAN_HexBoreEncoder turretAbsoluteEncoder = new AM_CAN_HexBoreEncoder(TurretConstants.TURRET_SENSOR_ID);
+
 
     public TurretSubsystem() {
         TalonFXConfiguration config = new TalonFXConfiguration();
@@ -39,6 +42,7 @@ public class TurretSubsystem extends SubsystemBase {
         //     SmartDashboard.getNumber("Turret I", TurretConstants.KI),
         //     SmartDashboard.getNumber("Turret D", TurretConstants.KD)
         // );
+        resetMotorEncoder();
     }
 
     public void setSpeed(double speed) {
@@ -47,8 +51,13 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public double getCurrentPosition() {
-        return turretMotor.getPosition().getValueAsDouble()  * TurretConstants.CONVERSION_FACTOR;
+        //return turretAbsoluteEncoder.getAngleDegrees();
+        return turretMotor.getPosition().getValueAsDouble()  * TurretConstants.MOTOR_CONVERSION_FACTOR;
+    }
 
+    public void resetMotorEncoder() {
+        double turretAngle = turretAbsoluteEncoder.getAngleDegrees() * TurretConstants.ENCODER_CONVERSION_FACTOR;
+        turretMotor.setPosition(turretAngle / TurretConstants.MOTOR_CONVERSION_FACTOR);
     }
 
     public void setTargetPosition(double targetPositon) {

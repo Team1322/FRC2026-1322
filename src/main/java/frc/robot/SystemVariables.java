@@ -42,12 +42,14 @@ public class SystemVariables {
 
      public static final class TurretConstants {
         public static final int TURRET_MOTOR_ID = 42;
+        public static final int TURRET_SENSOR_ID = 42;
         public static final double KP = 0.02;
         public static final double KI = 0.002;
         public static final double KD = 0.0006;
        public static final double RIGHT_LIMIT = -90;
        public static final double LEFT_LIMIT = 90;
-        public static final double CONVERSION_FACTOR = (360/21);
+       public static final double MOTOR_CONVERSION_FACTOR = (360.0 / 21.0);
+       public static final double ENCODER_CONVERSION_FACTOR = (1.0 / 7.0);
         public static final Transform2d TURRET_LOCATION = new Transform2d(
             Units.inchesToMeters(8),
             Units.inchesToMeters(0), 
