@@ -50,7 +50,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     
     public boolean isShooterSpunUp()  {
-        return false;
+        return Math.abs(shooterMotor.getVelocity().getValueAsDouble() - velo) < 1;
     }
 
     private double getShootVelocity() {
