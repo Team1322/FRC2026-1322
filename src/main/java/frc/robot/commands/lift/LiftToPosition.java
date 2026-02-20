@@ -13,7 +13,7 @@ public class LiftToPosition extends Command {
 
     @Override
     public void execute() {
-        lift.moveTowardPosition();
+        lift.runLiftToTarget();
     }
 
     @Override
