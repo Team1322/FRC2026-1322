@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.autoStuff.EmptyHopper;
 import frc.robot.commands.drive.DriveToPose;
+import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.lift.LiftToPosition;
@@ -147,6 +149,25 @@ public class RobotContainer {
                     new DriveToPoseObject(new Pose2d(1.509,4.188, Rotation2d.kZero) )
                 )
         )   );
+
+        autoChooser.addOption("BlueDepotShoot",
+            new SequentialCommandGroup(
+                new DriveToPose (drive,
+                    new DriveToPoseObject(new Pose2d(2.228, 5.681, Rotation2d.fromDegrees(-38.03)))
+                    ),
+                new EmptyHopper(feeder, shooter)
+            )
+        );
+
+        autoChooser.addOption("BlueDepotShootClimb",
+            new SequentialCommandGroup(
+                new DriveToPose (drive,
+                    new DriveToPoseObject(new Pose2d(2.228, 5.681, Rotation2d.fromDegrees(-38.03)))
+                    ),
+                new EmptyHopper(feeder, shooter)
+                
+            )
+        );
         
 
         SmartDashboard.putData("Auto Mode", autoChooser);
@@ -156,7 +177,7 @@ public class RobotContainer {
 
     private void configureBindings() {
 
-        //drive.setDefaultCommand(new FieldCentricControl(drive, driverController));
+        drive.setDefaultCommand(new FieldCentricControl(drive, driverController));
         //turret.setDefaultCommand(new RunTurretToWin(turret));
         turret.setDefaultCommand(new RunTurretToTarget(turret));
         //turret.setDefaultCommand(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
