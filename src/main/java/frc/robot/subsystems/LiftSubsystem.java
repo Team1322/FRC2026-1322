@@ -9,6 +9,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SystemVariables.LiftConstants;
+import frc.robot.SystemVariables.TurretConstants;
 
 public class LiftSubsystem extends SubsystemBase {
 
@@ -26,7 +27,6 @@ public class LiftSubsystem extends SubsystemBase {
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         liftMotor.getConfigurator().apply(config);
 
-        //liftAbsoluteEncoder.setOffsetDegrees(0);
 
         SmartDashboard.putNumber("Lift P", LiftConstants.KP);
         SmartDashboard.putNumber("Lift I", LiftConstants.KI);
@@ -37,7 +37,7 @@ public class LiftSubsystem extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Target Lift Position", targetPosition);
         SmartDashboard.putNumber("Current Lift Position", getCurrentPosition());
-
+        SmartDashboard.putNumber("Lift Encoder Pose", getEncoderAngle());
         liftController.setPID(
             SmartDashboard.getNumber("Lift P", LiftConstants.KP),
             SmartDashboard.getNumber("Lift I", LiftConstants.KI),
@@ -52,6 +52,17 @@ public class LiftSubsystem extends SubsystemBase {
     public double getCurrentPosition() {
         //return liftAbsoluteEncoder.getAngleDegrees();
         return liftMotor.getPosition().getValueAsDouble();
+    }
+
+    
+
+    public double getEncoderAngle() {
+        liftAbsoluteEncoder.getTelemetry();
+        double angle = liftAbsoluteEncoder.getAngleDegrees();
+        if (angle > 180) {
+            angle -= 360;
+        }
+        return angle;
     }
 
     public void setTargetPosition(double targetPosition) {
