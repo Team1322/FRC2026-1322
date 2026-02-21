@@ -9,7 +9,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SystemVariables.LiftConstants;
-import frc.robot.SystemVariables.TurretConstants;
+import frc.robot.SystemVariables.LiftConstants.LiftStates;
 
 public class LiftSubsystem extends SubsystemBase {
 
@@ -37,7 +37,7 @@ public class LiftSubsystem extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Target Lift Position", targetPosition);
         SmartDashboard.putNumber("Current Lift Position", getCurrentPosition());
-        SmartDashboard.putNumber("Lift Encoder Pose", getEncoderAngle());
+        //SmartDashboard.putNumber("Lift Encoder Pose", getEncoderAngle());
         liftController.setPID(
             SmartDashboard.getNumber("Lift P", LiftConstants.KP),
             SmartDashboard.getNumber("Lift I", LiftConstants.KI),
@@ -50,8 +50,8 @@ public class LiftSubsystem extends SubsystemBase {
     }
 
     public double getCurrentPosition() {
-        //return liftAbsoluteEncoder.getAngleDegrees();
-        return liftMotor.getPosition().getValueAsDouble();
+        return getEncoderAngle();
+        //return liftMotor.getPosition().getValueAsDouble();
     }
 
     
@@ -69,7 +69,21 @@ public class LiftSubsystem extends SubsystemBase {
         this.targetPosition = targetPosition;
     }
 
-    public void runLiftToTarget() {
+    public void setTargetState(LiftStates targetState) {
+        switch (targetState) {
+            case COMPACT:
+                setTargetPosition(60);
+                break;
+            case INTAKE:
+                setTargetPosition(5);
+                break;
+            case CLIMBED:
+                setTargetPosition(5);
+                break;
+        }
+    }
+
+    public void moveTowardPosition() {
         setSpeed(liftController.calculate(getCurrentPosition(), targetPosition));
     }
 

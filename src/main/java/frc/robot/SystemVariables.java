@@ -60,10 +60,16 @@ public class SystemVariables {
     public static final class LiftConstants {
         public static final int LIFT_MOTOR_ID = 50;
         public static final int LIFT_SENSOR_ID = 50;
-        public static final double KP = 0.001;
+        public static final double KP = 0.06;
         public static final double KI = 0.0;
-        public static final double KD = 0.0;
+        public static final double KD = 0.002;
         public static final double POSE_TOLERANCE = .25;
+
+        public static enum LiftStates{
+            COMPACT,
+            INTAKE,
+            CLIMBED
+        }
     }
 
     public static final class FieldConstants{
