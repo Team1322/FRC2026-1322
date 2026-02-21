@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.SystemVariables.LiftConstants.LiftStates;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
@@ -160,8 +161,8 @@ public class RobotContainer {
         //turret.setDefaultCommand(new RunTurretToWin(turret));
         turret.setDefaultCommand(new RunTurretToTarget(turret));
         //turret.setDefaultCommand(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
-        lift.setDefaultCommand(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
-        //lift.setDefaultCommand(new LiftToPosition(lift));
+        //lift.setDefaultCommand(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
+        lift.setDefaultCommand(new LiftToPosition(lift));
 
         // driverController.a().onTrue(new InstantCommand(() -> drive.setUseMT1(true)));
         // driverController.b().onTrue(new InstantCommand(() -> drive.setUseMT2(true)));
@@ -172,12 +173,12 @@ public class RobotContainer {
 
 
         operatorController.a().whileTrue(new RunIntake(intake));
-        operatorController.x().onTrue(new InstantCommand(() -> lift.setTargetPosition(80)));
-        operatorController.y().onTrue(new InstantCommand(() -> lift.setTargetPosition(0)));
+        operatorController.x().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.COMPACT)));
+        operatorController.y().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.INTAKE)));
 
         operatorController.povUp().whileTrue(new RunShooter(shooter));
 
-        operatorController.b().onTrue(new InstantCommand(() -> lift.setTargetPosition(100)));
+        //operatorController.povLeft().onTrue(new InstantCommand(() -> turret.setTargetPosition(100)));
 
         driverController.rightTrigger(0.5).whileTrue(new RunFeeder(feeder));
     }

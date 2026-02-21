@@ -37,7 +37,7 @@ public class LiftSubsystem extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Target Lift Position", targetPosition);
         SmartDashboard.putNumber("Current Lift Position", getCurrentPosition());
-        SmartDashboard.putNumber("Lift Encoder Pose", getEncoderAngle());
+        //SmartDashboard.putNumber("Lift Encoder Pose", getEncoderAngle());
         liftController.setPID(
             SmartDashboard.getNumber("Lift P", LiftConstants.KP),
             SmartDashboard.getNumber("Lift I", LiftConstants.KI),
@@ -50,8 +50,8 @@ public class LiftSubsystem extends SubsystemBase {
     }
 
     public double getCurrentPosition() {
-        //return liftAbsoluteEncoder.getAngleDegrees();
-        return liftMotor.getPosition().getValueAsDouble();
+        return getEncoderAngle();
+        //return liftMotor.getPosition().getValueAsDouble();
     }
 
     
@@ -72,11 +72,14 @@ public class LiftSubsystem extends SubsystemBase {
     public void setTargetState(LiftStates targetState) {
         switch (targetState) {
             case COMPACT:
-                setTargetPosition(0);
+                setTargetPosition(60);
+                break;
             case INTAKE:
-                setTargetPosition(70);
+                setTargetPosition(5);
+                break;
             case CLIMBED:
-                setTargetPosition(70);
+                setTargetPosition(5);
+                break;
         }
     }
 
