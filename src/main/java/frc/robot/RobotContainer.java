@@ -35,17 +35,9 @@ public class RobotContainer {
     /*
         TODO For Comp
 
-        START HERE 2/14/26
-
-       - Shoot Command
-            - Change the isShootSpunUp method to actually check if it is at the target velo
-
-        Do this as soon as we have a robot
-
         - ToDo on physical robot
             - Update Limelight firmware
             - Run through swerve generator and create TunerConstants.java file
-            - Tune turret PID
             - Tune lift PID
             - Tune flywheel PID
             - Determine multiplier to convert velocity method from meters per second to rev per second
@@ -57,7 +49,6 @@ public class RobotContainer {
         If DONE with above and we don't have a robot, contine here
 
         - Improve code for comp
-            - Create target 'states' for lift subsystem, aka Retracted, Intaking, and Climbed
             - Create handshaking for driver shoot button
                 - Turns chassis to brake mode
                 - Checks that shooter is up to speed
