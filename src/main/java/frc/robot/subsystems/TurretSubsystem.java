@@ -17,10 +17,11 @@ public class TurretSubsystem extends SubsystemBase {
     TalonFX turretMotor = new TalonFX(TurretConstants.TURRET_MOTOR_ID);
     double targetPosition = 0;
     PIDController turretController = new PIDController(TurretConstants.KP, TurretConstants.KI, TurretConstants.KD);
-    AM_CAN_HexBoreEncoder turretAbsoluteEncoder = new AM_CAN_HexBoreEncoder(TurretConstants.TURRET_SENSOR_ID);
+    AM_CAN_HexBoreEncoder turretAbsoluteEncoder;
 
 
     public TurretSubsystem() {
+        turretAbsoluteEncoder = new AM_CAN_HexBoreEncoder(TurretConstants.TURRET_SENSOR_ID);
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
@@ -30,8 +31,6 @@ public class TurretSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Turret P", TurretConstants.KP);
         SmartDashboard.putNumber("Turret I", TurretConstants.KI);
         SmartDashboard.putNumber("Turret D", TurretConstants.KD);
-
-        turretAbsoluteEncoder.setOffsetDegrees(0);
         
         resetMotorEncoder();
     }
@@ -40,7 +39,7 @@ public class TurretSubsystem extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Target Turret Position", targetPosition);
         SmartDashboard.putNumber("Current Turret Position", getCurrentPosition());
-
+        SmartDashboard.putNumber("Absolute Encoder position", getEncoderAngle() );
         // turretController.setPID(
         //     SmartDashboard.getNumber("Turret P", TurretConstants.KP),
         //     SmartDashboard.getNumber("Turret I", TurretConstants.KI),
@@ -53,13 +52,22 @@ public class TurretSubsystem extends SubsystemBase {
 
     }
 
+    public double getEncoderAngle() {
+        turretAbsoluteEncoder.getTelemetry();
+        double angle = turretAbsoluteEncoder.getAngleDegrees();
+        if (angle > 180) {
+            angle -= 360;
+        }
+        return angle * TurretConstants.ENCODER_CONVERSION_FACTOR;
+    }
+
     public double getCurrentPosition() {
         //return turretAbsoluteEncoder.getAngleDegrees();
         return turretMotor.getPosition().getValueAsDouble()  * TurretConstants.MOTOR_CONVERSION_FACTOR;
     }
 
     public void resetMotorEncoder() {
-        double turretAngle = turretAbsoluteEncoder.getAngleDegrees() * TurretConstants.ENCODER_CONVERSION_FACTOR;
+        double turretAngle = getEncoderAngle();
         turretMotor.setPosition(turretAngle / TurretConstants.MOTOR_CONVERSION_FACTOR);
     }
 
