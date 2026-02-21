@@ -28,9 +28,9 @@ public class TurretSubsystem extends SubsystemBase {
         config.MotorOutput.PeakForwardDutyCycle = 0.3;
         config.MotorOutput.PeakReverseDutyCycle = -0.3;
         turretMotor.getConfigurator().apply(config);
-        // SmartDashboard.putNumber("Turret P", TurretConstants.KP);
-        // SmartDashboard.putNumber("Turret I", TurretConstants.KI);
-        // SmartDashboard.putNumber("Turret D", TurretConstants.KD);
+        SmartDashboard.putNumber("Turret P", TurretConstants.KP);
+        SmartDashboard.putNumber("Turret I", TurretConstants.KI);
+        SmartDashboard.putNumber("Turret D", TurretConstants.KD);
         
         resetMotorEncoder();
     }
@@ -40,11 +40,11 @@ public class TurretSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Target Turret Position", targetPosition);
         SmartDashboard.putNumber("Current Turret Position", getCurrentPosition());
         SmartDashboard.putNumber("Absolute Encoder position", getEncoderAngle() );
-        // turretController.setPID(
-        //     SmartDashboard.getNumber("Turret P", TurretConstants.KP),
-        //     SmartDashboard.getNumber("Turret I", TurretConstants.KI),
-        //     SmartDashboard.getNumber("Turret D", TurretConstants.KD)
-        // );
+        turretController.setPID(
+            SmartDashboard.getNumber("Turret P", TurretConstants.KP),
+            SmartDashboard.getNumber("Turret I", TurretConstants.KI),
+            SmartDashboard.getNumber("Turret D", TurretConstants.KD)
+        );
     }
 
     public void setSpeed(double speed) {

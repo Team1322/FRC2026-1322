@@ -43,9 +43,9 @@ public class SystemVariables {
      public static final class TurretConstants {
         public static final int TURRET_MOTOR_ID = 42;
         public static final int TURRET_SENSOR_ID = 42;
-        public static final double KP = 0.02;
-        public static final double KI = 0.002;
-        public static final double KD = 0.0006;
+        public static final double KP = 0.01;
+        public static final double KI = 0.00;
+        public static final double KD = 0.0002;
        public static final double RIGHT_LIMIT = -90;
        public static final double LEFT_LIMIT = 90;
        public static final double MOTOR_CONVERSION_FACTOR = (360.0 / 21.0);
@@ -62,7 +62,7 @@ public class SystemVariables {
         public static final int LIFT_SENSOR_ID = 50;
         public static final double KP = 0.06;
         public static final double KI = 0.0;
-        public static final double KD = 0.002;
+        public static final double KD = 0.003;
         public static final double POSE_TOLERANCE = .25;
 
         public static enum LiftStates{

@@ -72,10 +72,10 @@ public class LiftSubsystem extends SubsystemBase {
     public void setTargetState(LiftStates targetState) {
         switch (targetState) {
             case COMPACT:
-                setTargetPosition(60);
+                setTargetPosition(75);
                 break;
             case INTAKE:
-                setTargetPosition(5);
+                setTargetPosition(3);
                 break;
             case CLIMBED:
                 setTargetPosition(5);

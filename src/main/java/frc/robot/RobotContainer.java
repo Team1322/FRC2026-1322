@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.SystemVariables.LiftConstants.LiftStates;
 import frc.robot.commands.drive.DriveToPose;
+import frc.robot.commands.drive.FieldCentricControl;
+import frc.robot.commands.feeder.ReverseFeeder;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.lift.LiftToPosition;
@@ -157,7 +159,7 @@ public class RobotContainer {
 
     private void configureBindings() {
 
-        //drive.setDefaultCommand(new FieldCentricControl(drive, driverController));
+        drive.setDefaultCommand(new FieldCentricControl(drive, driverController));
         //turret.setDefaultCommand(new RunTurretToWin(turret));
         turret.setDefaultCommand(new RunTurretToTarget(turret));
         //turret.setDefaultCommand(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
@@ -178,9 +180,11 @@ public class RobotContainer {
 
         operatorController.povUp().whileTrue(new RunShooter(shooter));
 
-        //operatorController.povLeft().onTrue(new InstantCommand(() -> turret.setTargetPosition(100)));
+        operatorController.povLeft().onTrue(new InstantCommand(() -> turret.setTargetPosition(-100)));
+        operatorController.povRight().onTrue(new InstantCommand(() -> turret.setTargetPosition(100)));
 
         driverController.rightTrigger(0.5).whileTrue(new RunFeeder(feeder));
+        driverController.leftTrigger(0.5).whileTrue(new ReverseFeeder(feeder));
     }
 
     public Command getAutonomousCommand() {
