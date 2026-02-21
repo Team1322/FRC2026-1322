@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.autoStuff.EmptyHopper;
 import frc.robot.commands.drive.DriveToPose;
+import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.lift.LiftToPosition;
@@ -56,11 +58,11 @@ public class RobotContainer {
             - Create buttons for auto-driving over the bumps or trench (if we fit under trench)
             - Determine shoot target when feeding instead of scoring
             - Create some autos we are likely to run
-                - Drive to shoot, shoot
+                
                 - Drive to shoot, shoot, climb auto
-                - Drive to human, pickup, drive to shoot, shoot
+                
                 - Drive to human, pickup, drive to shoot, shoot, climb
-                - Drive to depot, pickup, drive to shoot, shoot
+                
                 - Drive to depot, pickup, drive to shoot, shoot, climb
             - If you are feeling up to it and everything else is done, create more complex autos
                 - Drive to shoot, shoot, drive to mid-field, pickup, drive back, shoot
@@ -82,8 +84,8 @@ public class RobotContainer {
     DriveSubsystem drive = TunerConstants.createDrivetrain();
     IntakeSubsystem intake = new IntakeSubsystem();
     FeederSubsystem feeder = new FeederSubsystem();
-    TurretSubsystem turret = new TurretSubsystem();
-    LiftSubsystem lift = new LiftSubsystem();
+    //TurretSubsystem turret = new TurretSubsystem();
+    //LiftSubsystem lift = new LiftSubsystem();
     ShooterSubsystem shooter = new ShooterSubsystem();
 
     Command defaultCommand = new WaitCommand(1);
@@ -110,7 +112,7 @@ public class RobotContainer {
                 )
         ));
 
-        autoChooser.addOption("human blue", 
+        autoChooser.addOption("humanside human blue climb", 
             new SequentialCommandGroup(
                 new DriveToPose(
                     drive, 
@@ -124,12 +126,84 @@ public class RobotContainer {
                     new DriveToPoseObject(new Pose2d(2.017,3.144, Rotation2d.kZero))
 
                 ),
+            new EmptyHopper(feeder,shooter),
                 new DriveToPose(
                     drive,
                      new DriveToPoseObject(new Pose2d(1.605,3.144, Rotation2d.kZero))
                 )
         ));
 
+        autoChooser.addOption("human human side red climb", 
+            new SequentialCommandGroup(
+                new DriveToPose(
+                    drive, 
+                    new DriveToPoseObject(new Pose2d(16.123,7.375, Rotation2d.kZero))
+                   
+                ),
+                new WaitCommand(2),
+                new DriveToPose(
+                    drive,
+                    new DriveToPoseObject(new Pose2d(14.662,7.375, Rotation2d.kZero)),
+                    new DriveToPoseObject(new Pose2d(14.633,4.742, Rotation2d.kZero))
+
+                ),
+            new EmptyHopper(feeder,shooter),
+                new DriveToPose(
+                    drive,
+                     new DriveToPoseObject(new Pose2d(15.078,4.742, Rotation2d.kZero))
+                )
+                
+        ));
+
+ autoChooser.addOption("human blue", 
+            new SequentialCommandGroup(
+                new DriveToPose(
+                    drive, 
+                    new DriveToPoseObject(new Pose2d(0.407,0.702, Rotation2d.kZero))
+                   
+                ),
+                new WaitCommand(2),
+                new DriveToPose(
+                    drive,
+                    new DriveToPoseObject(new Pose2d(2.017,0.623, Rotation2d.kZero)),
+                    new DriveToPoseObject(new Pose2d(2.017,3.144, Rotation2d.kZero))
+
+                ),
+            new EmptyHopper(feeder,shooter),
+                new DriveToPose(
+                    drive,
+                     new DriveToPoseObject(new Pose2d(1.605,3.144, Rotation2d.kZero))
+                )
+        ));
+
+        autoChooser.addOption("human red", 
+            new SequentialCommandGroup(
+                new DriveToPose(
+                    drive, 
+                    new DriveToPoseObject(new Pose2d(16.123,7.375, Rotation2d.kZero))
+                   
+                ),
+                new WaitCommand(2),
+                new DriveToPose(
+                    drive,
+                    new DriveToPoseObject(new Pose2d(14.662,7.375, Rotation2d.kZero)),
+                    new DriveToPoseObject(new Pose2d(14.633,4.742, Rotation2d.kZero))
+
+                ),
+            new EmptyHopper(feeder,shooter),
+                new DriveToPose(
+                    drive,
+                     new DriveToPoseObject(new Pose2d(15.078,4.742, Rotation2d.kZero))
+                )
+                
+        ));
+ autoChooser.addOption("humanside shoot climb", 
+            new SequentialCommandGroup(
+                new DriveToPose(
+                    drive, 
+                    new DriveToPoseObject(new Pose2d(16.123,7.375, Rotation2d.kZero)))));
+
+    
         autoChooser.addOption("Null", 
             new SequentialCommandGroup(
                 new DriveToPose (drive, 
@@ -156,11 +230,11 @@ public class RobotContainer {
 
     private void configureBindings() {
 
-        //drive.setDefaultCommand(new FieldCentricControl(drive, driverController));
+        drive.setDefaultCommand(new FieldCentricControl(drive, driverController));
         //turret.setDefaultCommand(new RunTurretToWin(turret));
-        turret.setDefaultCommand(new RunTurretToTarget(turret));
+        //turret.setDefaultCommand(new RunTurretToTarget(turret));
         //turret.setDefaultCommand(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
-        lift.setDefaultCommand(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
+        //lift.setDefaultCommand(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
         //lift.setDefaultCommand(new LiftToPosition(lift));
 
         // driverController.a().onTrue(new InstantCommand(() -> drive.setUseMT1(true)));
@@ -172,12 +246,12 @@ public class RobotContainer {
 
 
         operatorController.a().whileTrue(new RunIntake(intake));
-        operatorController.x().onTrue(new InstantCommand(() -> lift.setTargetPosition(80)));
-        operatorController.y().onTrue(new InstantCommand(() -> lift.setTargetPosition(0)));
+        // operatorController.x().onTrue(new InstantCommand(() -> lift.setTargetPosition(80)));
+        // operatorController.y().onTrue(new InstantCommand(() -> lift.setTargetPosition(0)));
 
         operatorController.povUp().whileTrue(new RunShooter(shooter));
 
-        operatorController.b().onTrue(new InstantCommand(() -> lift.setTargetPosition(100)));
+        //operatorController.b().onTrue(new InstantCommand(() -> lift.setTargetPosition(100)));
 
         driverController.rightTrigger(0.5).whileTrue(new RunFeeder(feeder));
     }
