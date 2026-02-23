@@ -4,26 +4,15 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.SystemVariables.LiftConstants.LiftStates;
-import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.commands.feeder.ReverseFeeder;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.lift.LiftToPosition;
-import frc.robot.commands.lift.MoveLiftWithJoystick;
 import frc.robot.commands.shoot.RunShooter;
-import frc.robot.commands.turret.MoveTurretWithJoystick;
 import frc.robot.commands.turret.RunTurretToTarget;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -85,71 +74,7 @@ public class RobotContainer {
     LiftSubsystem lift = new LiftSubsystem();
     ShooterSubsystem shooter = new ShooterSubsystem();
 
-    Command defaultCommand = new WaitCommand(1);
-
-
-    /* Path follower */
-    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
-
     public RobotContainer() {
-        autoChooser.setDefaultOption("Do Nothing", defaultCommand);
-
-        autoChooser.addOption("Tuning", 
-            new SequentialCommandGroup(
-                new DriveToPose(
-                    drive, 
-                    new DriveToPoseObject(new Pose2d(1,1, Rotation2d.kZero)),
-                    new DriveToPoseObject(new Pose2d(0,0, Rotation2d.kZero)),
-                    new DriveToPoseObject(new Pose2d(2,2, Rotation2d.kZero)),
-                    new DriveToPoseObject(new Pose2d(0,0, Rotation2d.kZero)),
-                    new DriveToPoseObject(new Pose2d(4,4, Rotation2d.kZero)),
-                    new DriveToPoseObject(new Pose2d(0,0, Rotation2d.kZero)),
-                    new DriveToPoseObject(new Pose2d(8,8, Rotation2d.kZero)),
-                    new DriveToPoseObject(new Pose2d(0,0, Rotation2d.kZero))
-                )
-        ));
-
-        autoChooser.addOption("human blue", 
-            new SequentialCommandGroup(
-                new DriveToPose(
-                    drive, 
-                    new DriveToPoseObject(new Pose2d(0.407,0.702, Rotation2d.kZero))
-                   
-                ),
-                new WaitCommand(2),
-                new DriveToPose(
-                    drive,
-                    new DriveToPoseObject(new Pose2d(2.017,0.623, Rotation2d.kZero)),
-                    new DriveToPoseObject(new Pose2d(2.017,3.144, Rotation2d.kZero))
-
-                ),
-                new DriveToPose(
-                    drive,
-                     new DriveToPoseObject(new Pose2d(1.605,3.144, Rotation2d.kZero))
-                )
-        ));
-
-        autoChooser.addOption("Null", 
-            new SequentialCommandGroup(
-                new DriveToPose (drive, 
-                    new DriveToPoseObject(new Pose2d(1.275, 6.943, Rotation2d.kCCW_90deg),0.25),
-                    new DriveToPoseObject(new Pose2d(0.412, 6.928,Rotation2d.kCCW_90deg))
-                ),
-                new ParallelRaceGroup(
-                    new RunIntake (intake), 
-                    new DriveToPose (drive,
-                    new DriveToPoseObject(new Pose2d(0.421, 4.941, Rotation2d.kCCW_90deg))
-                    )
-                ),
-                new DriveToPose  (drive,
-                    new DriveToPoseObject(new Pose2d(1.509, 4.956, Rotation2d.kZero),0.25),
-                    new DriveToPoseObject(new Pose2d(1.509,4.188, Rotation2d.kZero) )
-                )
-        )   );
-        
-
-        //SmartDashboard.putData("Auto Mode", autoChooser);
-
         configureBindings();
     }
 
@@ -183,14 +108,4 @@ public class RobotContainer {
         driverController.leftTrigger(0.5).whileTrue(new ReverseFeeder(feeder));
     }
 
-    public Command getAutonomousCommand() {
-        /* Run the path selected from the auto chooser */
-        return autoChooser.getSelected();
-    }
-
-    public boolean readyForMatch() {
-        return 
-            !autoChooser.getSelected().equals(defaultCommand) && 
-            SmartDashboard.getBoolean("Match Setup/Precise Pose Setup", false);
-    }
 }
