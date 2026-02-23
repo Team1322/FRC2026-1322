@@ -40,19 +40,25 @@ public class AutonChooser {
         if (allianceChooser.getSelected().equals(AllianceColor.RED)) {
             switch (locationChooser.getSelected()) {
                 case DEPOT:
+                    autoChooser.addOption("Red Depot Collection", new WaitCommand(1));
                     break;
                 case CENTER:
+                    autoChooser.addOption("Red Center", new WaitCommand(1));
                     break;
                 case OUTPOST:
+                    autoChooser.addOption("Red Outpost Collection", new WaitCommand(1));
                     break;
             }
         } else {
             switch (locationChooser.getSelected()) {
                 case DEPOT:
+                    autoChooser.addOption("Blue Depot Collection", new WaitCommand(1));
                     break;
                 case CENTER:
+                    autoChooser.addOption("Blue Center", new WaitCommand(1));
                     break;
                 case OUTPOST:
+                    autoChooser.addOption("Blue Outpost Collection", new WaitCommand(1));
                     break;
             }
         }
