@@ -39,7 +39,6 @@ public class TurretSubsystem extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Target Turret Position", targetPosition);
         SmartDashboard.putNumber("Current Turret Position", getCurrentPosition());
-        SmartDashboard.putNumber("Absolute Encoder position", getEncoderAngle() );
         turretController.setPID(
             SmartDashboard.getNumber("Turret P", TurretConstants.KP),
             SmartDashboard.getNumber("Turret I", TurretConstants.KI),
