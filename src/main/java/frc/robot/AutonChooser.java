@@ -80,7 +80,7 @@ public class AutonChooser {
                     ));
 
                     
-                    autoChooser.addOption("human human side red climb", 
+                    autoChooser.addOption("Red Outpost Collection Front Climb", 
                         new SequentialCommandGroup(
                             new DriveToPose(
                                 r.drive, 
@@ -157,7 +157,7 @@ public class AutonChooser {
                     ));
 
                     
-                    autoChooser.addOption("humanside human blue climb", 
+                    autoChooser.addOption("Blue Outpost Collection Front Climb", 
                         new SequentialCommandGroup(
                             new DriveToPose(
                                 r.drive, 
