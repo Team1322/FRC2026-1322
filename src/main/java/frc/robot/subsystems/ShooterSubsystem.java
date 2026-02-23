@@ -34,6 +34,8 @@ public class ShooterSubsystem extends SubsystemBase {
     @Override
     public void periodic(){
         SmartDashboard.putNumber("Current Shoot Velocity", shooterMotor.getVelocity().getValueAsDouble());
+        SmartDashboard.putNumber("Shoot Velo to Goal", getShootVelocity());
+        SmartDashboard.putNumber("Distance to Goal", SystemVariables.turretDistanceFromGoal);
     }
 
     public void setShootFromDistance() {
@@ -55,10 +57,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private double getShootVelocity() {
         double distance = SystemVariables.turretDistanceFromGoal;
+        if (distance < 1.25) {
+            distance = 1.25;
+        }
         double vel = Math.sqrt(
                 (-(distance * distance) * 10)
-                        / (2 * ShooterConstants.GOAL_HEIGHT - 2 * distance * Math.tan(ShooterConstants.SHOOT_ANGLE)))
+                        / ((2 * ShooterConstants.GOAL_HEIGHT) - (2 * distance * Math.tan(ShooterConstants.SHOOT_ANGLE))))
                 / (Math.cos(ShooterConstants.SHOOT_ANGLE));
-        return vel;
+        return vel * 5;
     }
 }
