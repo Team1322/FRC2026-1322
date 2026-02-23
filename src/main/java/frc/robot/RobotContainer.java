@@ -78,68 +78,6 @@ public class RobotContainer {
     ShooterSubsystem shooter = new ShooterSubsystem();
 
     public RobotContainer() {
-        
-
-        autoChooser.addOption("human blue", 
-            new SequentialCommandGroup(
-                new DriveToPose(
-                    drive, 
-                    new DriveToPoseObject(new Pose2d(0.407,0.702, Rotation2d.kZero))
-                   
-                ),
-                new WaitCommand(2),
-                new DriveToPose(
-                    drive,
-                    new DriveToPoseObject(new Pose2d(2.017,0.623, Rotation2d.kZero)),
-                    new DriveToPoseObject(new Pose2d(2.017,3.144, Rotation2d.kZero))
-
-                ),
-                new DriveToPose(
-                    drive,
-                     new DriveToPoseObject(new Pose2d(1.605,3.144, Rotation2d.kZero))
-                )
-        ));
-
-        autoChooser.addOption("Null", 
-            new SequentialCommandGroup(
-                new DriveToPose (drive, 
-                    new DriveToPoseObject(new Pose2d(1.275, 6.943, Rotation2d.kCCW_90deg),0.25),
-                    new DriveToPoseObject(new Pose2d(0.412, 6.928,Rotation2d.kCCW_90deg))
-                ),
-                new ParallelRaceGroup(
-                    new RunIntake (intake), 
-                    new DriveToPose (drive,
-                    new DriveToPoseObject(new Pose2d(0.421, 4.941, Rotation2d.kCCW_90deg))
-                    )
-                ),
-                new DriveToPose  (drive,
-                    new DriveToPoseObject(new Pose2d(1.509, 4.956, Rotation2d.kZero),0.25),
-                    new DriveToPoseObject(new Pose2d(1.509,4.188, Rotation2d.kZero) )
-                )
-        )   );
-
-        autoChooser.addOption("BlueDepotShoot",
-            new SequentialCommandGroup(
-                new DriveToPose (drive,
-                    new DriveToPoseObject(new Pose2d(2.228, 5.681, Rotation2d.fromDegrees(-38.03)))
-                    ),
-                new EmptyHopper(feeder, shooter)
-            )
-        );
-
-        autoChooser.addOption("BlueDepotShootClimb",
-            new SequentialCommandGroup(
-                new DriveToPose (drive,
-                    new DriveToPoseObject(new Pose2d(2.228, 5.681, Rotation2d.fromDegrees(-38.03)))
-                    ),
-                new EmptyHopper(feeder, shooter)
-                
-            )
-        );
-        
-
-        //SmartDashboard.putData("Auto Mode", autoChooser);
-
         configureBindings();
     }
 

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.autoStuff.EmptyHopper;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.intake.RunIntake;
 
@@ -75,6 +76,27 @@ public class AutonChooser {
                                 new DriveToPoseObject(new Pose2d(1.509,4.188, Rotation2d.kZero) )
                             )
                         ));
+
+                        
+                    autoChooser.addOption("Blue Depot Just Shoot",
+                        new SequentialCommandGroup(
+                            new DriveToPose (r.drive,
+                                new DriveToPoseObject(new Pose2d(2.228, 5.681, Rotation2d.fromDegrees(-38.03)))
+                                ),
+                            new EmptyHopper(r.feeder, r.shooter)
+                        )
+                    );
+
+                    autoChooser.addOption("BlueDepotShootClimb",
+                        new SequentialCommandGroup(
+                            new DriveToPose (r.drive,
+                                new DriveToPoseObject(new Pose2d(2.228, 5.681, Rotation2d.fromDegrees(-38.03)))
+                                ),
+                            new EmptyHopper(r.feeder, r.shooter)
+                            
+                        )
+                    );
+
                     break;
                 case CENTER:
                     autoChooser.addOption("Blue Center", new WaitCommand(1));
