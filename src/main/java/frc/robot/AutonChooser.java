@@ -1,9 +1,15 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.drive.DriveToPose;
+import frc.robot.commands.intake.RunIntake;
 
 public class AutonChooser {
 
@@ -52,13 +58,47 @@ public class AutonChooser {
         } else {
             switch (locationChooser.getSelected()) {
                 case DEPOT:
-                    autoChooser.addOption("Blue Depot Collection", new WaitCommand(1));
+                    autoChooser.addOption("Blue Depot Collection", 
+                        new SequentialCommandGroup(
+                            new DriveToPose (r.drive, 
+                                new DriveToPoseObject(new Pose2d(1.275, 6.943, Rotation2d.kCCW_90deg),0.25),
+                                new DriveToPoseObject(new Pose2d(0.412, 6.928,Rotation2d.kCCW_90deg))
+                            ),
+                            new ParallelRaceGroup(
+                                new RunIntake (r.intake), 
+                                new DriveToPose (r.drive,
+                                new DriveToPoseObject(new Pose2d(0.421, 4.941, Rotation2d.kCCW_90deg))
+                                )
+                            ),
+                            new DriveToPose  (r.drive,
+                                new DriveToPoseObject(new Pose2d(1.509, 4.956, Rotation2d.kZero),0.25),
+                                new DriveToPoseObject(new Pose2d(1.509,4.188, Rotation2d.kZero) )
+                            )
+                        ));
                     break;
                 case CENTER:
                     autoChooser.addOption("Blue Center", new WaitCommand(1));
                     break;
                 case OUTPOST:
-                    autoChooser.addOption("Blue Outpost Collection", new WaitCommand(1));
+                    autoChooser.addOption("Blue Outpost Collection", 
+                        new SequentialCommandGroup(
+                            new DriveToPose(
+                                r.drive, 
+                                new DriveToPoseObject(new Pose2d(0.407,0.702, Rotation2d.kZero))
+                            
+                            ),
+                            new WaitCommand(2),
+                            new DriveToPose(
+                                r.drive,
+                                new DriveToPoseObject(new Pose2d(2.017,0.623, Rotation2d.kZero)),
+                                new DriveToPoseObject(new Pose2d(2.017,3.144, Rotation2d.kZero))
+
+                            ),
+                            new DriveToPose(
+                                r.drive,
+                                new DriveToPoseObject(new Pose2d(1.605,3.144, Rotation2d.kZero))
+                            )
+                    ));
                     break;
             }
         }
@@ -72,5 +112,9 @@ public class AutonChooser {
             createChooser();
             SmartDashboard.putData("Auto Selection", autoChooser);
         }
+    }
+
+    public Command getSelectedAuton() {
+        return autoChooser.getSelected();
     }
 }
