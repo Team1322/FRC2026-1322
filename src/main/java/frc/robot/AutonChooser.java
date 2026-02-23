@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.autoStuff.EmptyHopper;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.intake.RunIntake;
 
@@ -44,6 +45,9 @@ public class AutonChooser {
     public void createChooser() {
         autoChooser = blankChooser;
         if (allianceChooser.getSelected().equals(AllianceColor.RED)) {
+
+
+
             switch (locationChooser.getSelected()) {
                 case DEPOT:
                     autoChooser.addOption("Red Depot Collection", new WaitCommand(1));
@@ -52,10 +56,62 @@ public class AutonChooser {
                     autoChooser.addOption("Red Center", new WaitCommand(1));
                     break;
                 case OUTPOST:
-                    autoChooser.addOption("Red Outpost Collection", new WaitCommand(1));
+                    
+                    autoChooser.addOption("Red Outpost Collection", 
+                        new SequentialCommandGroup(
+                            new DriveToPose(
+                                r.drive, 
+                                new DriveToPoseObject(new Pose2d(16.123,7.375, Rotation2d.kZero))
+                            
+                            ),
+                            new WaitCommand(2),
+                            new DriveToPose(
+                                r.drive,
+                                new DriveToPoseObject(new Pose2d(14.662,7.375, Rotation2d.kZero)),
+                                new DriveToPoseObject(new Pose2d(14.633,4.742, Rotation2d.kZero))
+
+                            ),
+                        new EmptyHopper(r.feeder, r.shooter),
+                            new DriveToPose(
+                                r.drive,
+                                new DriveToPoseObject(new Pose2d(15.078,4.742, Rotation2d.kZero))
+                            )
+                            
+                    ));
+
+                    
+                    autoChooser.addOption("human human side red climb", 
+                        new SequentialCommandGroup(
+                            new DriveToPose(
+                                r.drive, 
+                                new DriveToPoseObject(new Pose2d(16.123,7.375, Rotation2d.kZero))
+                            
+                            ),
+                            new WaitCommand(2),
+                            new DriveToPose(
+                                r.drive,
+                                new DriveToPoseObject(new Pose2d(14.662,7.375, Rotation2d.kZero)),
+                                new DriveToPoseObject(new Pose2d(14.633,4.742, Rotation2d.kZero))
+
+                            ),
+                        new EmptyHopper(r.feeder, r.shooter),
+                            new DriveToPose(
+                                r.drive,
+                                new DriveToPoseObject(new Pose2d(15.078,4.742, Rotation2d.kZero))
+                            )
+                            
+                    ));
+
                     break;
             }
+
+
+
+
         } else {
+
+
+
             switch (locationChooser.getSelected()) {
                 case DEPOT:
                     autoChooser.addOption("Blue Depot Collection", 
@@ -99,8 +155,35 @@ public class AutonChooser {
                                 new DriveToPoseObject(new Pose2d(1.605,3.144, Rotation2d.kZero))
                             )
                     ));
+
+                    
+                    autoChooser.addOption("humanside human blue climb", 
+                        new SequentialCommandGroup(
+                            new DriveToPose(
+                                r.drive, 
+                                new DriveToPoseObject(new Pose2d(0.407,0.702, Rotation2d.kZero))
+                            
+                            ),
+                            new WaitCommand(2),
+                            new DriveToPose(
+                                r.drive,
+                                new DriveToPoseObject(new Pose2d(2.017,0.623, Rotation2d.kZero)),
+                                new DriveToPoseObject(new Pose2d(2.017,3.144, Rotation2d.kZero))
+
+                            ),
+                        new EmptyHopper(r.feeder, r.shooter),
+                            new DriveToPose(
+                                r.drive,
+                                new DriveToPoseObject(new Pose2d(1.605,3.144, Rotation2d.kZero))
+                            )
+                    ));
+
                     break;
             }
+
+
+
+
         }
     }
 
