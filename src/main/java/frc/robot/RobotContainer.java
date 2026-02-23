@@ -39,14 +39,10 @@ public class RobotContainer {
         TODO For Comp
 
         - ToDo on physical robot
-            - Update Limelight firmware
-            - Run through swerve generator and create TunerConstants.java file
-            - Tune lift PID
             - Tune flywheel PID
             - Determine multiplier to convert velocity method from meters per second to rev per second
             - Drive To Pose PID
             - Drive To Poes Slew Rate Limit
-            - Lift positions for each state
             - Full system tests to find potential issues
 
         If DONE with above and we don't have a robot, contine here
