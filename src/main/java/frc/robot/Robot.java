@@ -12,12 +12,14 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
+  AutonChooser autonChooser;
 
 
   public Robot() {
     
   
     m_robotContainer = new RobotContainer();
+    autonChooser = new AutonChooser(m_robotContainer);
   }
 
   @Override
@@ -31,7 +33,9 @@ public class Robot extends TimedRobot {
   public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    autonChooser.updateClass();
+  }
 
   @Override
   public void disabledExit() {}

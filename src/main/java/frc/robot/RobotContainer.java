@@ -17,6 +17,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.autoStuff.EmptyHopper;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.drive.FieldCentricControl;
+import frc.robot.SystemVariables.LiftConstants.LiftStates;
+import frc.robot.commands.drive.DriveToPose;
+import frc.robot.commands.drive.FieldCentricControl;
+import frc.robot.commands.feeder.ReverseFeeder;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.lift.LiftToPosition;
@@ -38,14 +42,10 @@ public class RobotContainer {
         TODO For Comp
 
         - ToDo on physical robot
-            - Update Limelight firmware
-            - Run through swerve generator and create TunerConstants.java file
-            - Tune lift PID
             - Tune flywheel PID
             - Determine multiplier to convert velocity method from meters per second to rev per second
             - Drive To Pose PID
             - Drive To Poes Slew Rate Limit
-            - Lift positions for each state
             - Full system tests to find potential issues
 
         If DONE with above and we don't have a robot, contine here
@@ -170,7 +170,7 @@ public class RobotContainer {
         );
         
 
-        SmartDashboard.putData("Auto Mode", autoChooser);
+        //SmartDashboard.putData("Auto Mode", autoChooser);
 
         configureBindings();
     }
@@ -181,8 +181,8 @@ public class RobotContainer {
         //turret.setDefaultCommand(new RunTurretToWin(turret));
         turret.setDefaultCommand(new RunTurretToTarget(turret));
         //turret.setDefaultCommand(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
-        lift.setDefaultCommand(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
-        //lift.setDefaultCommand(new LiftToPosition(lift));
+        //lift.setDefaultCommand(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
+        lift.setDefaultCommand(new LiftToPosition(lift));
 
         // driverController.a().onTrue(new InstantCommand(() -> drive.setUseMT1(true)));
         // driverController.b().onTrue(new InstantCommand(() -> drive.setUseMT2(true)));
@@ -193,14 +193,16 @@ public class RobotContainer {
 
 
         operatorController.a().whileTrue(new RunIntake(intake));
-        operatorController.x().onTrue(new InstantCommand(() -> lift.setTargetPosition(80)));
-        operatorController.y().onTrue(new InstantCommand(() -> lift.setTargetPosition(0)));
+        operatorController.x().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.COMPACT)));
+        operatorController.y().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.INTAKE)));
 
         operatorController.povUp().whileTrue(new RunShooter(shooter));
 
-        operatorController.b().onTrue(new InstantCommand(() -> lift.setTargetPosition(100)));
+        operatorController.povLeft().onTrue(new InstantCommand(() -> turret.setTargetPosition(-100)));
+        operatorController.povRight().onTrue(new InstantCommand(() -> turret.setTargetPosition(100)));
 
         driverController.rightTrigger(0.5).whileTrue(new RunFeeder(feeder));
+        driverController.leftTrigger(0.5).whileTrue(new ReverseFeeder(feeder));
     }
 
     public Command getAutonomousCommand() {

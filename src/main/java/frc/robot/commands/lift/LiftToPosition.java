@@ -12,8 +12,13 @@ public class LiftToPosition extends Command {
     }
 
     @Override
+    public void initialize() {
+        lift.setTargetPosition(lift.getCurrentPosition());
+    }
+
+    @Override
     public void execute() {
-        lift.runLiftToTarget();
+        lift.moveTowardPosition();
     }
 
     @Override
