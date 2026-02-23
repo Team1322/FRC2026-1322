@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.andymark.jni.AM_CAN_HexBoreEncoder;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -8,12 +9,15 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SystemVariables.LiftConstants;
+import frc.robot.SystemVariables.LiftConstants.LiftStates;
 
 public class LiftSubsystem extends SubsystemBase {
 
     TalonFX liftMotor = new TalonFX(LiftConstants.LIFT_MOTOR_ID);
 
     PIDController liftController = new PIDController(LiftConstants.KP, LiftConstants.KI, LiftConstants.KD);
+    
+    AM_CAN_HexBoreEncoder liftAbsoluteEncoder = new AM_CAN_HexBoreEncoder(LiftConstants.LIFT_SENSOR_ID);
 
     double targetPosition = 0;
 
@@ -22,6 +26,7 @@ public class LiftSubsystem extends SubsystemBase {
         config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         liftMotor.getConfigurator().apply(config);
+
 
         SmartDashboard.putNumber("Lift P", LiftConstants.KP);
         SmartDashboard.putNumber("Lift I", LiftConstants.KI);
@@ -32,7 +37,7 @@ public class LiftSubsystem extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Target Lift Position", targetPosition);
         SmartDashboard.putNumber("Current Lift Position", getCurrentPosition());
-
+        //SmartDashboard.putNumber("Lift Encoder Pose", getEncoderAngle());
         liftController.setPID(
             SmartDashboard.getNumber("Lift P", LiftConstants.KP),
             SmartDashboard.getNumber("Lift I", LiftConstants.KI),
@@ -45,14 +50,40 @@ public class LiftSubsystem extends SubsystemBase {
     }
 
     public double getCurrentPosition() {
-        return liftMotor.getPosition().getValueAsDouble();
+        return getEncoderAngle();
+        //return liftMotor.getPosition().getValueAsDouble();
+    }
+
+    
+
+    public double getEncoderAngle() {
+        liftAbsoluteEncoder.getTelemetry();
+        double angle = liftAbsoluteEncoder.getAngleDegrees();
+        if (angle > 180) {
+            angle -= 360;
+        }
+        return angle;
     }
 
     public void setTargetPosition(double targetPosition) {
         this.targetPosition = targetPosition;
     }
 
-    public void runLiftToTarget() {
+    public void setTargetState(LiftStates targetState) {
+        switch (targetState) {
+            case COMPACT:
+                setTargetPosition(75);
+                break;
+            case INTAKE:
+                setTargetPosition(3);
+                break;
+            case CLIMBED:
+                setTargetPosition(5);
+                break;
+        }
+    }
+
+    public void moveTowardPosition() {
         setSpeed(liftController.calculate(getCurrentPosition(), targetPosition));
     }
 

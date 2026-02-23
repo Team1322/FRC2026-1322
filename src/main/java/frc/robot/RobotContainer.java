@@ -4,25 +4,18 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.autoStuff.EmptyHopper;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.drive.FieldCentricControl;
+import frc.robot.SystemVariables.LiftConstants.LiftStates;
+import frc.robot.commands.drive.FieldCentricControl;
+import frc.robot.commands.feeder.ReverseFeeder;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.lift.LiftToPosition;
-import frc.robot.commands.lift.MoveLiftWithJoystick;
 import frc.robot.commands.shoot.RunShooter;
-import frc.robot.commands.turret.MoveTurretWithJoystick;
 import frc.robot.commands.turret.RunTurretToTarget;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -38,14 +31,10 @@ public class RobotContainer {
         TODO For Comp
 
         - ToDo on physical robot
-            - Update Limelight firmware
-            - Run through swerve generator and create TunerConstants.java file
-            - Tune lift PID
             - Tune flywheel PID
             - Determine multiplier to convert velocity method from meters per second to rev per second
             - Drive To Pose PID
             - Drive To Poes Slew Rate Limit
-            - Lift positions for each state
             - Full system tests to find potential issues
 
         If DONE with above and we don't have a robot, contine here
@@ -84,33 +73,11 @@ public class RobotContainer {
     DriveSubsystem drive = TunerConstants.createDrivetrain();
     IntakeSubsystem intake = new IntakeSubsystem();
     FeederSubsystem feeder = new FeederSubsystem();
-    //TurretSubsystem turret = new TurretSubsystem();
-    //LiftSubsystem lift = new LiftSubsystem();
+    TurretSubsystem turret = new TurretSubsystem();
+    LiftSubsystem lift = new LiftSubsystem();
     ShooterSubsystem shooter = new ShooterSubsystem();
 
-    Command defaultCommand = new WaitCommand(1);
-
-
-    /* Path follower */
-    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
-
     public RobotContainer() {
-        autoChooser.setDefaultOption("Do Nothing", defaultCommand);
-
-        autoChooser.addOption("Tuning", 
-            new SequentialCommandGroup(
-                new DriveToPose(
-                    drive, 
-                    new DriveToPoseObject(new Pose2d(1,1, Rotation2d.kZero)),
-                    new DriveToPoseObject(new Pose2d(0,0, Rotation2d.kZero)),
-                    new DriveToPoseObject(new Pose2d(2,2, Rotation2d.kZero)),
-                    new DriveToPoseObject(new Pose2d(0,0, Rotation2d.kZero)),
-                    new DriveToPoseObject(new Pose2d(4,4, Rotation2d.kZero)),
-                    new DriveToPoseObject(new Pose2d(0,0, Rotation2d.kZero)),
-                    new DriveToPoseObject(new Pose2d(8,8, Rotation2d.kZero)),
-                    new DriveToPoseObject(new Pose2d(0,0, Rotation2d.kZero))
-                )
-        ));
 
         autoChooser.addOption("humanside human blue climb", 
             new SequentialCommandGroup(
@@ -204,27 +171,6 @@ public class RobotContainer {
                     new DriveToPoseObject(new Pose2d(16.123,7.375, Rotation2d.kZero)))));
 
     
-        autoChooser.addOption("Null", 
-            new SequentialCommandGroup(
-                new DriveToPose (drive, 
-                    new DriveToPoseObject(new Pose2d(1.275, 6.943, Rotation2d.kCCW_90deg),0.25),
-                    new DriveToPoseObject(new Pose2d(0.412, 6.928,Rotation2d.kCCW_90deg))
-                ),
-                new ParallelRaceGroup(
-                    new RunIntake (intake), 
-                    new DriveToPose (drive,
-                    new DriveToPoseObject(new Pose2d(0.421, 4.941, Rotation2d.kCCW_90deg))
-                    )
-                ),
-                new DriveToPose  (drive,
-                    new DriveToPoseObject(new Pose2d(1.509, 4.956, Rotation2d.kZero),0.25),
-                    new DriveToPoseObject(new Pose2d(1.509,4.188, Rotation2d.kZero) )
-                )
-        )   );
-        
-
-        SmartDashboard.putData("Auto Mode", autoChooser);
-
         configureBindings();
     }
 
@@ -235,7 +181,7 @@ public class RobotContainer {
         //turret.setDefaultCommand(new RunTurretToTarget(turret));
         //turret.setDefaultCommand(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
         //lift.setDefaultCommand(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
-        //lift.setDefaultCommand(new LiftToPosition(lift));
+        lift.setDefaultCommand(new LiftToPosition(lift));
 
         // driverController.a().onTrue(new InstantCommand(() -> drive.setUseMT1(true)));
         // driverController.b().onTrue(new InstantCommand(() -> drive.setUseMT2(true)));
@@ -246,24 +192,16 @@ public class RobotContainer {
 
 
         operatorController.a().whileTrue(new RunIntake(intake));
-        // operatorController.x().onTrue(new InstantCommand(() -> lift.setTargetPosition(80)));
-        // operatorController.y().onTrue(new InstantCommand(() -> lift.setTargetPosition(0)));
+        operatorController.x().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.COMPACT)));
+        operatorController.y().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.INTAKE)));
 
         operatorController.povUp().whileTrue(new RunShooter(shooter));
 
-        //operatorController.b().onTrue(new InstantCommand(() -> lift.setTargetPosition(100)));
+        operatorController.povLeft().onTrue(new InstantCommand(() -> turret.setTargetPosition(-100)));
+        operatorController.povRight().onTrue(new InstantCommand(() -> turret.setTargetPosition(100)));
 
         driverController.rightTrigger(0.5).whileTrue(new RunFeeder(feeder));
+        driverController.leftTrigger(0.5).whileTrue(new ReverseFeeder(feeder));
     }
 
-    public Command getAutonomousCommand() {
-        /* Run the path selected from the auto chooser */
-        return autoChooser.getSelected();
-    }
-
-    public boolean readyForMatch() {
-        return 
-            !autoChooser.getSelected().equals(defaultCommand) && 
-            SmartDashboard.getBoolean("Match Setup/Precise Pose Setup", false);
-    }
 }
