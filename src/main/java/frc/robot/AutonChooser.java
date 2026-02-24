@@ -20,8 +20,7 @@ public class AutonChooser {
     
     private final SendableChooser<AllianceColor> allianceChooser = new SendableChooser<>();
     private final SendableChooser<StartingLocations> locationChooser = new SendableChooser<>();
-    private SendableChooser<Command> autoChooser = new SendableChooser<>();
-    private final SendableChooser<Command> blankChooser = new SendableChooser<>();
+    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
     RobotContainer r;
     public AutonChooser (RobotContainer r) {
@@ -36,14 +35,13 @@ public class AutonChooser {
         locationChooser.addOption("Outpost", StartingLocations.OUTPOST);
         SmartDashboard.putData("Starting Location", locationChooser);
 
-        blankChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
-        SmartDashboard.putData("Auto Selection", blankChooser);
+        autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
+        SmartDashboard.putData("Auto Selection", autoChooser);
 
         SmartDashboard.putBoolean("Auton/Build Chooser?", false);
     }
 
     public void createChooser() {
-        autoChooser = blankChooser;
         if (allianceChooser.getSelected().equals(AllianceColor.RED)) {
             switch (locationChooser.getSelected()) {
                 case DEPOT:
