@@ -1,13 +1,17 @@
 package frc.robot;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.SystemVariables.LiftConstants.LiftStates;
 import frc.robot.commands.autoStuff.EmptyHopper;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.intake.RunIntake;
@@ -16,11 +20,18 @@ public class AutonChooser {
 
     public enum AllianceColor { RED, BLUE }
     public enum StartingLocations { DEPOT, CENTER, OUTPOST }
+    public enum ClimbLocations { NONE, DEPOT_FRONT, DEPOT_BACK, OUTPOST_FRONT, OUTPOST_BACK }
     
     
     private final SendableChooser<AllianceColor> allianceChooser = new SendableChooser<>();
     private final SendableChooser<StartingLocations> locationChooser = new SendableChooser<>();
+    private final SendableChooser<ClimbLocations> climbChooser = new SendableChooser<>();
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+
+    private final Pose2d blueDepotShotLocation = new Pose2d(2, 5, Rotation2d.kZero);
+    private final Pose2d blueOutpostShotLocation = new Pose2d(2, 2.5, Rotation2d.kZero);
+    private final Pose2d redDepotShotLocation = new Pose2d(14.5, 3, Rotation2d.k180deg);
+    private final Pose2d redOutpostShotLocation = new Pose2d(14.5, 5.5, Rotation2d.k180deg);
 
     RobotContainer r;
     public AutonChooser (RobotContainer r) {
@@ -34,6 +45,13 @@ public class AutonChooser {
         locationChooser.addOption("Center", StartingLocations.CENTER);
         locationChooser.addOption("Outpost", StartingLocations.OUTPOST);
         SmartDashboard.putData("Starting Location", locationChooser);
+
+        climbChooser.setDefaultOption("None", ClimbLocations.NONE);
+        climbChooser.addOption("Depot Front", ClimbLocations.DEPOT_FRONT);
+        climbChooser.addOption("Depot Back", ClimbLocations.DEPOT_BACK);
+        climbChooser.addOption("Outpost Front", ClimbLocations.OUTPOST_FRONT);
+        climbChooser.addOption("Outpost Back", ClimbLocations.OUTPOST_BACK);
+        SmartDashboard.putData("Climb Location", climbChooser);
 
         autoChooser.setDefaultOption("Do Nothing", new WaitCommand(1));
         SmartDashboard.putData("Auto Selection", autoChooser);
@@ -97,7 +115,11 @@ public class AutonChooser {
 
                     break;
                 case CENTER:
-                    autoChooser.addOption("Blue Center", new WaitCommand(1));
+                    autoChooser.addOption("Blue Center Fan Left", new SequentialCommandGroup(
+                        new DriveToPose(r.drive, new DriveToPoseObject(blueDepotShotLocation)),
+                        new WaitCommand(1),
+                        new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                    ));
                     break;
                 case OUTPOST:
                     autoChooser.addOption("Blue Outpost Collection", 
@@ -124,6 +146,54 @@ public class AutonChooser {
         }
     }
 
+    public Command getClimbCommand() {
+        if (allianceChooser.getSelected().equals(AllianceColor.RED)) {
+            switch (climbChooser.getSelected()) {
+                case NONE:
+                    return new WaitCommand(1);
+                case DEPOT_FRONT:
+                    return new WaitCommand(1);
+                case DEPOT_BACK:
+                    return new WaitCommand(1);
+                case OUTPOST_FRONT:
+                    return new WaitCommand(1);
+                case OUTPOST_BACK:
+                    return new WaitCommand(1);
+            }
+        } else {
+            switch (climbChooser.getSelected()) {
+                case NONE:
+                    return new WaitCommand(1);
+                case DEPOT_FRONT:
+                    return new SequentialCommandGroup(
+                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
+                        new DriveToPose(r.drive, 
+                            new DriveToPoseObject(new Pose2d(2, 4.1, Rotation2d.kZero), 0.25),
+                            new DriveToPoseObject(new Pose2d(1.4, 4.1, Rotation2d.kZero), MetersPerSecond.of(0.5))
+                        ),
+                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
+                        new WaitCommand(5)
+                    );
+                case DEPOT_BACK:
+                    return new SequentialCommandGroup(
+                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
+                        new DriveToPose(r.drive, 
+                            new DriveToPoseObject(new Pose2d(1.5, 5, Rotation2d.k180deg), 0.1),
+                            new DriveToPoseObject(new Pose2d(0.4, 5, Rotation2d.k180deg), 0.1),
+                            new DriveToPoseObject(new Pose2d(0.4, 4.1, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
+                            new DriveToPoseObject(new Pose2d(0.7, 4.1, Rotation2d.k180deg), MetersPerSecond.of(0.5))
+                        ),
+                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
+                        new WaitCommand(5)
+                    );
+                case OUTPOST_FRONT:
+                    return new WaitCommand(1);
+                case OUTPOST_BACK:
+                    return new WaitCommand(1);
+            }
+        }
+        return new WaitCommand(1);
+    }
 
 
     public void updateClass() {
@@ -135,6 +205,6 @@ public class AutonChooser {
     }
 
     public Command getSelectedAuton() {
-        return autoChooser.getSelected();
+        return autoChooser.getSelected().andThen(getClimbCommand());
     }
 }

@@ -15,7 +15,9 @@ import frc.robot.commands.feeder.ReverseFeeder;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.lift.LiftToPosition;
+import frc.robot.commands.lift.MoveLiftWithJoystick;
 import frc.robot.commands.shoot.RunShooter;
+import frc.robot.commands.turret.RunTurretToHub;
 import frc.robot.commands.turret.RunTurretToTarget;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -84,11 +86,11 @@ public class RobotContainer {
     private void configureBindings() {
 
         drive.setDefaultCommand(new FieldCentricControl(drive, driverController));
-        //turret.setDefaultCommand(new RunTurretToWin(turret));
-        turret.setDefaultCommand(new RunTurretToTarget(turret));
+        turret.setDefaultCommand(new RunTurretToHub(turret));
+        //turret.setDefaultCommand(new RunTurretToTarget(turret));
         //turret.setDefaultCommand(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
-        //lift.setDefaultCommand(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
-        lift.setDefaultCommand(new LiftToPosition(lift));
+        lift.setDefaultCommand(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
+        //lift.setDefaultCommand(new LiftToPosition(lift));
 
         // driverController.a().onTrue(new InstantCommand(() -> drive.setUseMT1(true)));
         // driverController.b().onTrue(new InstantCommand(() -> drive.setUseMT2(true)));
