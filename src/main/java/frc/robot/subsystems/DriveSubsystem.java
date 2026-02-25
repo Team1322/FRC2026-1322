@@ -315,7 +315,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         boolean updateVision = true;
 
         LimelightHelpers.SetRobotOrientation("limelight-main", getCurrentPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-        LimelightHelpers.PoseEstimate mt2_blue = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-main");
+        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-main");
         if (Math.abs(getPigeon2().getAngularVelocityZWorld().getValueAsDouble()) > 720) { // if our angular velocity is
                                                                                           // greater than 720 degrees
                                                                                           // per second, ignore vision
@@ -323,16 +323,16 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
             updateVision = false;
         }
 
-        if (mt2_blue != null) {
-            if (mt2_blue.tagCount == 0) {
+        if (mt2 != null) {
+            if (mt2.tagCount == 0) {
                 updateVision = false;
             }
             if (updateVision) {
 
                 setVisionMeasurementStdDevs(VecBuilder.fill(0.15, 0.15, 9999999)); // x and Y were 0.7
                 addVisionMeasurement(
-                        new Pose2d(mt2_blue.pose.getTranslation(), getCurrentPose().getRotation() ),
-                        Utils.fpgaToCurrentTime(mt2_blue.timestampSeconds));
+                        new Pose2d(mt2.pose.getTranslation(), getCurrentPose().getRotation() ),
+                        Utils.fpgaToCurrentTime(mt2.timestampSeconds));
             }
         }
     }
