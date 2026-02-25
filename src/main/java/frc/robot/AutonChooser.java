@@ -29,8 +29,10 @@ public class AutonChooser {
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
     private final Pose2d blueDepotShotLocation = new Pose2d(2, 5, Rotation2d.kZero);
+    private final Pose2d blueCenterShotLocation = new Pose2d(2, 4.25, Rotation2d.kZero);
     private final Pose2d blueOutpostShotLocation = new Pose2d(2, 2.5, Rotation2d.kZero);
     private final Pose2d redDepotShotLocation = new Pose2d(14.5, 3, Rotation2d.k180deg);
+    private final Pose2d redCenterShotLocation = new Pose2d(14.5, 4.75, Rotation2d.k180deg);
     private final Pose2d redOutpostShotLocation = new Pose2d(14.5, 5.5, Rotation2d.k180deg);
 
     RobotContainer r;
@@ -63,18 +65,22 @@ public class AutonChooser {
         if (allianceChooser.getSelected().equals(AllianceColor.RED)) {
             switch (locationChooser.getSelected()) {
                 case DEPOT:
+                    //TODO: Depot Collection & Depot side just shoot
                     autoChooser.addOption("Red Depot Collection", new WaitCommand(1));
                     break;
                 case CENTER:
+                    //TODO: Center shoot left side, center shoot right side, and center shoot center
                     autoChooser.addOption("Red Center", new WaitCommand(1));
                     break;
                 case OUTPOST:
+                    //TODO: Outpost Collection & Outpost side just shoot
                     autoChooser.addOption("Red Outpost Collection", new WaitCommand(1));
                     break;
             }
         } else {
             switch (locationChooser.getSelected()) {
                 case DEPOT:
+                    //TODO: Depot Collection & Depot side just shoot
                     autoChooser.addOption("Blue Depot Collection", 
                         new SequentialCommandGroup(
                             new DriveToPose (r.drive, 
@@ -94,6 +100,7 @@ public class AutonChooser {
                         ));
                     break;
                 case CENTER:
+                    //TODO: Center shoot left side, center shoot right side, and center shoot center
                     autoChooser.addOption("Blue Center Fan Left", new SequentialCommandGroup(
                         new DriveToPose(r.drive, new DriveToPoseObject(blueDepotShotLocation)),
                         new WaitCommand(1),
@@ -101,6 +108,7 @@ public class AutonChooser {
                     ));
                     break;
                 case OUTPOST:
+                    //TODO: Outpost Collection & Outpost side just shoot
                     autoChooser.addOption("Blue Outpost Collection", 
                         new SequentialCommandGroup(
                             new DriveToPose(
@@ -126,6 +134,7 @@ public class AutonChooser {
     }
 
     public Command getClimbCommand() {
+        //TODO: Populate options
         if (allianceChooser.getSelected().equals(AllianceColor.RED)) {
             switch (climbChooser.getSelected()) {
                 case NONE:
