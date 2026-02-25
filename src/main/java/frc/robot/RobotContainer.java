@@ -43,7 +43,6 @@ public class RobotContainer {
                 - Turns chassis to brake mode
                 - Checks that shooter is up to speed
                 - Checks that turret is in position
-            - Create buttons for auto-driving over the bumps or trench (if we fit under trench)
             - Determine shoot target when feeding instead of scoring
             - Create some autos we are likely to run
                 - Drive to shoot, shoot
@@ -89,12 +88,6 @@ public class RobotContainer {
         lift.setDefaultCommand(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
         //lift.setDefaultCommand(new LiftToPosition(lift));
 
-        // driverController.a().onTrue(new InstantCommand(() -> drive.setUseMT1(true)));
-        // driverController.b().onTrue(new InstantCommand(() -> drive.setUseMT2(true)));
-        // driverController.x().onTrue(new InstantCommand(() -> {
-        //     drive.setUseMT1(false);
-        //     drive.setUseMT2(false);
-        // }));
 
 
         operatorController.a().whileTrue(new RunIntake(intake));
