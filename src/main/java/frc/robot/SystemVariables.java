@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -14,6 +15,7 @@ public class SystemVariables {
 
     public static double turretDistanceFromGoal = 0;
     public static Rotation2d turretAngleToGoal = Rotation2d.kZero, turretZeroDirection = Rotation2d.kZero;
+    public static Pose2d turretPose = Pose2d.kZero;
 
     //public static boolean 
     public static final class DrivetrainConstants {

@@ -16,7 +16,8 @@ import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.lift.LiftToPosition;
 import frc.robot.commands.lift.MoveLiftWithJoystick;
-import frc.robot.commands.shoot.RunShooter;
+import frc.robot.commands.shoot.RunShooterOverride;
+import frc.robot.commands.shoot.RunShooterToHub;
 import frc.robot.commands.turret.RunTurretToHub;
 import frc.robot.commands.turret.RunTurretToTarget;
 import frc.robot.generated.TunerConstants;
@@ -46,7 +47,6 @@ public class RobotContainer {
                 - Turns chassis to brake mode
                 - Checks that shooter is up to speed
                 - Checks that turret is in position
-            - Create buttons for auto-driving over the bumps or trench (if we fit under trench)
             - Determine shoot target when feeding instead of scoring
             - Create some autos we are likely to run
                 
@@ -95,22 +95,16 @@ public class RobotContainer {
         lift.setDefaultCommand(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
         //lift.setDefaultCommand(new LiftToPosition(lift));
 
-        // driverController.a().onTrue(new InstantCommand(() -> drive.setUseMT1(true)));
-        // driverController.b().onTrue(new InstantCommand(() -> drive.setUseMT2(true)));
-        // driverController.x().onTrue(new InstantCommand(() -> {
-        //     drive.setUseMT1(false);
-        //     drive.setUseMT2(false);
-        // }));
 
 
-        operatorController.a().whileTrue(new RunIntake(intake));
-        operatorController.x().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.COMPACT)));
-        operatorController.y().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.INTAKE)));
+        operatorController.leftTrigger(0.5).whileTrue(new RunIntake(intake));
+        operatorController.rightTrigger(0.5).whileTrue(new RunShooterToHub(shooter));
 
-        operatorController.povUp().whileTrue(new RunShooter(shooter));
+        operatorController.povUp().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.COMPACT)));
+        operatorController.povDown().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.INTAKE)));
 
-        operatorController.povLeft().onTrue(new InstantCommand(() -> turret.setTargetPosition(-100)));
-        operatorController.povRight().onTrue(new InstantCommand(() -> turret.setTargetPosition(100)));
+        operatorController.a().whileTrue(new RunShooterOverride(shooter, 50).andThen(new RunTurretToTarget(turret, 0))); //At tower override pos
+
 
         driverController.rightTrigger(0.5).whileTrue(new RunFeeder(feeder));
         driverController.leftTrigger(0.5).whileTrue(new ReverseFeeder(feeder));
