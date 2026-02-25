@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.measure.LinearVelocity;
@@ -98,6 +99,15 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         if (Utils.isSimulation()) {
             startSimThread();
         }
+
+        LimelightHelpers.setCameraPose_RobotSpace("limelight-main", 
+        Units.inchesToMeters(12.25),    // Forward offset (meters)
+        Units.inchesToMeters(0),    // Side offset (meters)
+        Units.inchesToMeters(10.25),    // Height offset (meters)
+            0.0,    // Roll (degrees)
+            0,   // Pitch (degrees)
+            25     // Yaw (degrees)
+        );
 
         poseOptions.setDefaultOption("All Zeros", Pose2d.kZero);
         poseOptions.addOption("Blue Goal", new Pose2d(3.6, 4, Rotation2d.kZero));
@@ -277,9 +287,9 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     public void updatePoseWithMT1() {
         boolean updateVision = true;
 
-        LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-
+        LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-main");
         if (mt1 != null) {
+            System.out.println("Alex is the Best!");
 
             if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
                 if (mt1.rawFiducials[0].ambiguity > .7) {
@@ -304,8 +314,8 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     public void updatePoseWithMT2() {
         boolean updateVision = true;
 
-        LimelightHelpers.SetRobotOrientation("limelight", getCurrentPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-        LimelightHelpers.PoseEstimate mt2_blue = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+        LimelightHelpers.SetRobotOrientation("limelight-main", getCurrentPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+        LimelightHelpers.PoseEstimate mt2_blue = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-main");
         if (Math.abs(getPigeon2().getAngularVelocityZWorld().getValueAsDouble()) > 720) { // if our angular velocity is
                                                                                           // greater than 720 degrees
                                                                                           // per second, ignore vision
@@ -321,7 +331,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
 
                 setVisionMeasurementStdDevs(VecBuilder.fill(0.15, 0.15, 9999999)); // x and Y were 0.7
                 addVisionMeasurement(
-                        mt2_blue.pose,
+                        new Pose2d(mt2_blue.pose.getTranslation(), getCurrentPose().getRotation() ),
                         Utils.fpgaToCurrentTime(mt2_blue.timestampSeconds));
             }
         }
