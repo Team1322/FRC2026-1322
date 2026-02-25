@@ -55,9 +55,6 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     StructPublisher<Pose2d> robotPosePublisher = NetworkTableInstance.getDefault()
         .getStructTopic("Robot Pose", Pose2d.struct).publish();
 
-    StructPublisher<Pose3d> turretPosePublisher = NetworkTableInstance.getDefault()
-        .getStructTopic("Turret Pose", Pose3d.struct).publish();
-
     StructPublisher<Pose2d> shootTargetPublisher = NetworkTableInstance.getDefault()
         .getStructTopic("Shooting Target", Pose2d.struct).publish();
 
@@ -150,8 +147,8 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
             updatePoseWithMT2();
 
         robotPosePublisher.set(getCurrentPose());
-        turretPosePublisher.set(new Pose3d(getTurretPose().getX(), getTurretPose().getY(), ShooterConstants.SHOOTER_HEIGHT, new Rotation3d(getAngleToGoal())));
         shootTargetPublisher.set(new Pose2d(getShootTarget(), Rotation2d.kZero));
+        SystemVariables.turretPose = getTurretPose();
 
         /*
          * Periodically try to apply the operator perspective.
