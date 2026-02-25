@@ -4,17 +4,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class RunShooter extends Command  {
+public class RunShooterOverride extends Command  {
     ShooterSubsystem shooter;
+    double velo;
 
-    public RunShooter(ShooterSubsystem shooter)  {
+    public RunShooterOverride(ShooterSubsystem shooter, double velo)  {
         this.shooter = shooter;
+        this.velo = velo;
         addRequirements(shooter);
     }
 
     @Override
     public void execute() {
-        shooter.setShootVelocity(SmartDashboard.getNumber("Shoot Velo", 0));
+        shooter.setShootVelocity(velo);
         //shooter.setShootFromDistance();
 
     }

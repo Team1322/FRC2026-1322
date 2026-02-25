@@ -7,10 +7,15 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SystemVariables;
+import frc.robot.SystemVariables.ShooterConstants;
 import frc.robot.SystemVariables.TurretConstants;
 
 public class TurretSubsystem extends SubsystemBase {
@@ -19,6 +24,9 @@ public class TurretSubsystem extends SubsystemBase {
     PIDController turretController = new PIDController(TurretConstants.KP, TurretConstants.KI, TurretConstants.KD);
     AM_CAN_HexBoreEncoder turretAbsoluteEncoder;
 
+    
+    StructPublisher<Pose3d> turretPosePublisher = NetworkTableInstance.getDefault()
+        .getStructTopic("Turret Pose", Pose3d.struct).publish();
 
     public TurretSubsystem() {
         turretAbsoluteEncoder = new AM_CAN_HexBoreEncoder(TurretConstants.TURRET_SENSOR_ID);
@@ -37,6 +45,14 @@ public class TurretSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+
+        turretPosePublisher.set(new Pose3d(
+            SystemVariables.turretPose.getX(), 
+            SystemVariables.turretPose.getY(), 
+            ShooterConstants.SHOOTER_HEIGHT, 
+            new Rotation3d(SystemVariables.turretPose.getRotation().plus(Rotation2d.fromDegrees(targetPosition)))
+        ));
+
         SmartDashboard.putNumber("Target Turret Position", targetPosition);
         SmartDashboard.putNumber("Current Turret Position", getCurrentPosition());
         turretController.setPID(
