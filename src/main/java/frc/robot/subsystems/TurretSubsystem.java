@@ -40,12 +40,12 @@ public class TurretSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Turret I", TurretConstants.KI);
         SmartDashboard.putNumber("Turret D", TurretConstants.KD);
         
+        //turretAbsoluteEncoder.setZeroHere();
         resetMotorEncoder();
     }
 
     @Override
     public void periodic() {
-
         turretPosePublisher.set(new Pose3d(
             SystemVariables.turretPose.getX(), 
             SystemVariables.turretPose.getY(), 
@@ -87,7 +87,6 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void setTargetPosition(double targetPositon) {
-       
         if (targetPositon < TurretConstants.RIGHT_LIMIT) {
             targetPositon = TurretConstants.RIGHT_LIMIT;
         }
@@ -105,6 +104,12 @@ public class TurretSubsystem extends SubsystemBase {
     public Rotation2d getTargetAngleToHub() {
         double angleToGoal = SystemVariables.turretAngleToGoal.getDegrees(); //This is the angle from the turret to the goal
         double angleOfRobot = SystemVariables.turretZeroDirection.getDegrees(); //This is the angle of the robot used to offset our math
-        return Rotation2d.fromDegrees(angleToGoal - angleOfRobot);
+        double returnAngle = angleToGoal - angleOfRobot;
+
+        if (returnAngle > 180) {
+            returnAngle -= 360;
+        }
+
+        return Rotation2d.fromDegrees(returnAngle);
     }
 }

@@ -102,8 +102,8 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         Units.inchesToMeters(0),    // Side offset (meters)
         Units.inchesToMeters(10.25),    // Height offset (meters)
             0.0,    // Roll (degrees)
-            0,   // Pitch (degrees)
-            25     // Yaw (degrees)
+            20,   // Pitch (degrees)
+            0     // Yaw (degrees)
         );
 
         poseOptions.setDefaultOption("All Zeros", Pose2d.kZero);
@@ -286,7 +286,6 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
 
         LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-main");
         if (mt1 != null) {
-            System.out.println("Alex is the Best!");
 
             if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
                 if (mt1.rawFiducials[0].ambiguity > .7) {
