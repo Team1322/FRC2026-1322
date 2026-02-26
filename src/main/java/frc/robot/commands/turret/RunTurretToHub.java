@@ -14,7 +14,7 @@ public class RunTurretToHub extends Command {
     @Override
     public void execute() {
         turret.setTargetPosition( turret.getTargetAngleToHub().getDegrees());
-        turret.runTurretToTarget();
+        //turret.runTurretToTarget();
     }
 
     @Override

@@ -53,6 +53,8 @@ public class TurretSubsystem extends SubsystemBase {
             new Rotation3d(SystemVariables.turretPose.getRotation().plus(Rotation2d.fromDegrees(targetPosition)))
         ));
 
+        SmartDashboard.putNumber("Turret Angle To Hub", getTargetAngleToHub().getDegrees());
+
         SmartDashboard.putNumber("Target Turret Position", targetPosition);
         SmartDashboard.putNumber("Current Turret Position", getCurrentPosition());
         turretController.setPID(
@@ -87,6 +89,9 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void setTargetPosition(double targetPositon) {
+
+        SmartDashboard.putNumber("Raw Turret Target", targetPositon);
+
         if (targetPositon < TurretConstants.RIGHT_LIMIT) {
             targetPositon = TurretConstants.RIGHT_LIMIT;
         }
@@ -108,6 +113,8 @@ public class TurretSubsystem extends SubsystemBase {
 
         if (returnAngle > 180) {
             returnAngle -= 360;
+        } else if (returnAngle < -180) {
+            returnAngle += 360;
         }
 
         return Rotation2d.fromDegrees(returnAngle);
