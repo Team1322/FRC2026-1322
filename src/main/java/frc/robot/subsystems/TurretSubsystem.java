@@ -32,7 +32,7 @@ public class TurretSubsystem extends SubsystemBase {
         turretAbsoluteEncoder = new AM_CAN_HexBoreEncoder(TurretConstants.TURRET_SENSOR_ID);
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-        config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         config.MotorOutput.PeakForwardDutyCycle = 0.3;
         config.MotorOutput.PeakReverseDutyCycle = -0.3;
         turretMotor.getConfigurator().apply(config);
@@ -40,18 +40,20 @@ public class TurretSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Turret I", TurretConstants.KI);
         SmartDashboard.putNumber("Turret D", TurretConstants.KD);
         
+        //turretAbsoluteEncoder.setZeroHere();
         resetMotorEncoder();
     }
 
     @Override
     public void periodic() {
-
         turretPosePublisher.set(new Pose3d(
             SystemVariables.turretPose.getX(), 
             SystemVariables.turretPose.getY(), 
             ShooterConstants.SHOOTER_HEIGHT, 
             new Rotation3d(SystemVariables.turretPose.getRotation().plus(Rotation2d.fromDegrees(targetPosition)))
         ));
+
+        SmartDashboard.putNumber("Turret Angle To Hub", getTargetAngleToHub().getDegrees());
 
         SmartDashboard.putNumber("Target Turret Position", targetPosition);
         SmartDashboard.putNumber("Current Turret Position", getCurrentPosition());
@@ -87,7 +89,9 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public void setTargetPosition(double targetPositon) {
-       
+
+        SmartDashboard.putNumber("Raw Turret Target", targetPositon);
+
         if (targetPositon < TurretConstants.RIGHT_LIMIT) {
             targetPositon = TurretConstants.RIGHT_LIMIT;
         }
@@ -105,6 +109,14 @@ public class TurretSubsystem extends SubsystemBase {
     public Rotation2d getTargetAngleToHub() {
         double angleToGoal = SystemVariables.turretAngleToGoal.getDegrees(); //This is the angle from the turret to the goal
         double angleOfRobot = SystemVariables.turretZeroDirection.getDegrees(); //This is the angle of the robot used to offset our math
-        return Rotation2d.fromDegrees(angleToGoal - angleOfRobot);
+        double returnAngle = angleToGoal - angleOfRobot;
+
+        if (returnAngle > 180) {
+            returnAngle -= 360;
+        } else if (returnAngle < -180) {
+            returnAngle += 360;
+        }
+
+        return Rotation2d.fromDegrees(returnAngle);
     }
 }

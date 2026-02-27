@@ -30,7 +30,7 @@ public class FieldCentricControl extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        drive.setControl(drive.brake);
+        //drive.setControl(drive.brake);
     }
 
     @Override

@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.autoStuff.EmptyHopper;
@@ -18,6 +22,7 @@ import frc.robot.commands.lift.LiftToPosition;
 import frc.robot.commands.lift.MoveLiftWithJoystick;
 import frc.robot.commands.shoot.RunShooterOverride;
 import frc.robot.commands.shoot.RunShooterToHub;
+import frc.robot.commands.turret.MoveTurretWithJoystick;
 import frc.robot.commands.turret.RunTurretToHub;
 import frc.robot.commands.turret.RunTurretToTarget;
 import frc.robot.generated.TunerConstants;
@@ -49,23 +54,16 @@ public class RobotContainer {
                 - Checks that turret is in position
             - Determine shoot target when feeding instead of scoring
             - Create some autos we are likely to run
-                - Drive to shoot, shoot
+                
                 - Drive to shoot, shoot, climb auto
-                - Drive to human, pickup, drive to shoot, shoot
+                
                 - Drive to human, pickup, drive to shoot, shoot, climb
-                - Drive to depot, pickup, drive to shoot, shoot
+                
                 - Drive to depot, pickup, drive to shoot, shoot, climb
             - If you are feeling up to it and everything else is done, create more complex autos
                 - Drive to shoot, shoot, drive to mid-field, pickup, drive back, shoot
                 - Drive to mid-field, pickup, drive back, shoot, maybe climb???
                 - Drive to human, pickup, Drive to depot, pickup, drive to shoot, shoot, climb
-
-        - Create fail-safes
-            - Add overrides to shoot power if positional data is unknown
-                - Create this as known spots to shoot and ignore vision data for this
-            - Add overrides to turret angle if positional data is unknown
-                - Same as shooter, just do the same for turret
-            - Add a zero button for field-centric
 
     */
 
@@ -80,6 +78,9 @@ public class RobotContainer {
     ShooterSubsystem shooter = new ShooterSubsystem();
 
     public RobotContainer() {
+
+
+    
         configureBindings();
     }
 
@@ -89,10 +90,8 @@ public class RobotContainer {
         turret.setDefaultCommand(new RunTurretToHub(turret));
         //turret.setDefaultCommand(new RunTurretToTarget(turret));
         //turret.setDefaultCommand(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
-        lift.setDefaultCommand(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
+        //lift.setDefaultCommand(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
         //lift.setDefaultCommand(new LiftToPosition(lift));
-
-
 
         operatorController.leftTrigger(0.5).whileTrue(new RunIntake(intake));
         operatorController.rightTrigger(0.5).whileTrue(new RunShooterToHub(shooter));
@@ -102,9 +101,15 @@ public class RobotContainer {
 
         operatorController.a().whileTrue(new RunShooterOverride(shooter, 50).andThen(new RunTurretToTarget(turret, 0))); //At tower override pos
 
+        operatorController.back().whileTrue(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
+        operatorController.start().whileTrue(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
 
         driverController.rightTrigger(0.5).whileTrue(new RunFeeder(feeder));
         driverController.leftTrigger(0.5).whileTrue(new ReverseFeeder(feeder));
+        driverController.a().onTrue(
+            new InstantCommand(() -> 
+                drive.resetPose(new Pose2d(drive.getCurrentPose().getTranslation(), DriverStation.getAlliance().get() == Alliance.Blue ? Rotation2d.kZero : Rotation2d.k180deg))
+        ));
     }
 
 }
