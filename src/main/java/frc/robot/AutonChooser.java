@@ -115,29 +115,6 @@ public class AutonChooser {
                             
                     ));
 
-                    
-                    autoChooser.addOption("Red Outpost Collection Front Climb", 
-                        new SequentialCommandGroup(
-                            new DriveToPose(
-                                r.drive, 
-                                new DriveToPoseObject(new Pose2d(16.123,7.375, Rotation2d.kZero))
-                            
-                            ),
-                            new WaitCommand(2),
-                            new DriveToPose(
-                                r.drive,
-                                new DriveToPoseObject(new Pose2d(14.662,7.375, Rotation2d.kZero)),
-                                new DriveToPoseObject(new Pose2d(14.633,4.742, Rotation2d.kZero))
-
-                            ),
-                        new EmptyHopper(r.feeder, r.shooter),
-                            new DriveToPose(
-                                r.drive,
-                                new DriveToPoseObject(new Pose2d(15.078,4.742, Rotation2d.kZero))
-                            )
-                            
-                    ));
-
                     break;
             }
 
@@ -204,28 +181,6 @@ public class AutonChooser {
                                 new DriveToPoseObject(new Pose2d(2.017,3.144, Rotation2d.kZero))
 
                             ),
-                            new DriveToPose(
-                                r.drive,
-                                new DriveToPoseObject(new Pose2d(1.605,3.144, Rotation2d.kZero))
-                            )
-                    ));
-
-                    
-                    autoChooser.addOption("Blue Outpost Collection Front Climb", 
-                        new SequentialCommandGroup(
-                            new DriveToPose(
-                                r.drive, 
-                                new DriveToPoseObject(new Pose2d(0.407,0.702, Rotation2d.kZero))
-                            
-                            ),
-                            new WaitCommand(2),
-                            new DriveToPose(
-                                r.drive,
-                                new DriveToPoseObject(new Pose2d(2.017,0.623, Rotation2d.kZero)),
-                                new DriveToPoseObject(new Pose2d(2.017,3.144, Rotation2d.kZero))
-
-                            ),
-                        new EmptyHopper(r.feeder, r.shooter),
                             new DriveToPose(
                                 r.drive,
                                 new DriveToPoseObject(new Pose2d(1.605,3.144, Rotation2d.kZero))
