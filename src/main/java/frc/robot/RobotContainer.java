@@ -10,7 +10,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.autoStuff.EmptyHopper;
+import frc.robot.commands.complexCommands.ClearHopper;
+import frc.robot.commands.complexCommands.EmptyHopper;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.SystemVariables.LiftConstants.LiftStates;
@@ -95,7 +96,8 @@ public class RobotContainer {
         operatorController.back().whileTrue(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
         operatorController.start().whileTrue(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
 
-        driverController.rightTrigger(0.5).whileTrue(new RunFeeder(feeder));
+        driverController.rightTrigger(0.5).whileTrue(new ClearHopper(feeder, lift));
+        driverController.rightTrigger(0.5).onFalse(new InstantCommand(() -> lift.setTargetState(LiftStates.INTAKE)));
         driverController.leftTrigger(0.5).whileTrue(new ReverseFeeder(feeder));
         driverController.a().onTrue(
             new InstantCommand(() -> 
