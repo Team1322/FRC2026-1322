@@ -10,6 +10,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.autoStuff.EmptyHopper;
+import frc.robot.commands.drive.DriveToPose;
+import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.SystemVariables.LiftConstants.LiftStates;
 import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.commands.feeder.ReverseFeeder;
@@ -51,11 +54,11 @@ public class RobotContainer {
                 - Checks that turret is in position
             - Determine shoot target when feeding instead of scoring
             - Create some autos we are likely to run
-                - Drive to shoot, shoot
+                
                 - Drive to shoot, shoot, climb auto
-                - Drive to human, pickup, drive to shoot, shoot
+                
                 - Drive to human, pickup, drive to shoot, shoot, climb
-                - Drive to depot, pickup, drive to shoot, shoot
+                
                 - Drive to depot, pickup, drive to shoot, shoot, climb
             - If you are feeling up to it and everything else is done, create more complex autos
                 - Drive to shoot, shoot, drive to mid-field, pickup, drive back, shoot
@@ -75,6 +78,9 @@ public class RobotContainer {
     ShooterSubsystem shooter = new ShooterSubsystem();
 
     public RobotContainer() {
+
+
+    
         configureBindings();
     }
 
