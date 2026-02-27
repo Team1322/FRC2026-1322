@@ -70,8 +70,17 @@ public class AutonChooser {
 
             switch (locationChooser.getSelected()) {
                 case DEPOT:
-                    //TODO: Depot Collection & Depot side just shoot
-                    autoChooser.addOption("Red Depot Collection", new WaitCommand(1));
+                    //TODO: Depot side just shoot
+                    autoChooser.addOption("Red Depot Collection", new SequentialCommandGroup(
+                        new DriveToPose(r.drive, 
+                            new DriveToPoseObject(new Pose2d(12.900, 2.000,Rotation2d.kZero)),
+                            new DriveToPoseObject(new Pose2d(16.100, 1.200,Rotation2d.fromDegrees(-90))),
+                            new DriveToPoseObject(new Pose2d(16.100, 3.000,Rotation2d.fromDegrees(-90))),
+                            new DriveToPoseObject (redDepotShotLocation)
+                        ),
+                        new WaitCommand(1),
+                        new EmptyHopper(r.feeder,r.shooter).withTimeout(5)
+                    ));
                     break;
                 case CENTER:
                     autoChooser.addOption("Red Center Fan Left", new SequentialCommandGroup(
@@ -123,7 +132,6 @@ public class AutonChooser {
 
             switch (locationChooser.getSelected()) {
                 case DEPOT:
-                    //TODO: Depot side just shoot
                     autoChooser.addOption("Blue Depot Collection", 
                         new SequentialCommandGroup(
                             new DriveToPose (r.drive, 
@@ -143,6 +151,17 @@ public class AutonChooser {
                             new WaitCommand(1),
                             new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
                         ));
+
+                        
+                    autoChooser.addOption("Blue Depot Just Shoot",
+                        new SequentialCommandGroup(
+                            new DriveToPose (r.drive,
+                                new DriveToPoseObject(blueDepotShotLocation)
+                            ),
+                            new EmptyHopper(r.feeder, r.shooter)
+                        )
+                    );
+
                     break;
                 case CENTER:
                     autoChooser.addOption("Blue Center Fan Left", new SequentialCommandGroup(
@@ -190,7 +209,8 @@ public class AutonChooser {
 
         }
     }
-
+// hello, if your seeing this... HELP ME:( theres so much work!!! R.I.P. To Me 
+// Hi, you are doing great! (I'll help on Saturday)
     public Command getClimbCommand() {
         //TODO: Populate options
         if (allianceChooser.getSelected().equals(AllianceColor.RED)) {
