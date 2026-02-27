@@ -153,7 +153,7 @@ public class AutonChooser {
             }
         }
     }
-
+// hello, if your seeing this... HELP ME:( theres so much work!!! R.I.P. To Me
     public Command getClimbCommand() {
         //TODO: Populate options
         if (allianceChooser.getSelected().equals(AllianceColor.RED)) {
