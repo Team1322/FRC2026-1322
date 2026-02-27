@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.SystemVariables.LiftConstants.LiftStates;
-import frc.robot.commands.autoStuff.EmptyHopper;
+import frc.robot.commands.complexCommands.EmptyHopper;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.intake.RunIntake;
 
@@ -79,24 +79,24 @@ public class AutonChooser {
                             new DriveToPoseObject (redDepotShotLocation)
                         ),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder,r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
                     ));
                     break;
                 case CENTER:
                     autoChooser.addOption("Red Center Fan Left", new SequentialCommandGroup(
                         new DriveToPose(r.drive, new DriveToPoseObject(redDepotShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
                     ));
                     autoChooser.addOption("Red Center Fan Right",new SequentialCommandGroup(
                         new DriveToPose(r.drive, new DriveToPoseObject(redOutpostShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder,r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
                     ));
                     autoChooser.addOption("Red Center Fan Center", new SequentialCommandGroup(
                         new DriveToPose(r.drive,new DriveToPoseObject(redCenterShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder,r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
                     ));
                     break;
                 case OUTPOST:
@@ -116,7 +116,7 @@ public class AutonChooser {
 
                             ),
                             new WaitCommand(1),
-                            new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                            new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
                             
                     ));
 
@@ -149,7 +149,7 @@ public class AutonChooser {
                                 new DriveToPoseObject(blueDepotShotLocation)
                             ),
                             new WaitCommand(1),
-                            new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                            new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
                         ));
 
                         
@@ -158,7 +158,7 @@ public class AutonChooser {
                             new DriveToPose (r.drive,
                                 new DriveToPoseObject(blueDepotShotLocation)
                             ),
-                            new EmptyHopper(r.feeder, r.shooter)
+                            new EmptyHopper(r.feeder, r.shooter, r.lift)
                         )
                     );
 
@@ -167,17 +167,17 @@ public class AutonChooser {
                     autoChooser.addOption("Blue Center Fan Left", new SequentialCommandGroup(
                         new DriveToPose(r.drive, new DriveToPoseObject(blueDepotShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
                     ));
                     autoChooser.addOption("Blue Center Fan Right", new SequentialCommandGroup(
                         new DriveToPose(r.drive, new DriveToPoseObject(blueOutpostShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
                     ));
                     autoChooser.addOption("Blue Center Fan Center", new SequentialCommandGroup(
                         new DriveToPose(r.drive, new DriveToPoseObject(blueCenterShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
                     ));
                     
                     break;
@@ -198,7 +198,7 @@ public class AutonChooser {
 
                             ),
                             new WaitCommand(1),
-                            new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                            new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
                     ));
 
                     break;
