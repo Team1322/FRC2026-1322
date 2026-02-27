@@ -32,7 +32,7 @@ public class TurretSubsystem extends SubsystemBase {
         turretAbsoluteEncoder = new AM_CAN_HexBoreEncoder(TurretConstants.TURRET_SENSOR_ID);
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-        config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         config.MotorOutput.PeakForwardDutyCycle = 0.3;
         config.MotorOutput.PeakReverseDutyCycle = -0.3;
         turretMotor.getConfigurator().apply(config);
