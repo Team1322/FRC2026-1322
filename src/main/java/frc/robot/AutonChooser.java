@@ -69,6 +69,7 @@ public class AutonChooser {
                     autoChooser.addOption("Red Depot Collection", new WaitCommand(1));
                     new DriveToPoseObject(new Pose2d(12.900, 2.000,Rotation2d.kZero));
                     new DriveToPoseObject(new Pose2d(16.100, 1.200,Rotation2d.fromDegrees(-90)));
+                    new DriveToPoseObject(new Pose2d(16.100, 3.000,Rotation2d.fromDegrees(-90)));
                     new DriveToPoseObject (new Pose2d(14.5, 3, Rotation2d.k180deg));
                     break;
                 case CENTER:
