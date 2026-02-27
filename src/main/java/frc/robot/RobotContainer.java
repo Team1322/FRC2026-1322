@@ -52,18 +52,9 @@ public class RobotContainer {
                 - Turns chassis to brake mode
                 - Checks that shooter is up to speed
                 - Checks that turret is in position
+                - Moves lift around to shake pieces
             - Determine shoot target when feeding instead of scoring
-            - Create some autos we are likely to run
-                
-                - Drive to shoot, shoot, climb auto
-                
-                - Drive to human, pickup, drive to shoot, shoot, climb
-                
-                - Drive to depot, pickup, drive to shoot, shoot, climb
-            - If you are feeling up to it and everything else is done, create more complex autos
-                - Drive to shoot, shoot, drive to mid-field, pickup, drive back, shoot
-                - Drive to mid-field, pickup, drive back, shoot, maybe climb???
-                - Drive to human, pickup, Drive to depot, pickup, drive to shoot, shoot, climb
+            
 
     */
 
