@@ -3,7 +3,6 @@ package frc.robot.commands.complexCommands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.shoot.RunShooterToHub;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
