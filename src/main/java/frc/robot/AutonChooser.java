@@ -2,6 +2,8 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
+
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -73,7 +75,21 @@ public class AutonChooser {
                     break;
                 case CENTER:
                     //TODO: Center shoot left side, center shoot right side, and center shoot center
-                    autoChooser.addOption("Red Center", new WaitCommand(1));
+                    autoChooser.addOption("Red Center Fan Left", new SequentialCommandGroup(
+                        new DriveToPose(r.drive, new DriveToPoseObject(redDepotShotLocation)),
+                        new WaitCommand(1),
+                        new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                    ));
+                    autoChooser.addOption("Red Center Fan Right",new SequentialCommandGroup(
+                        new DriveToPose(r.drive, new DriveToPoseObject(redOutpostShotLocation)),
+                        new WaitCommand(1),
+                        new EmptyHopper(r.feeder,r.shooter).withTimeout(5)
+                    ));
+                    autoChooser.addOption("Red Center Fan Center", new SequentialCommandGroup(
+                        new DriveToPose(r.drive,new DriveToPoseObject(redCenterShotLocation)),
+                        new WaitCommand(1),
+                        new EmptyHopper(r.feeder,r.shooter).withTimeout(5)
+                    ));
                     break;
                 case OUTPOST:
                     //TODO: Outpost Collection & Outpost side just shoot
@@ -160,6 +176,17 @@ public class AutonChooser {
                         new WaitCommand(1),
                         new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
                     ));
+                    autoChooser.addOption("Blue Center Fan Right", new SequentialCommandGroup(
+                        new DriveToPose(r.drive, new DriveToPoseObject(blueOutpostShotLocation)),
+                        new WaitCommand(1),
+                        new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                    ));
+                    autoChooser.addOption("Blue Center Fan Center", new SequentialCommandGroup(
+                        new DriveToPose(r.drive, new DriveToPoseObject(blueCenterShotLocation)),
+                        new WaitCommand(1),
+                        new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                    ));
+                    
                     break;
                 case OUTPOST:
                     //TODO: Outpost Collection & Outpost side just shoot
