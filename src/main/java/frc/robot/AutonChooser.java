@@ -67,6 +67,9 @@ public class AutonChooser {
                 case DEPOT:
                     //TODO: Depot Collection & Depot side just shoot
                     autoChooser.addOption("Red Depot Collection", new WaitCommand(1));
+                    new DriveToPoseObject(new Pose2d(12.900, 2.000,Rotation2d.kZero));
+                    new DriveToPoseObject(new Pose2d(16.100, 1.200,Rotation2d.fromDegrees(-90)));
+                    new DriveToPoseObject (new Pose2d(14.5, 3, Rotation2d.k180deg));
                     break;
                 case CENTER:
                     //TODO: Center shoot left side, center shoot right side, and center shoot center
