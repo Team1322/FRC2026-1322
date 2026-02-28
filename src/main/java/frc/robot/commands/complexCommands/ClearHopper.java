@@ -14,7 +14,7 @@ import frc.robot.subsystems.LiftSubsystem;
 public class ClearHopper extends ParallelCommandGroup {
     public ClearHopper (FeederSubsystem feeder, LiftSubsystem lift) {
         addCommands(
-            new ConditionalCommand(new RunFeeder(feeder), new WaitCommand(0), () -> SystemVariables.shooterUpToSpeed),
+            new ConditionalCommand(new RunFeeder(feeder), new WaitCommand(0), () -> true), //() -> SystemVariables.shooterUpToSpeed),
             new SequentialCommandGroup(
                 new InstantCommand(() -> lift.setTargetState(LiftStates.DISTURB)),
                 new WaitCommand(0.3),

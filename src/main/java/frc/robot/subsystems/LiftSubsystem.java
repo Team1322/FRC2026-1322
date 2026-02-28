@@ -27,6 +27,7 @@ public class LiftSubsystem extends SubsystemBase {
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         liftMotor.getConfigurator().apply(config);
 
+        //liftAbsoluteEncoder.setZeroHere();
         SmartDashboard.putNumber("Lift P", LiftConstants.KP);
         SmartDashboard.putNumber("Lift I", LiftConstants.KI);
         SmartDashboard.putNumber("Lift D", LiftConstants.KD);

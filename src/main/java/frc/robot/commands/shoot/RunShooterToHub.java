@@ -14,8 +14,8 @@ public class RunShooterToHub extends Command  {
 
     @Override
     public void execute() {
-        shooter.setShootVelocity(SmartDashboard.getNumber("Shoot Velo", 0));
-        //shooter.setShootFromDistance();
+        //shooter.setShootVelocity(SmartDashboard.getNumber("Shoot Velo", 0));
+        shooter.setShootFromDistance();
 
     }
 

@@ -62,10 +62,12 @@ public class ShooterSubsystem extends SubsystemBase {
         if (distance < 1.25) {
             distance = 1.25;
         }
-        double vel = Math.sqrt(
-                (-(distance * distance) * 10)
-                        / ((2 * ShooterConstants.GOAL_HEIGHT) - (2 * distance * Math.tan(ShooterConstants.SHOOT_ANGLE))))
+
+        double sqrtNum = (distance * distance) * -10;
+        double sqrtDenom = (2 * ShooterConstants.GOAL_HEIGHT) - (2 * distance * Math.tan(ShooterConstants.SHOOT_ANGLE));
+
+        double vel = Math.sqrt(sqrtNum/sqrtDenom)
                 / (Math.cos(ShooterConstants.SHOOT_ANGLE));
-        return vel * 7;
+        return vel * 7.1;
     }
 }
