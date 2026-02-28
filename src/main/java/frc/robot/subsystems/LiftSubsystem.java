@@ -87,6 +87,16 @@ public class LiftSubsystem extends SubsystemBase {
         }
     }
 
+public boolean isLiftAtDisturb(){
+return Math.abs(getCurrentPosition() -15)<0.5;
+}
+
+    public boolean isLiftAtIntake(){
+return Math.abs(getCurrentPosition() -3)<0.5;
+}
+
+
+
     public void moveTowardPosition() {
         setSpeed(liftController.calculate(getCurrentPosition(), targetPosition));
     }
