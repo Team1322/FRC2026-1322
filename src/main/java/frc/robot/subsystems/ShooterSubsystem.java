@@ -36,6 +36,8 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Current Shoot Velocity", shooterMotor.getVelocity().getValueAsDouble());
         SmartDashboard.putNumber("Shoot Velo to Goal", getShootVelocity());
         SmartDashboard.putNumber("Distance to Goal", SystemVariables.turretDistanceFromGoal);
+
+        SystemVariables.shooterUpToSpeed = isShooterSpunUp();
     }
 
     public void setShootFromDistance() {
@@ -52,7 +54,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     
     public boolean isShooterSpunUp()  {
-        return Math.abs(shooterMotor.getVelocity().getValueAsDouble() - velo) < 1;
+        return Math.abs(shooterMotor.getVelocity().getValueAsDouble() - velo) < 1 && velo > 5;
     }
 
     private double getShootVelocity() {

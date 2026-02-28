@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.SystemVariables.LiftConstants.LiftStates;
-import frc.robot.commands.autoStuff.EmptyHopper;
+import frc.robot.commands.complexCommands.EmptyHopper;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.intake.RunIntake;
 
@@ -70,24 +70,30 @@ public class AutonChooser {
 
             switch (locationChooser.getSelected()) {
                 case DEPOT:
-                    //TODO: Depot Collection & Depot side just shoot
-                    autoChooser.addOption("Red Depot Collection", new WaitCommand(1)
-                    
-                    );
+                    autoChooser.addOption("Red Depot Collection", new SequentialCommandGroup(
+                        new DriveToPose(r.drive, 
+                            new DriveToPoseObject(new Pose2d(12.900, 2.000,Rotation2d.kZero)),
+                            new DriveToPoseObject(new Pose2d(16.100, 1.200,Rotation2d.fromDegrees(-90))),
+                            new DriveToPoseObject(new Pose2d(16.100, 3.000,Rotation2d.fromDegrees(-90))),
+                            new DriveToPoseObject (redDepotShotLocation)
+                        ),
+                        new WaitCommand(1),
+                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
+                    ));
                     autoChooser.addOption("Red Depot Fan Center",new SequentialCommandGroup (
                         new DriveToPose(r.drive, new DriveToPoseObject (redCenterShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
                     ));
                     autoChooser.addOption("Red Depot Fan Outpost",new SequentialCommandGroup (
                         new DriveToPose(r.drive, new DriveToPoseObject (redOutpostShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
                     ));
                     autoChooser.addOption("Red Depot Fan Depot",new SequentialCommandGroup (
                         new DriveToPose(r.drive, new DriveToPoseObject (redDepotShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
                     ));
                     break;
                 
@@ -95,21 +101,21 @@ public class AutonChooser {
                     autoChooser.addOption("Red Center Fan Left", new SequentialCommandGroup(
                         new DriveToPose(r.drive, new DriveToPoseObject(redDepotShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
                     ));
                     autoChooser.addOption("Red Center Fan Right",new SequentialCommandGroup(
                         new DriveToPose(r.drive, new DriveToPoseObject(redOutpostShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder,r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
                     ));
                     autoChooser.addOption("Red Center Fan Center", new SequentialCommandGroup(
                         new DriveToPose(r.drive,new DriveToPoseObject(redCenterShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder,r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
                     ));
                     break;
                 case OUTPOST:
-                    //TODO: Outpost Collection & Outpost side just shoot
+                    //TODO: Outpost side just shoot
                     autoChooser.addOption("Red Outpost Collection", 
                         new SequentialCommandGroup(
                             new DriveToPose(
@@ -121,30 +127,32 @@ public class AutonChooser {
                             new DriveToPose(
                                 r.drive,
                                 new DriveToPoseObject(new Pose2d(14.662,7.375, Rotation2d.kZero)),
-                                new DriveToPoseObject(new Pose2d(14.633,4.742, Rotation2d.kZero))
+                                new DriveToPoseObject(redOutpostShotLocation)
 
                             ),
-                        new EmptyHopper(r.feeder, r.shooter),
+                        new EmptyHopper(r.feeder,r.shooter, r.lift),
                             new DriveToPose(
                                 r.drive,
                                 new DriveToPoseObject(new Pose2d(15.078,4.742, Rotation2d.kZero))
-                            )
+                            ),
+                            new WaitCommand(1),
+                            new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
                             
                     ));
  autoChooser.addOption("Red Outpost Fan Outpost",new SequentialCommandGroup (
                         new DriveToPose(r.drive, new DriveToPoseObject (redOutpostShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
                     ));
                      autoChooser.addOption("Red Outpost Fan Center",new SequentialCommandGroup (
                         new DriveToPose(r.drive, new DriveToPoseObject (redCenterShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
                     ));
                      autoChooser.addOption("Red Outpost Fan Depot",new SequentialCommandGroup (
                         new DriveToPose(r.drive, new DriveToPoseObject (redDepotShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
                     ));
                     autoChooser.addOption("Red Outpost Collection Front Climb", 
                         new SequentialCommandGroup(
@@ -160,11 +168,12 @@ public class AutonChooser {
                                 new DriveToPoseObject(new Pose2d(14.633,4.742, Rotation2d.kZero))
 
                             ),
-                        new EmptyHopper(r.feeder, r.shooter),
+                        new EmptyHopper(r.feeder,r.shooter, r.lift),
                             new DriveToPose(
                                 r.drive,
                                 new DriveToPoseObject(new Pose2d(15.078,4.742, Rotation2d.kZero))
                             )
+                            
                             
                     ));
 
@@ -180,7 +189,6 @@ public class AutonChooser {
 
             switch (locationChooser.getSelected()) {
                 case DEPOT:
-                    //TODO: Depot Collection & Depot side just shoot
                     autoChooser.addOption("Blue Depot Collection", 
                         new SequentialCommandGroup(
                             new DriveToPose (r.drive, 
@@ -195,31 +203,43 @@ public class AutonChooser {
                             ),
                             new DriveToPose  (r.drive,
                                 new DriveToPoseObject(new Pose2d(1.509, 4.956, Rotation2d.kZero),0.25),
-                                new DriveToPoseObject(new Pose2d(1.509,4.188, Rotation2d.kZero) )
-                            )
+                                new DriveToPoseObject(blueDepotShotLocation)
+                            ),
+                            new WaitCommand(1),
+                            new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
                         ));
+
+                        
+                    autoChooser.addOption("Blue Depot Just Shoot",
+                        new SequentialCommandGroup(
+                            new DriveToPose (r.drive,
+                                new DriveToPoseObject(blueDepotShotLocation)
+                            ),
+                            new EmptyHopper(r.feeder, r.shooter, r.lift)
+                        )
+                    );
+
                     break;
                 case CENTER:
-                    //TODO: Center shoot left side, center shoot right side, and center shoot center
                     autoChooser.addOption("Blue Center Fan Left", new SequentialCommandGroup(
                         new DriveToPose(r.drive, new DriveToPoseObject(blueDepotShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
                     ));
                     autoChooser.addOption("Blue Center Fan Right", new SequentialCommandGroup(
                         new DriveToPose(r.drive, new DriveToPoseObject(blueOutpostShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
                     ));
                     autoChooser.addOption("Blue Center Fan Center", new SequentialCommandGroup(
                         new DriveToPose(r.drive, new DriveToPoseObject(blueCenterShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter).withTimeout(5)
+                        new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
                     ));
                     
                     break;
                 case OUTPOST:
-                    //TODO: Outpost Collection & Outpost side just shoot
+                    //TODO: Outpost side just shoot
                     autoChooser.addOption("Blue Outpost Collection", 
                         new SequentialCommandGroup(
                             new DriveToPose(
@@ -230,36 +250,12 @@ public class AutonChooser {
                             new WaitCommand(2),
                             new DriveToPose(
                                 r.drive,
-                                new DriveToPoseObject(new Pose2d(2.017,0.623, Rotation2d.kZero)),
-                                new DriveToPoseObject(new Pose2d(2.017,3.144, Rotation2d.kZero))
+                                new DriveToPoseObject(new Pose2d(2.017,0.623, Rotation2d.kZero), 0.5),
+                                new DriveToPoseObject(blueOutpostShotLocation)
 
                             ),
-                            new DriveToPose(
-                                r.drive,
-                                new DriveToPoseObject(new Pose2d(1.605,3.144, Rotation2d.kZero))
-                            )
-                    ));
-
-                    
-                    autoChooser.addOption("Blue Outpost Collection Front Climb", 
-                        new SequentialCommandGroup(
-                            new DriveToPose(
-                                r.drive, 
-                                new DriveToPoseObject(new Pose2d(0.407,0.702, Rotation2d.kZero))
-                            
-                            ),
-                            new WaitCommand(2),
-                            new DriveToPose(
-                                r.drive,
-                                new DriveToPoseObject(new Pose2d(2.017,0.623, Rotation2d.kZero)),
-                                new DriveToPoseObject(new Pose2d(2.017,3.144, Rotation2d.kZero))
-
-                            ),
-                        new EmptyHopper(r.feeder, r.shooter),
-                            new DriveToPose(
-                                r.drive,
-                                new DriveToPoseObject(new Pose2d(1.605,3.144, Rotation2d.kZero))
-                            )
+                            new WaitCommand(1),
+                            new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
                     ));
 
                     break;
@@ -270,7 +266,8 @@ public class AutonChooser {
 
         }
     }
-
+// hello, if your seeing this... HELP ME:( theres so much work!!! R.I.P. To Me 
+// Hi, you are doing great! (I'll help on Saturday)
     public Command getClimbCommand() {
         //TODO: Populate options
         if (allianceChooser.getSelected().equals(AllianceColor.RED)) {

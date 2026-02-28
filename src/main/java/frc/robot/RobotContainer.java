@@ -10,15 +10,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.autoStuff.EmptyHopper;
-import frc.robot.commands.drive.DriveToPose;
+import frc.robot.commands.complexCommands.ClearHopper;
 import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.SystemVariables.LiftConstants.LiftStates;
-import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.commands.feeder.ReverseFeeder;
-import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
-import frc.robot.commands.lift.LiftToPosition;
 import frc.robot.commands.lift.MoveLiftWithJoystick;
 import frc.robot.commands.shoot.RunShooterOverride;
 import frc.robot.commands.shoot.RunShooterToHub;
@@ -52,18 +48,9 @@ public class RobotContainer {
                 - Turns chassis to brake mode
                 - Checks that shooter is up to speed
                 - Checks that turret is in position
+                - Moves lift around to shake pieces
             - Determine shoot target when feeding instead of scoring
-            - Create some autos we are likely to run
-                
-                - Drive to shoot, shoot, climb auto
-                
-                - Drive to human, pickup, drive to shoot, shoot, climb
-                
-                - Drive to depot, pickup, drive to shoot, shoot, climb
-            - If you are feeling up to it and everything else is done, create more complex autos
-                - Drive to shoot, shoot, drive to mid-field, pickup, drive back, shoot
-                - Drive to mid-field, pickup, drive back, shoot, maybe climb???
-                - Drive to human, pickup, Drive to depot, pickup, drive to shoot, shoot, climb
+            
 
     */
 
@@ -104,7 +91,8 @@ public class RobotContainer {
         operatorController.back().whileTrue(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
         operatorController.start().whileTrue(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
 
-        driverController.rightTrigger(0.5).whileTrue(new RunFeeder(feeder));
+        driverController.rightTrigger(0.5).whileTrue(new ClearHopper(feeder, lift));
+        driverController.rightTrigger(0.5).onFalse(new InstantCommand(() -> lift.setTargetState(LiftStates.INTAKE)));
         driverController.leftTrigger(0.5).whileTrue(new ReverseFeeder(feeder));
         driverController.a().onTrue(
             new InstantCommand(() -> 
