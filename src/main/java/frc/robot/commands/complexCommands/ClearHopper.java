@@ -16,7 +16,7 @@ public class ClearHopper extends ParallelCommandGroup {
     public ClearHopper (FeederSubsystem feeder, LiftSubsystem lift) {
         addCommands(
             new ConditionalCommand(new RunFeeder(feeder), new WaitCommand(0), () -> SystemVariables.shooterUpToSpeed),
-           new HopperNotStill(lift)
+            new HopperNotStill(lift)
             
             );
     }

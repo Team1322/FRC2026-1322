@@ -22,7 +22,7 @@ public class ShooterSubsystem extends SubsystemBase {
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-        config.Slot0.kP = 1;
+        config.Slot0.kP = 2;
         shooterMotor.getConfigurator().apply(config);
         shooterFollower.getConfigurator().apply(config);
         shooterFollower.setControl(new Follower(shooterMotor.getDeviceID(), MotorAlignmentValue.Opposed));
@@ -54,7 +54,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     
     public boolean isShooterSpunUp()  {
-        return Math.abs(shooterMotor.getVelocity().getValueAsDouble() - velo) < 1 && velo > 5;
+        return Math.abs(shooterMotor.getVelocity().getValueAsDouble() - velo) < 10 && velo > 5;
     }
 
     private double getShootVelocity() {

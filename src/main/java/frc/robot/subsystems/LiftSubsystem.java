@@ -81,18 +81,18 @@ public class LiftSubsystem extends SubsystemBase {
                 setTargetPosition(5);
                 break;
             case DISTURB:
-                setTargetPosition(15);
+                setTargetPosition(30);
                 break;
 
         }
     }
 
 public boolean isLiftAtDisturb(){
-return Math.abs(getCurrentPosition() -15)<0.5;
+return Math.abs(getCurrentPosition() - 30)<0.5;
 }
 
     public boolean isLiftAtIntake(){
-return Math.abs(getCurrentPosition() -3)<0.5;
+return Math.abs(getCurrentPosition() - 3)<0.5;
 }
 
 

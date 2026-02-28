@@ -93,7 +93,6 @@ public class RobotContainer {
         operatorController.start().whileTrue(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
 
         driverController.rightTrigger(0.5).whileTrue(new ClearHopper(feeder, lift));
-        driverController.rightTrigger(0.5).onFalse(new InstantCommand(() -> lift.setTargetState(LiftStates.INTAKE)));
         driverController.leftTrigger(0.5).whileTrue(new ReverseFeeder(feeder));
         driverController.a().onTrue(
             new InstantCommand(() -> 
