@@ -15,6 +15,7 @@ import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.SystemVariables.LiftConstants.LiftStates;
 import frc.robot.commands.feeder.ReverseFeeder;
 import frc.robot.commands.intake.RunIntake;
+import frc.robot.commands.lift.LiftToPosition;
 import frc.robot.commands.lift.MoveLiftWithJoystick;
 import frc.robot.commands.shoot.RunShooterOverride;
 import frc.robot.commands.shoot.RunShooterToHub;
@@ -78,7 +79,7 @@ public class RobotContainer {
         //turret.setDefaultCommand(new RunTurretToTarget(turret));
         //turret.setDefaultCommand(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
         //lift.setDefaultCommand(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
-        //lift.setDefaultCommand(new LiftToPosition(lift));
+        lift.setDefaultCommand(new LiftToPosition(lift));
 
         operatorController.leftTrigger(0.5).whileTrue(new RunIntake(intake));
         operatorController.rightTrigger(0.5).whileTrue(new RunShooterToHub(shooter));
@@ -92,7 +93,6 @@ public class RobotContainer {
         operatorController.start().whileTrue(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
 
         driverController.rightTrigger(0.5).whileTrue(new ClearHopper(feeder, lift));
-        driverController.rightTrigger(0.5).onFalse(new InstantCommand(() -> lift.setTargetState(LiftStates.INTAKE)));
         driverController.leftTrigger(0.5).whileTrue(new ReverseFeeder(feeder));
         driverController.a().onTrue(
             new InstantCommand(() -> 

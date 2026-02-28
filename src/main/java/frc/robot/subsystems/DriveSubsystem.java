@@ -95,11 +95,11 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         }
 
         LimelightHelpers.setCameraPose_RobotSpace("limelight-main", 
-        Units.inchesToMeters(12.25),    // Forward offset (meters)
+        Units.inchesToMeters(15.25),    // Forward offset (meters)
         Units.inchesToMeters(0),    // Side offset (meters)
-        Units.inchesToMeters(10.25),    // Height offset (meters)
+        Units.inchesToMeters(9.75),    // Height offset (meters)
             0.0,    // Roll (degrees)
-            20,   // Pitch (degrees)
+            30,   // Pitch (degrees)
             0     // Yaw (degrees)
         );
 
