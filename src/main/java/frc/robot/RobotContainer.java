@@ -97,6 +97,8 @@ public class RobotContainer {
             new InstantCommand(() -> 
                 drive.resetPose(new Pose2d(drive.getCurrentPose().getTranslation(), DriverStation.getAlliance().get() == Alliance.Blue ? Rotation2d.kZero : Rotation2d.k180deg))
         ));
+        driverController.rightBumper().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.COMPACT)))
+            .onFalse(new InstantCommand(() -> lift.setTargetState(LiftStates.CLIMBED)));
     }
 
 }
