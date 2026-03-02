@@ -14,6 +14,7 @@ import frc.robot.commands.complexCommands.ClearHopper;
 import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.SystemVariables.LiftConstants.LiftStates;
 import frc.robot.commands.feeder.ReverseFeeder;
+import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.lift.LiftToPosition;
 import frc.robot.commands.lift.MoveLiftWithJoystick;
@@ -97,8 +98,9 @@ public class RobotContainer {
             new InstantCommand(() -> 
                 drive.resetPose(new Pose2d(drive.getCurrentPose().getTranslation(), DriverStation.getAlliance().get() == Alliance.Blue ? Rotation2d.kZero : Rotation2d.k180deg))
         ));
-        driverController.rightBumper().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.COMPACT)))
+        driverController.leftBumper().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.COMPACT)))
             .onFalse(new InstantCommand(() -> lift.setTargetState(LiftStates.CLIMBED)));
+        driverController.rightBumper().whileTrue(new RunFeeder(feeder));
     }
 
 }
