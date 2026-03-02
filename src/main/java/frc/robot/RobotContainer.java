@@ -50,7 +50,6 @@ public class RobotContainer {
                 - Checks that shooter is up to speed
                 - Checks that turret is in position
                 - Moves lift around to shake pieces
-            - Determine shoot target when feeding instead of scoring
             
 
     */

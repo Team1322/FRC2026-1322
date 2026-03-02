@@ -77,8 +77,12 @@ public class SystemVariables {
     }
 
     public static final class FieldConstants{
-        public static final Translation2d RED_GOAL = new Translation2d(Units.inchesToMeters(650.12 - 181.56),Units.inchesToMeters(158.32));
-        public static final Translation2d BLUE_GOAL = new Translation2d(Units.inchesToMeters(181.56),Units.inchesToMeters(158.32));
+        public static final Translation2d RED_GOAL = new Translation2d(Units.inchesToMeters(650.12 - 181.56), Units.inchesToMeters(158.32));
+        public static final Translation2d RED_FEED_OUTPOST_SIDE = new Translation2d(Units.inchesToMeters(650.12 - 80), Units.inchesToMeters(250));
+        public static final Translation2d RED_FEED_DEPOT_SIDE = new Translation2d(Units.inchesToMeters(650.12 - 80), Units.inchesToMeters(75));
+        public static final Translation2d BLUE_GOAL = new Translation2d(Units.inchesToMeters(181.56), Units.inchesToMeters(158.32));
+        public static final Translation2d BLUE_FEED_OUTPOST_SIDE = new Translation2d(Units.inchesToMeters(80), Units.inchesToMeters(75));
+        public static final Translation2d BLUE_FEED_DEPOT_SIDE = new Translation2d(Units.inchesToMeters(80), Units.inchesToMeters(250));
     }
 
 }
