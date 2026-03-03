@@ -103,6 +103,8 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
             0     // Yaw (degrees)
         );
 
+        LimelightHelpers.setStreamMode_Standard("limelight-main");
+
         poseOptions.setDefaultOption("All Zeros", Pose2d.kZero);
         poseOptions.addOption("Blue Goal", new Pose2d(3.6, 4, Rotation2d.kZero));
         poseOptions.addOption("Blue Depot Side", new Pose2d(3.6, 6, Rotation2d.kZero));
