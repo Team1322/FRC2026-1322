@@ -18,7 +18,7 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotor1 = new SparkMax(IntakeConstants.INTAKE_MOTOR_1, MotorType.kBrushless);
 
     SparkMaxConfig config0 = new SparkMaxConfig();
-    config0.inverted(false);
+    config0.inverted(true);
     intakeMotor0.configure(config0, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     
