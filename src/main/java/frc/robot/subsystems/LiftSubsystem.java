@@ -75,7 +75,7 @@ public class LiftSubsystem extends SubsystemBase {
                 setTargetPosition(75);
                 break;
             case INTAKE:
-                setTargetPosition(3);
+                setTargetPosition(0);
                 break;
             case CLIMBED:
                 setTargetPosition(5);
@@ -92,7 +92,7 @@ return Math.abs(getCurrentPosition() - 30)<0.5;
 }
 
     public boolean isLiftAtIntake(){
-return Math.abs(getCurrentPosition() - 3)<0.5;
+return Math.abs(getCurrentPosition() - 0)<0.5;
 }
 
 
