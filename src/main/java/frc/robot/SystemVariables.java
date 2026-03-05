@@ -27,7 +27,7 @@ public class SystemVariables {
     
     public static final class IntakeConstants {
         public static final int INTAKE_MOTOR_0 = 20;
-        //public static final int INTAKE_MOTOR_1 = 21;
+        public static final int INTAKE_MOTOR_1 = 21;
     }
 
     public static final class FeederConstants {
