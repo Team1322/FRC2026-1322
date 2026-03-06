@@ -317,7 +317,14 @@ autoChooser.addOption("Blue Outpost Fan Outpost", new SequentialCommandGroup(
                         new WaitCommand(5)
                     );
                 case OUTPOST_FRONT:
-                    return new WaitCommand(1);
+                    return new SequentialCommandGroup(
+                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
+                        new DriveToPose(r.drive, 
+                            new DriveToPoseObject(new Pose2d(1.590, 4.293, Rotation2d.fromDegrees(-178.96)
+                        ))),
+                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
+                        new WaitCommand(5)
+                    );
                 case OUTPOST_BACK:
                     return new WaitCommand(1);
             }
