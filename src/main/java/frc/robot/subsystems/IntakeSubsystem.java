@@ -19,16 +19,19 @@ public class IntakeSubsystem extends SubsystemBase {
 
     SparkMaxConfig config0 = new SparkMaxConfig();
     config0.inverted(true);
+    config0.smartCurrentLimit(40);
     intakeMotor0.configure(config0, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     
     SparkMaxConfig config1 = new SparkMaxConfig();
-    config1.inverted(true);
-    config1.follow(intakeMotor0.getDeviceId(), true);
+    config1.inverted(false);
+    //config1.follow(intakeMotor0.getDeviceId(), true);
+    config1.smartCurrentLimit(40);
     intakeMotor1.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   public void setSpeed(double speed) {
     intakeMotor0.set(speed);
+    intakeMotor1.set(speed);
   }
 }

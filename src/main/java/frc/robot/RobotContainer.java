@@ -101,6 +101,10 @@ public class RobotContainer {
         driverController.leftBumper().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.COMPACT)))
             .onFalse(new InstantCommand(() -> lift.setTargetState(LiftStates.CLIMBED)));
         driverController.rightBumper().whileTrue(new RunFeeder(feeder));
+
+        operatorController.x().onTrue(new InstantCommand(() -> lift.deployLiftServo()));
+        operatorController.b().onTrue(new InstantCommand(() -> lift.resetLiftServo()));
+
     }
 
 }
