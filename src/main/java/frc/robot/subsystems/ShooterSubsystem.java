@@ -8,6 +8,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SystemVariables;
@@ -22,7 +23,7 @@ public class ShooterSubsystem extends SubsystemBase {
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-        config.Slot0.kP = 2;
+        config.Slot0.kP = 4;
         shooterMotor.getConfigurator().apply(config);
         shooterFollower.getConfigurator().apply(config);
         shooterFollower.setControl(new Follower(shooterMotor.getDeviceID(), MotorAlignmentValue.Opposed));
@@ -63,11 +64,16 @@ public class ShooterSubsystem extends SubsystemBase {
             distance = 1.25;
         }
 
+        double difference = Math.abs(SystemVariables.turretZeroDirection.minus(SystemVariables.turretAngleToGoal).getDegrees());
+
         double sqrtNum = (distance * distance) * -10;
         double sqrtDenom = (2 * ShooterConstants.GOAL_HEIGHT) - (2 * distance * Math.tan(ShooterConstants.SHOOT_ANGLE));
 
         double vel = Math.sqrt(sqrtNum/sqrtDenom)
                 / (Math.cos(ShooterConstants.SHOOT_ANGLE));
-        return vel * 6.8;
+
+        vel *= 6.2;
+        vel *= ((difference / 18) / 100) +1;
+        return vel * 6.2;
     }
 }

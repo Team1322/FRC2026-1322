@@ -58,7 +58,7 @@ public class LiftSubsystem extends SubsystemBase {
     }
 
     public void deployLiftServo() {
-        servo.set(1);
+        servo.set(0.5);
     }
 
     public void resetLiftServo() {
