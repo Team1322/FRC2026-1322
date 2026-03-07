@@ -320,13 +320,24 @@ autoChooser.addOption("Blue Outpost Fan Outpost", new SequentialCommandGroup(
                     return new SequentialCommandGroup(
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
                         new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(1.590, 4.293, Rotation2d.fromDegrees(-178.96)
-                        ))),
+                            new DriveToPoseObject(new Pose2d(2, 3.3, Rotation2d.kZero), 0.25),
+                            new DriveToPoseObject(new Pose2d(1.4, 3.3, Rotation2d.kZero), MetersPerSecond.of(0.5))
+                        ),
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
                         new WaitCommand(5)
                     );
                 case OUTPOST_BACK:
-                    return new WaitCommand(1);
+                    return new SequentialCommandGroup(
+                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
+                        new DriveToPose(r.drive, 
+                            new DriveToPoseObject(new Pose2d(1.5, 2.5, Rotation2d.k180deg), 0.1),
+                            new DriveToPoseObject(new Pose2d(0.4, 2.5, Rotation2d.k180deg), 0.1),
+                            new DriveToPoseObject(new Pose2d(0.4, 3.3, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
+                            new DriveToPoseObject(new Pose2d(0.7, 3.3, Rotation2d.k180deg), MetersPerSecond.of(0.5))
+                        ),
+                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
+                        new WaitCommand(5)
+                    );
             }
         }
         return new WaitCommand(1);
