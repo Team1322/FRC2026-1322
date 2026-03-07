@@ -285,8 +285,8 @@ autoChooser.addOption("Blue Outpost Fan Outpost", new SequentialCommandGroup(
                     return new SequentialCommandGroup(
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
                         new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(14, 4, Rotation2d.k180deg), 0.25),
-                            new DriveToPoseObject(new Pose2d(15, 4, Rotation2d.k180deg), MetersPerSecond.of(0.5))
+                            new DriveToPoseObject(new Pose2d(14.5, 3.8, Rotation2d.k180deg), 0.25),
+                            new DriveToPoseObject(new Pose2d(15, 3.8, Rotation2d.k180deg), MetersPerSecond.of(0.5))
                         ),
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
                         new WaitCommand(5)
@@ -295,18 +295,20 @@ autoChooser.addOption("Blue Outpost Fan Outpost", new SequentialCommandGroup(
                     return new SequentialCommandGroup(
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
                         new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(16.131, 3.116, Rotation2d.kZero), 0.25),
-                            new DriveToPoseObject(new Pose2d(15.865, 4.005, Rotation2d.kZero), MetersPerSecond.of(0.5))
+                            new DriveToPoseObject(new Pose2d(14.75, 3.1, Rotation2d.kZero), 0.1),
+                            new DriveToPoseObject(new Pose2d(16.1, 3.1, Rotation2d.kZero), 0.1),
+                            new DriveToPoseObject(new Pose2d(16.1, 3.8, Rotation2d.kZero), 0.1, MetersPerSecond.of(1)),
+                            new DriveToPoseObject(new Pose2d(15.9, 3.8, Rotation2d.kZero), MetersPerSecond.of(0.5))
                         ),
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
                         new WaitCommand(5)
                     );
                 case OUTPOST_FRONT:
                     return new SequentialCommandGroup(
-                    new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
+                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
                         new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(14, 4.6, Rotation2d.k180deg), 0.25),
-                            new DriveToPoseObject(new Pose2d(15, 4.6, Rotation2d.k180deg), MetersPerSecond.of(0.5))
+                            new DriveToPoseObject(new Pose2d(14.5, 4.8, Rotation2d.k180deg), 0.25),
+                            new DriveToPoseObject(new Pose2d(15, 4.8, Rotation2d.k180deg), MetersPerSecond.of(0.5))
                         ),
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
                         new WaitCommand(5)
@@ -315,8 +317,10 @@ autoChooser.addOption("Blue Outpost Fan Outpost", new SequentialCommandGroup(
                     return new SequentialCommandGroup(
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
                         new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(16.165, 5.719, Rotation2d.kZero), 0.25),
-                            new DriveToPoseObject(new Pose2d(15.862, 4.605, Rotation2d.kZero), MetersPerSecond.of(0.5))
+                            new DriveToPoseObject(new Pose2d(14.75, 5.5, Rotation2d.kZero), 0.1),
+                            new DriveToPoseObject(new Pose2d(16.1, 5.5, Rotation2d.kZero), 0.1),
+                            new DriveToPoseObject(new Pose2d(16.1, 4.8, Rotation2d.kZero), 0.1, MetersPerSecond.of(1)),
+                            new DriveToPoseObject(new Pose2d(15.9, 4.8, Rotation2d.kZero), MetersPerSecond.of(0.5))
                         ),
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
                         new WaitCommand(5)
