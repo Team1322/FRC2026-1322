@@ -95,13 +95,15 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         }
 
         LimelightHelpers.setCameraPose_RobotSpace("limelight-main", 
-        Units.inchesToMeters(12.25),    // Forward offset (meters)
+        Units.inchesToMeters(15.25),    // Forward offset (meters)
         Units.inchesToMeters(0),    // Side offset (meters)
-        Units.inchesToMeters(10.25),    // Height offset (meters)
+        Units.inchesToMeters(9.75),    // Height offset (meters)
             0.0,    // Roll (degrees)
-            20,   // Pitch (degrees)
+            30,   // Pitch (degrees)
             0     // Yaw (degrees)
         );
+
+        LimelightHelpers.setStreamMode_Standard("limelight-main");
 
         poseOptions.setDefaultOption("All Zeros", Pose2d.kZero);
         poseOptions.addOption("Blue Goal", new Pose2d(3.6, 4, Rotation2d.kZero));
@@ -188,7 +190,25 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     }
 
     private Translation2d getShootTarget() {
+        
+        if (DriverStation.getAlliance().get() == Alliance.Red && getCurrentPose().getX() < 11.9) {
+            // 3 Main Targets: Goal, Outpost Side Feed, Depot Side Feed
+            if (getCurrentPose().getY() < 4) {
+                return FieldConstants.RED_FEED_DEPOT_SIDE;
+            } else {
+                return FieldConstants.RED_FEED_OUTPOST_SIDE;
+            }
+        } else if (DriverStation.getAlliance().get() == Alliance.Blue && getCurrentPose().getX() > 4.6) {
+            if (getCurrentPose().getY() > 4) {
+                return FieldConstants.BLUE_FEED_DEPOT_SIDE;
+            } else {
+                return FieldConstants.BLUE_FEED_OUTPOST_SIDE;
+            }
+        }
+
+        //If Shooting to Goal
         Translation2d target = DriverStation.getAlliance().get() == Alliance.Red ? FieldConstants.RED_GOAL : FieldConstants.BLUE_GOAL;
+
         target = target.minus(new Translation2d(getState().Speeds.vxMetersPerSecond * 0.3, getState().Speeds.vyMetersPerSecond * 0.3));
         return target;
     }

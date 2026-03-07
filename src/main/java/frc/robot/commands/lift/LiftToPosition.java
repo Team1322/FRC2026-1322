@@ -1,6 +1,7 @@
 package frc.robot.commands.lift;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.SystemVariables.LiftConstants.LiftStates;
 import frc.robot.subsystems.LiftSubsystem;
 
 public class LiftToPosition extends Command {
@@ -13,7 +14,8 @@ public class LiftToPosition extends Command {
 
     @Override
     public void initialize() {
-        lift.setTargetPosition(lift.getCurrentPosition());
+        lift.setTargetState(LiftStates.INTAKE);
+        lift.deployLiftServo();
     }
 
     @Override

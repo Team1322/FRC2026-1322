@@ -6,6 +6,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SystemVariables.LiftConstants;
@@ -21,12 +22,15 @@ public class LiftSubsystem extends SubsystemBase {
 
     double targetPosition = 0;
 
+    Servo servo = new Servo(0);
+
     public LiftSubsystem() {
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         liftMotor.getConfigurator().apply(config);
 
+        //liftAbsoluteEncoder.setZeroHere();
         SmartDashboard.putNumber("Lift P", LiftConstants.KP);
         SmartDashboard.putNumber("Lift I", LiftConstants.KI);
         SmartDashboard.putNumber("Lift D", LiftConstants.KD);
@@ -53,7 +57,13 @@ public class LiftSubsystem extends SubsystemBase {
         //return liftMotor.getPosition().getValueAsDouble();
     }
 
-    
+    public void deployLiftServo() {
+        servo.set(1);
+    }
+
+    public void resetLiftServo() {
+        servo.set(0);
+    }
 
     public double getEncoderAngle() {
         liftAbsoluteEncoder.getTelemetry();
@@ -71,27 +81,27 @@ public class LiftSubsystem extends SubsystemBase {
     public void setTargetState(LiftStates targetState) {
         switch (targetState) {
             case COMPACT:
-                setTargetPosition(75);
+                setTargetPosition(69);
                 break;
             case INTAKE:
-                setTargetPosition(3);
+                setTargetPosition(0);
                 break;
             case CLIMBED:
                 setTargetPosition(5);
                 break;
             case DISTURB:
-                setTargetPosition(15);
+                setTargetPosition(30);
                 break;
 
         }
     }
 
 public boolean isLiftAtDisturb(){
-return Math.abs(getCurrentPosition() -15)<0.5;
+return Math.abs(getCurrentPosition() - 30)<0.5;
 }
 
     public boolean isLiftAtIntake(){
-return Math.abs(getCurrentPosition() -3)<0.5;
+return Math.abs(getCurrentPosition() - 0)<0.5;
 }
 
 

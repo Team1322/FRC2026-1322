@@ -27,7 +27,7 @@ public class SystemVariables {
     
     public static final class IntakeConstants {
         public static final int INTAKE_MOTOR_0 = 20;
-        //public static final int INTAKE_MOTOR_1 = 21;
+        public static final int INTAKE_MOTOR_1 = 21;
     }
 
     public static final class FeederConstants {
@@ -40,7 +40,7 @@ public class SystemVariables {
         public static final int SHOOT_FOLLWER_ID = 41;
         public static final double SHOOTER_HEIGHT = Units.inchesToMeters(22);
         public static final double GOAL_HEIGHT = 1.8 - SHOOTER_HEIGHT;
-        public static final double SHOOT_ANGLE = Units.degreesToRadians(90 - 30);
+        public static final double SHOOT_ANGLE = Units.degreesToRadians(90 - 15);
     }
 
      public static final class TurretConstants {
@@ -77,8 +77,12 @@ public class SystemVariables {
     }
 
     public static final class FieldConstants{
-        public static final Translation2d RED_GOAL = new Translation2d(Units.inchesToMeters(650.12 - 181.56),Units.inchesToMeters(158.32));
-        public static final Translation2d BLUE_GOAL = new Translation2d(Units.inchesToMeters(181.56),Units.inchesToMeters(158.32));
+        public static final Translation2d RED_GOAL = new Translation2d(Units.inchesToMeters(650.12 - 181.56), Units.inchesToMeters(158.32));
+        public static final Translation2d RED_FEED_OUTPOST_SIDE = new Translation2d(Units.inchesToMeters(650.12 - 80), Units.inchesToMeters(250));
+        public static final Translation2d RED_FEED_DEPOT_SIDE = new Translation2d(Units.inchesToMeters(650.12 - 80), Units.inchesToMeters(75));
+        public static final Translation2d BLUE_GOAL = new Translation2d(Units.inchesToMeters(181.56), Units.inchesToMeters(158.32));
+        public static final Translation2d BLUE_FEED_OUTPOST_SIDE = new Translation2d(Units.inchesToMeters(80), Units.inchesToMeters(75));
+        public static final Translation2d BLUE_FEED_DEPOT_SIDE = new Translation2d(Units.inchesToMeters(80), Units.inchesToMeters(250));
     }
 
 }
