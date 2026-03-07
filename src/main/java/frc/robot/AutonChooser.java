@@ -98,12 +98,12 @@ public class AutonChooser {
                     break;
                 
                 case CENTER:
-                    autoChooser.addOption("Red Center Fan Left", new SequentialCommandGroup(
+                    autoChooser.addOption("Red Center Fan Depot", new SequentialCommandGroup(
                         new DriveToPose(r.drive, new DriveToPoseObject(redDepotShotLocation)),
                         new WaitCommand(1),
                         new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
                     ));
-                    autoChooser.addOption("Red Center Fan Right",new SequentialCommandGroup(
+                    autoChooser.addOption("Red Center Fan Outpost",new SequentialCommandGroup(
                         new DriveToPose(r.drive, new DriveToPoseObject(redOutpostShotLocation)),
                         new WaitCommand(1),
                         new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
@@ -285,8 +285,8 @@ autoChooser.addOption("Blue Outpost Fan Outpost", new SequentialCommandGroup(
                     return new SequentialCommandGroup(
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
                         new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(13.961, 4.042, Rotation2d.k180deg), 0.25),
-                            new DriveToPoseObject(new Pose2d(15.037, 4.046, Rotation2d.k180deg), MetersPerSecond.of(0.5))
+                            new DriveToPoseObject(new Pose2d(14, 4, Rotation2d.k180deg), 0.25),
+                            new DriveToPoseObject(new Pose2d(15, 4, Rotation2d.k180deg), MetersPerSecond.of(0.5))
                         ),
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
                         new WaitCommand(5)
@@ -305,8 +305,8 @@ autoChooser.addOption("Blue Outpost Fan Outpost", new SequentialCommandGroup(
                     return new SequentialCommandGroup(
                     new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
                         new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(13.961, 4.558, Rotation2d.k180deg), 0.25),
-                            new DriveToPoseObject(new Pose2d(15.091, 4.558, Rotation2d.k180deg), MetersPerSecond.of(0.5))
+                            new DriveToPoseObject(new Pose2d(14, 4.6, Rotation2d.k180deg), 0.25),
+                            new DriveToPoseObject(new Pose2d(15, 4.6, Rotation2d.k180deg), MetersPerSecond.of(0.5))
                         ),
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
                         new WaitCommand(5)
