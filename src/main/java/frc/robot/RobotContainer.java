@@ -18,6 +18,7 @@ import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.lift.LiftToPosition;
 import frc.robot.commands.lift.MoveLiftWithJoystick;
+import frc.robot.commands.shoot.AutoShooterToHub;
 import frc.robot.commands.shoot.RunShooterOverride;
 import frc.robot.commands.shoot.RunShooterToHub;
 import frc.robot.commands.turret.MoveTurretWithJoystick;
@@ -80,6 +81,7 @@ public class RobotContainer {
         //turret.setDefaultCommand(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
         //lift.setDefaultCommand(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
         lift.setDefaultCommand(new LiftToPosition(lift));
+        shooter.setDefaultCommand(new AutoShooterToHub(shooter));
 
         operatorController.leftTrigger(0.5).whileTrue(new RunIntake(intake));
         operatorController.rightTrigger(0.5).whileTrue(new RunShooterToHub(shooter));
