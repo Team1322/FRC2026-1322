@@ -35,6 +35,11 @@ public class TurretSubsystem extends SubsystemBase {
         config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         config.MotorOutput.PeakForwardDutyCycle = 0.3;
         config.MotorOutput.PeakReverseDutyCycle = -0.3;
+        config.CurrentLimits.StatorCurrentLimit = 60;
+        config.CurrentLimits.SupplyCurrentLimit = 40;
+        config.CurrentLimits.SupplyCurrentLowerLimit = 20;
+        config.CurrentLimits.SupplyCurrentLimitEnable = true;
+        config.CurrentLimits.StatorCurrentLimitEnable = true;
         turretMotor.getConfigurator().apply(config);
         SmartDashboard.putNumber("Turret P", TurretConstants.KP);
         SmartDashboard.putNumber("Turret I", TurretConstants.KI);
