@@ -15,7 +15,7 @@ public class SystemVariables {
 
     public static double turretDistanceFromGoal = 0;
     public static Rotation2d turretAngleToGoal = Rotation2d.kZero, turretZeroDirection = Rotation2d.kZero;
-    public static boolean shooterUpToSpeed = false;
+    public static boolean shooterUpToSpeed = false, runShooter = false;
     public static Pose2d turretPose = Pose2d.kZero;
 
     //public static boolean 

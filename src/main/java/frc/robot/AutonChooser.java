@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.SystemVariables.LiftConstants.LiftStates;
-import frc.robot.commands.complexCommands.EmptyHopper;
+import frc.robot.commands.complexCommands.ClearHopper;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.intake.RunIntake;
 
@@ -30,12 +30,12 @@ public class AutonChooser {
     private final SendableChooser<ClimbLocations> climbChooser = new SendableChooser<>();
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
-    private final Pose2d blueDepotShotLocation = new Pose2d(2, 5, Rotation2d.kZero);
+    private final Pose2d blueDepotShotLocation = new Pose2d(2, 5, Rotation2d.fromDegrees(-20));
     private final Pose2d blueCenterShotLocation = new Pose2d(2, 4.25, Rotation2d.kZero);
-    private final Pose2d blueOutpostShotLocation = new Pose2d(2, 2.5, Rotation2d.kZero);
-    private final Pose2d redDepotShotLocation = new Pose2d(14.5, 3, Rotation2d.k180deg);
-    private final Pose2d redCenterShotLocation = new Pose2d(14.5, 4.75, Rotation2d.k180deg);
-    private final Pose2d redOutpostShotLocation = new Pose2d(14.5, 5.5, Rotation2d.k180deg);
+    private final Pose2d blueOutpostShotLocation = new Pose2d(2, 2.5, Rotation2d.fromDegrees(20));
+    private final Pose2d redDepotShotLocation = new Pose2d(14.5, 3, Rotation2d.fromDegrees(160));
+    private final Pose2d redCenterShotLocation = new Pose2d(14.5, 4.25, Rotation2d.k180deg);
+    private final Pose2d redOutpostShotLocation = new Pose2d(14.5, 5.5, Rotation2d.fromDegrees(-160));
 
     RobotContainer r;
     public AutonChooser (RobotContainer r) {
@@ -70,125 +70,139 @@ public class AutonChooser {
 
             switch (locationChooser.getSelected()) {
                 case DEPOT:
+
                     autoChooser.addOption("Red Depot Collection", new SequentialCommandGroup(
                         new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(12.900, 2.000,Rotation2d.kZero)),
-                            new DriveToPoseObject(new Pose2d(16.100, 1.200,Rotation2d.fromDegrees(-90))),
-                            new DriveToPoseObject(new Pose2d(16.100, 3.000,Rotation2d.fromDegrees(-90))),
+                            new DriveToPoseObject(new Pose2d(15.5, 1.1,Rotation2d.fromDegrees(-90)), 0.25),
+                            new DriveToPoseObject(new Pose2d(16.100, 1.100,Rotation2d.fromDegrees(-90)))
+                        ),
+
+                        new ParallelRaceGroup(
+                            new DriveToPose(r.drive, 
+                                new DriveToPoseObject(new Pose2d(16.100, 3.100,Rotation2d.fromDegrees(-90)))
+                            ),
+                            new RunIntake(r.intake)
+                        ),
+
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
+                        new DriveToPose(r.drive, 
+                            new DriveToPoseObject(new Pose2d(15.5, 3.100,Rotation2d.fromDegrees(-90)), 0.25),
                             new DriveToPoseObject (redDepotShotLocation)
                         ),
+
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
+                        new ClearHopper(r.feeder, r.lift).withTimeout(5),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
+
                     autoChooser.addOption("Red Depot Fan Center",new SequentialCommandGroup (
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (redCenterShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
+                        new ClearHopper(r.feeder, r.lift).withTimeout(5),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
+
                     autoChooser.addOption("Red Depot Fan Outpost",new SequentialCommandGroup (
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (redOutpostShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
+                        new ClearHopper(r.feeder, r.lift).withTimeout(5),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
+
                     autoChooser.addOption("Red Depot Fan Depot",new SequentialCommandGroup (
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (redDepotShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
+                        new ClearHopper(r.feeder, r.lift).withTimeout(5),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
+
                     break;
                 
                 case CENTER:
+                
                     autoChooser.addOption("Red Center Fan Depot", new SequentialCommandGroup(
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(redDepotShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
+                        new ClearHopper(r.feeder, r.lift).withTimeout(5),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
+
                     autoChooser.addOption("Red Center Fan Outpost",new SequentialCommandGroup(
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(redOutpostShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
+                        new ClearHopper(r.feeder, r.lift).withTimeout(5),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
+
                     autoChooser.addOption("Red Center Fan Center", new SequentialCommandGroup(
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive,new DriveToPoseObject(redCenterShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
+                        new ClearHopper(r.feeder, r.lift).withTimeout(5),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
+
                     break;
+
                 case OUTPOST:
                    
                     autoChooser.addOption("Red Outpost Collection", 
                         new SequentialCommandGroup(
                             new DriveToPose(
                                 r.drive, 
-                                new DriveToPoseObject(new Pose2d(16.123,7.375, Rotation2d.kZero))
+                                new DriveToPoseObject(new Pose2d(16,7.375, Rotation2d.k180deg))
                             
                             ),
                             new WaitCommand(2),
+                            new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                             new DriveToPose(
                                 r.drive,
-                                new DriveToPoseObject(new Pose2d(14.662,7.375, Rotation2d.kZero)),
                                 new DriveToPoseObject(redOutpostShotLocation)
 
                             ),
-                        new EmptyHopper(r.feeder,r.shooter, r.lift),
-                            new DriveToPose(
-                                r.drive,
-                                new DriveToPoseObject(new Pose2d(15.078,4.742, Rotation2d.kZero))
-                            ),
                             new WaitCommand(1),
-                            new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
+                            new ClearHopper(r.feeder, r.lift).withTimeout(5),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
                             
                     ));
- autoChooser.addOption("Red Outpost Fan Outpost",new SequentialCommandGroup (
+
+                    autoChooser.addOption("Red Outpost Fan Outpost",new SequentialCommandGroup (
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (redOutpostShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
+                        new ClearHopper(r.feeder, r.lift).withTimeout(5),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
+
                      autoChooser.addOption("Red Outpost Fan Center",new SequentialCommandGroup (
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (redCenterShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
+                        new ClearHopper(r.feeder, r.lift).withTimeout(5),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
+
                      autoChooser.addOption("Red Outpost Fan Depot",new SequentialCommandGroup (
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (redDepotShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder,r.shooter, r.lift).withTimeout(5)
-                    ));
-                    autoChooser.addOption("Red Outpost Collection Front Climb", 
-                        new SequentialCommandGroup(
-                            new DriveToPose(
-                                r.drive, 
-                                new DriveToPoseObject(new Pose2d(16.123,7.375, Rotation2d.kZero))
-                            
-                            ),
-                            new WaitCommand(2),
-                            new DriveToPose(
-                                r.drive,
-                                new DriveToPoseObject(new Pose2d(14.662,7.375, Rotation2d.kZero)),
-                                new DriveToPoseObject(new Pose2d(14.633,4.742, Rotation2d.kZero))
-
-                            ),
-                        new EmptyHopper(r.feeder,r.shooter, r.lift),
-                            new DriveToPose(
-                                r.drive,
-                                new DriveToPoseObject(new Pose2d(15.078,4.742, Rotation2d.kZero))
-                            )
-                            
-                            
+                        new ClearHopper(r.feeder, r.lift).withTimeout(5),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
                     break;
             }
 
-
-
-
         } else {
-
-
 
             switch (locationChooser.getSelected()) {
                 case DEPOT:
+
                     autoChooser.addOption("Blue Depot Collection", 
                         new SequentialCommandGroup(
                             new DriveToPose (r.drive, 
@@ -201,72 +215,83 @@ public class AutonChooser {
                                 new DriveToPoseObject(new Pose2d(0.421, 4.941, Rotation2d.kCCW_90deg))
                                 )
                             ),
+                            new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                             new DriveToPose  (r.drive,
-                                new DriveToPoseObject(new Pose2d(1.509, 4.956, Rotation2d.kZero),0.25),
+                                new DriveToPoseObject(new Pose2d(1.509, 4.956, Rotation2d.kCCW_90deg),0.25),
                                 new DriveToPoseObject(blueDepotShotLocation)
                             ),
                             new WaitCommand(1),
-                            new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
+                            new ClearHopper(r.feeder, r.lift).withTimeout(5),
+                            new InstantCommand(() -> {SystemVariables.runShooter = false;})
                         ));
 
                      autoChooser.addOption("Blue Depot Fan Depot", new SequentialCommandGroup(
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(blueDepotShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
+                        new ClearHopper(r.feeder, r.lift).withTimeout(5),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
-                        
-                    autoChooser.addOption("Blue Depot Just Shoot",
-                        new SequentialCommandGroup(
-                            new DriveToPose (r.drive,
-                                new DriveToPoseObject(blueDepotShotLocation)
-                            ),
-                            new EmptyHopper(r.feeder, r.shooter, r.lift)
-                        )
-                    );
 
                     break;
+
                 case CENTER:
+
                     autoChooser.addOption("Blue Center Fan Depot", new SequentialCommandGroup(
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(blueDepotShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
+                        new ClearHopper(r.feeder, r.lift).withTimeout(5),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
+
                     autoChooser.addOption("Blue Center Fan Outpost", new SequentialCommandGroup(
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(blueOutpostShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
+                        new ClearHopper(r.feeder, r.lift).withTimeout(5),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
+
                     autoChooser.addOption("Blue Center Fan Center", new SequentialCommandGroup(
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(blueCenterShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
+                        new ClearHopper(r.feeder, r.lift).withTimeout(5),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
                     
                     break;
+
                 case OUTPOST:
                    
                     autoChooser.addOption("Blue Outpost Collection", 
                         new SequentialCommandGroup(
                             new DriveToPose(
                                 r.drive, 
-                                new DriveToPoseObject(new Pose2d(0.407,0.702, Rotation2d.kZero))
+                                new DriveToPoseObject(new Pose2d(.75,0.702, Rotation2d.kZero))
                             
                             ),
                             new WaitCommand(2),
+                            new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                             new DriveToPose(
                                 r.drive,
-                                new DriveToPoseObject(new Pose2d(2.017,0.623, Rotation2d.kZero), 0.5),
                                 new DriveToPoseObject(blueOutpostShotLocation)
 
                             ),
                             new WaitCommand(1),
-                            new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
+                            new ClearHopper(r.feeder, r.lift).withTimeout(5),
+                            new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
-autoChooser.addOption("Blue Outpost Fan Outpost", new SequentialCommandGroup(
+
+                    autoChooser.addOption("Blue Outpost Fan Outpost", new SequentialCommandGroup(
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(blueOutpostShotLocation)),
                         new WaitCommand(1),
-                        new EmptyHopper(r.feeder, r.shooter, r.lift).withTimeout(5)
+                        new ClearHopper(r.feeder, r.lift).withTimeout(5),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
+
                     break;
             }
 
@@ -276,7 +301,6 @@ autoChooser.addOption("Blue Outpost Fan Outpost", new SequentialCommandGroup(
         }
     }
     public Command getClimbCommand() {
-        //TODO: Populate options
         if (allianceChooser.getSelected().equals(AllianceColor.RED)) {
             switch (climbChooser.getSelected()) {
                 case NONE:
@@ -389,6 +413,11 @@ autoChooser.addOption("Blue Outpost Fan Outpost", new SequentialCommandGroup(
     }
 
     public Command getSelectedAuton() {
-        return autoChooser.getSelected().andThen(getClimbCommand());
+        Command selectedAuto = autoChooser.getSelected();
+        if (selectedAuto == null) {
+            System.out.println("\n=================================\nAuto selection failed to get auto\n=================================\n");
+            return null;
+        }
+        return selectedAuto.andThen(getClimbCommand());
     }
 }
