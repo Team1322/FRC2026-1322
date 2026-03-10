@@ -18,6 +18,11 @@ public class FeederSubsystem extends SubsystemBase {
     TalonFXConfiguration config = new TalonFXConfiguration();
     config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    config.CurrentLimits.StatorCurrentLimit = 80;
+    config.CurrentLimits.SupplyCurrentLimit = 60;
+    config.CurrentLimits.SupplyCurrentLowerLimit = 30;
+    config.CurrentLimits.SupplyCurrentLimitEnable = true;
+    config.CurrentLimits.StatorCurrentLimitEnable = true;
     feederMotor.getConfigurator().apply(config);
     feederFollower.getConfigurator().apply(config);
     feederFollower.setControl(new Follower(feederMotor.getDeviceID(), MotorAlignmentValue.Opposed));
