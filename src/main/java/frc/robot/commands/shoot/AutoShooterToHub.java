@@ -4,23 +4,21 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.SystemVariables;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class RunShooterToHub extends Command  {
+public class AutoShooterToHub extends Command  {
     ShooterSubsystem shooter;
 
-    public RunShooterToHub(ShooterSubsystem shooter)  {
+    public AutoShooterToHub(ShooterSubsystem shooter)  {
         this.shooter = shooter;
         addRequirements(shooter);
     }
 
     @Override
-    public void initialize() {
-        SystemVariables.runShooter = false;
-    }
-
-    @Override
     public void execute() {
-        //shooter.setShootVelocity(SmartDashboard.getNumber("Shoot Velo", 0));
-        shooter.setShootFromDistance();
+        if (SystemVariables.runShooter) {
+            shooter.setShootFromDistance();
+        } else {
+            shooter.stopShoot();
+        }
 
     }
 

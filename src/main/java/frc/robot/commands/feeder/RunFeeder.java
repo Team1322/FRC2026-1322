@@ -13,7 +13,7 @@ public class RunFeeder extends Command {
 
     @Override
     public void execute() {
-        feeder.setSpeed(1);
+        feeder.setSpeed(0.6);
 
     }
 

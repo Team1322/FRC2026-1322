@@ -103,6 +103,8 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
             0     // Yaw (degrees)
         );
 
+        LimelightHelpers.setStreamMode_Standard("limelight-main");
+
         poseOptions.setDefaultOption("All Zeros", Pose2d.kZero);
         poseOptions.addOption("Blue Goal", new Pose2d(3.6, 4, Rotation2d.kZero));
         poseOptions.addOption("Blue Depot Side", new Pose2d(3.6, 6, Rotation2d.kZero));
@@ -192,7 +194,25 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     }
 
     private Translation2d getShootTarget() {
+        
+        if (DriverStation.getAlliance().get() == Alliance.Red && getCurrentPose().getX() < 11.9) {
+            // 3 Main Targets: Goal, Outpost Side Feed, Depot Side Feed
+            if (getCurrentPose().getY() < 4) {
+                return FieldConstants.RED_FEED_DEPOT_SIDE;
+            } else {
+                return FieldConstants.RED_FEED_OUTPOST_SIDE;
+            }
+        } else if (DriverStation.getAlliance().get() == Alliance.Blue && getCurrentPose().getX() > 4.6) {
+            if (getCurrentPose().getY() > 4) {
+                return FieldConstants.BLUE_FEED_DEPOT_SIDE;
+            } else {
+                return FieldConstants.BLUE_FEED_OUTPOST_SIDE;
+            }
+        }
+
+        //If Shooting to Goal
         Translation2d target = DriverStation.getAlliance().get() == Alliance.Red ? FieldConstants.RED_GOAL : FieldConstants.BLUE_GOAL;
+
         target = target.minus(new Translation2d(getState().Speeds.vxMetersPerSecond * 0.3, getState().Speeds.vyMetersPerSecond * 0.3));
         return target;
     }

@@ -31,10 +31,15 @@ public class TurretSubsystem extends SubsystemBase {
     public TurretSubsystem() {
         turretAbsoluteEncoder = new AM_CAN_HexBoreEncoder(TurretConstants.TURRET_SENSOR_ID);
         TalonFXConfiguration config = new TalonFXConfiguration();
-        config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         config.MotorOutput.PeakForwardDutyCycle = 0.3;
         config.MotorOutput.PeakReverseDutyCycle = -0.3;
+        config.CurrentLimits.StatorCurrentLimit = 60;
+        config.CurrentLimits.SupplyCurrentLimit = 40;
+        config.CurrentLimits.SupplyCurrentLowerLimit = 20;
+        config.CurrentLimits.SupplyCurrentLimitEnable = true;
+        config.CurrentLimits.StatorCurrentLimitEnable = true;
         turretMotor.getConfigurator().apply(config);
         SmartDashboard.putNumber("Turret P", TurretConstants.KP);
         SmartDashboard.putNumber("Turret I", TurretConstants.KI);
@@ -54,6 +59,7 @@ public class TurretSubsystem extends SubsystemBase {
         ));
 
         SmartDashboard.putNumber("Turret Angle To Hub", getTargetAngleToHub().getDegrees());
+        SmartDashboard.putNumber("Encoder Pose", getEncoderAngle());
 
         SmartDashboard.putNumber("Target Turret Position", targetPosition);
         SmartDashboard.putNumber("Current Turret Position", getCurrentPosition());

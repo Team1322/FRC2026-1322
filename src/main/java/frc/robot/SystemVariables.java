@@ -15,7 +15,7 @@ public class SystemVariables {
 
     public static double turretDistanceFromGoal = 0;
     public static Rotation2d turretAngleToGoal = Rotation2d.kZero, turretZeroDirection = Rotation2d.kZero;
-    public static boolean shooterUpToSpeed = false;
+    public static boolean shooterUpToSpeed = false, runShooter = false;
     public static Pose2d turretPose = Pose2d.kZero;
 
     //public static boolean 
@@ -27,7 +27,7 @@ public class SystemVariables {
     
     public static final class IntakeConstants {
         public static final int INTAKE_MOTOR_0 = 20;
-        //public static final int INTAKE_MOTOR_1 = 21;
+        public static final int INTAKE_MOTOR_1 = 21;
     }
 
     public static final class FeederConstants {
@@ -40,7 +40,7 @@ public class SystemVariables {
         public static final int SHOOT_FOLLWER_ID = 41;
         public static final double SHOOTER_HEIGHT = Units.inchesToMeters(22);
         public static final double GOAL_HEIGHT = 1.8 - SHOOTER_HEIGHT;
-        public static final double SHOOT_ANGLE = Units.degreesToRadians(90 - 20);
+        public static final double SHOOT_ANGLE = Units.degreesToRadians(90 - 15);
     }
 
      public static final class TurretConstants {
@@ -49,10 +49,10 @@ public class SystemVariables {
         public static final double KP = 0.01;
         public static final double KI = 0.00;
         public static final double KD = 0.0002;
-       public static final double RIGHT_LIMIT = -90;
-       public static final double LEFT_LIMIT = 90;
-       public static final double MOTOR_CONVERSION_FACTOR = (360.0 / 20);
-       public static final double ENCODER_CONVERSION_FACTOR = (1.0 / 6.666);
+       public static final double RIGHT_LIMIT = -130;
+       public static final double LEFT_LIMIT = 130;
+       public static final double MOTOR_CONVERSION_FACTOR = (360.0 / 11);
+       public static final double ENCODER_CONVERSION_FACTOR = (-1.0 / 2.92); //160 to 58
         public static final Transform2d TURRET_LOCATION = new Transform2d(
             Units.inchesToMeters(8),
             Units.inchesToMeters(0), 
@@ -77,8 +77,12 @@ public class SystemVariables {
     }
 
     public static final class FieldConstants{
-        public static final Translation2d RED_GOAL = new Translation2d(Units.inchesToMeters(650.12 - 181.56),Units.inchesToMeters(158.32));
-        public static final Translation2d BLUE_GOAL = new Translation2d(Units.inchesToMeters(181.56),Units.inchesToMeters(158.32));
+        public static final Translation2d RED_GOAL = new Translation2d(Units.inchesToMeters(650.12 - 181.56), Units.inchesToMeters(158.32));
+        public static final Translation2d RED_FEED_OUTPOST_SIDE = new Translation2d(Units.inchesToMeters(650.12 - 80), Units.inchesToMeters(250));
+        public static final Translation2d RED_FEED_DEPOT_SIDE = new Translation2d(Units.inchesToMeters(650.12 - 80), Units.inchesToMeters(75));
+        public static final Translation2d BLUE_GOAL = new Translation2d(Units.inchesToMeters(181.56), Units.inchesToMeters(158.32));
+        public static final Translation2d BLUE_FEED_OUTPOST_SIDE = new Translation2d(Units.inchesToMeters(80), Units.inchesToMeters(75));
+        public static final Translation2d BLUE_FEED_DEPOT_SIDE = new Translation2d(Units.inchesToMeters(80), Units.inchesToMeters(250));
     }
 
 }

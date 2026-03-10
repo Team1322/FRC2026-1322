@@ -15,6 +15,7 @@ public class LiftToPosition extends Command {
     @Override
     public void initialize() {
         lift.setTargetState(LiftStates.INTAKE);
+        lift.deployLiftServo();
     }
 
     @Override

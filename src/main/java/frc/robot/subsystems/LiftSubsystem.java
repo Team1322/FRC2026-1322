@@ -6,6 +6,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SystemVariables.LiftConstants;
@@ -20,6 +21,8 @@ public class LiftSubsystem extends SubsystemBase {
     AM_CAN_HexBoreEncoder liftAbsoluteEncoder = new AM_CAN_HexBoreEncoder(LiftConstants.LIFT_SENSOR_ID);
 
     double targetPosition = 0;
+
+    Servo servo = new Servo(0);
 
     public LiftSubsystem() {
         TalonFXConfiguration config = new TalonFXConfiguration();
@@ -54,7 +57,13 @@ public class LiftSubsystem extends SubsystemBase {
         //return liftMotor.getPosition().getValueAsDouble();
     }
 
-    
+    public void deployLiftServo() {
+        servo.set(0.5);
+    }
+
+    public void resetLiftServo() {
+        servo.set(0);
+    }
 
     public double getEncoderAngle() {
         liftAbsoluteEncoder.getTelemetry();
@@ -72,10 +81,10 @@ public class LiftSubsystem extends SubsystemBase {
     public void setTargetState(LiftStates targetState) {
         switch (targetState) {
             case COMPACT:
-                setTargetPosition(75);
+                setTargetPosition(65);
                 break;
             case INTAKE:
-                setTargetPosition(3);
+                setTargetPosition(0);
                 break;
             case CLIMBED:
                 setTargetPosition(5);
@@ -92,7 +101,7 @@ return Math.abs(getCurrentPosition() - 30)<0.5;
 }
 
     public boolean isLiftAtIntake(){
-return Math.abs(getCurrentPosition() - 3)<0.5;
+return Math.abs(getCurrentPosition() - 0)<0.5;
 }
 
 
