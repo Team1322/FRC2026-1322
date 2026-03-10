@@ -24,6 +24,11 @@ public class ShooterSubsystem extends SubsystemBase {
         config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         config.Slot0.kP = 4;
+        config.CurrentLimits.StatorCurrentLimit = 120;
+        config.CurrentLimits.SupplyCurrentLimit = 80;
+        config.CurrentLimits.SupplyCurrentLowerLimit = 40;
+        config.CurrentLimits.SupplyCurrentLimitEnable = true;
+        config.CurrentLimits.StatorCurrentLimitEnable = true;
         shooterMotor.getConfigurator().apply(config);
         shooterFollower.getConfigurator().apply(config);
         shooterFollower.setControl(new Follower(shooterMotor.getDeviceID(), MotorAlignmentValue.Opposed));
