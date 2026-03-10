@@ -30,12 +30,12 @@ public class AutonChooser {
     private final SendableChooser<ClimbLocations> climbChooser = new SendableChooser<>();
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
-    private final Pose2d blueDepotShotLocation = new Pose2d(2, 5, Rotation2d.kZero);
+    private final Pose2d blueDepotShotLocation = new Pose2d(2, 5, Rotation2d.fromDegrees(-20));
     private final Pose2d blueCenterShotLocation = new Pose2d(2, 4.25, Rotation2d.kZero);
-    private final Pose2d blueOutpostShotLocation = new Pose2d(2, 2.5, Rotation2d.kZero);
-    private final Pose2d redDepotShotLocation = new Pose2d(14.5, 3, Rotation2d.k180deg);
-    private final Pose2d redCenterShotLocation = new Pose2d(14.5, 4.75, Rotation2d.k180deg);
-    private final Pose2d redOutpostShotLocation = new Pose2d(14.5, 5.5, Rotation2d.k180deg);
+    private final Pose2d blueOutpostShotLocation = new Pose2d(2, 2.5, Rotation2d.fromDegrees(20));
+    private final Pose2d redDepotShotLocation = new Pose2d(14.5, 3, Rotation2d.fromDegrees(160));
+    private final Pose2d redCenterShotLocation = new Pose2d(14.5, 4.25, Rotation2d.k180deg);
+    private final Pose2d redOutpostShotLocation = new Pose2d(14.5, 5.5, Rotation2d.fromDegrees(-160));
 
     RobotContainer r;
     public AutonChooser (RobotContainer r) {
@@ -73,19 +73,20 @@ public class AutonChooser {
 
                     autoChooser.addOption("Red Depot Collection", new SequentialCommandGroup(
                         new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(12.900, 2.000,Rotation2d.kZero))
+                            new DriveToPoseObject(new Pose2d(15.5, 1.1,Rotation2d.fromDegrees(-90)), 0.25),
+                            new DriveToPoseObject(new Pose2d(16.100, 1.100,Rotation2d.fromDegrees(-90)))
                         ),
 
                         new ParallelRaceGroup(
                             new DriveToPose(r.drive, 
-                                new DriveToPoseObject(new Pose2d(16.100, 1.200,Rotation2d.fromDegrees(-90))),
-                                new DriveToPoseObject(new Pose2d(16.100, 3.000,Rotation2d.fromDegrees(-90)))
+                                new DriveToPoseObject(new Pose2d(16.100, 3.100,Rotation2d.fromDegrees(-90)))
                             ),
                             new RunIntake(r.intake)
                         ),
 
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, 
+                            new DriveToPoseObject(new Pose2d(15.5, 3.100,Rotation2d.fromDegrees(-90)), 0.25),
                             new DriveToPoseObject (redDepotShotLocation)
                         ),
 
@@ -154,21 +155,15 @@ public class AutonChooser {
                         new SequentialCommandGroup(
                             new DriveToPose(
                                 r.drive, 
-                                new DriveToPoseObject(new Pose2d(16.123,7.375, Rotation2d.kZero))
+                                new DriveToPoseObject(new Pose2d(16,7.375, Rotation2d.k180deg))
                             
                             ),
                             new WaitCommand(2),
                             new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                             new DriveToPose(
                                 r.drive,
-                                new DriveToPoseObject(new Pose2d(14.662,7.375, Rotation2d.kZero)),
                                 new DriveToPoseObject(redOutpostShotLocation)
 
-                            ),
-                        new ClearHopper(r.feeder, r.lift),
-                            new DriveToPose(
-                                r.drive,
-                                new DriveToPoseObject(new Pose2d(15.078,4.742, Rotation2d.kZero))
                             ),
                             new WaitCommand(1),
                             new ClearHopper(r.feeder, r.lift).withTimeout(5),
@@ -222,7 +217,7 @@ public class AutonChooser {
                             ),
                             new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                             new DriveToPose  (r.drive,
-                                new DriveToPoseObject(new Pose2d(1.509, 4.956, Rotation2d.kZero),0.25),
+                                new DriveToPoseObject(new Pose2d(1.509, 4.956, Rotation2d.kCCW_90deg),0.25),
                                 new DriveToPoseObject(blueDepotShotLocation)
                             ),
                             new WaitCommand(1),
@@ -274,14 +269,13 @@ public class AutonChooser {
                         new SequentialCommandGroup(
                             new DriveToPose(
                                 r.drive, 
-                                new DriveToPoseObject(new Pose2d(0.407,0.702, Rotation2d.kZero))
+                                new DriveToPoseObject(new Pose2d(.75,0.702, Rotation2d.kZero))
                             
                             ),
                             new WaitCommand(2),
                             new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                             new DriveToPose(
                                 r.drive,
-                                new DriveToPoseObject(new Pose2d(2.017,0.623, Rotation2d.kZero), 0.5),
                                 new DriveToPoseObject(blueOutpostShotLocation)
 
                             ),
@@ -307,7 +301,6 @@ public class AutonChooser {
         }
     }
     public Command getClimbCommand() {
-        //TODO: Populate options
         if (allianceChooser.getSelected().equals(AllianceColor.RED)) {
             switch (climbChooser.getSelected()) {
                 case NONE:
@@ -420,6 +413,11 @@ public class AutonChooser {
     }
 
     public Command getSelectedAuton() {
-        return autoChooser.getSelected().andThen(getClimbCommand());
+        Command selectedAuto = autoChooser.getSelected();
+        if (selectedAuto == null) {
+            System.out.println("\n=================================\nAuto selection failed to get auto\n=================================\n");
+            return null;
+        }
+        return selectedAuto.andThen(getClimbCommand());
     }
 }
