@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
@@ -94,10 +95,12 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
             startSimThread();
         }
 
+        configNeutralMode(NeutralModeValue.Coast);
+
         LimelightHelpers.setCameraPose_RobotSpace("limelight-main", 
-        Units.inchesToMeters(15.25),    // Forward offset (meters)
+        Units.inchesToMeters(11.75),    // Forward offset (meters)
         Units.inchesToMeters(0),    // Side offset (meters)
-        Units.inchesToMeters(9.75),    // Height offset (meters)
+        Units.inchesToMeters(9.5),    // Height offset (meters)
             0.0,    // Roll (degrees)
             30,   // Pitch (degrees)
             0     // Yaw (degrees)
