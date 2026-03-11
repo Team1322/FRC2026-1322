@@ -95,7 +95,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
             startSimThread();
         }
 
-        configNeutralMode(NeutralModeValue.Coast);
+        //configNeutralMode(NeutralModeValue.Coast);
 
         LimelightHelpers.setCameraPose_RobotSpace("limelight-main", 
         Units.inchesToMeters(11.75),    // Forward offset (meters)
