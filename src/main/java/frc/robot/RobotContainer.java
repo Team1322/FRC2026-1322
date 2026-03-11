@@ -38,8 +38,6 @@ public class RobotContainer {
         TODO For Comp
 
         - ToDo on physical robot
-            - Tune flywheel PID
-            - Determine multiplier to convert velocity method from meters per second to rev per second
             - Drive To Pose PID
             - Drive To Poes Slew Rate Limit
             - Full system tests to find potential issues
@@ -49,9 +47,6 @@ public class RobotContainer {
         - Improve code for comp
             - Create handshaking for driver shoot button
                 - Turns chassis to brake mode
-                - Checks that shooter is up to speed
-                - Checks that turret is in position
-                - Moves lift around to shake pieces
             
 
     */

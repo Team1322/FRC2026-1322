@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SystemVariables;
 import frc.robot.SystemVariables.ShooterConstants;
 import frc.robot.SystemVariables.TurretConstants;
-
 public class TurretSubsystem extends SubsystemBase {
     TalonFX turretMotor = new TalonFX(TurretConstants.TURRET_MOTOR_ID);
     double targetPosition = 0;
@@ -41,9 +40,9 @@ public class TurretSubsystem extends SubsystemBase {
         config.CurrentLimits.SupplyCurrentLimitEnable = true;
         config.CurrentLimits.StatorCurrentLimitEnable = true;
         turretMotor.getConfigurator().apply(config);
-        SmartDashboard.putNumber("Turret P", TurretConstants.KP);
-        SmartDashboard.putNumber("Turret I", TurretConstants.KI);
-        SmartDashboard.putNumber("Turret D", TurretConstants.KD);
+        //SmartDashboard.putNumber("Turret P", TurretConstants.KP);
+        //SmartDashboard.putNumber("Turret I", TurretConstants.KI);
+        //SmartDashboard.putNumber("Turret D", TurretConstants.KD);
         
         //turretAbsoluteEncoder.setZeroHere();
         resetMotorEncoder();
@@ -63,11 +62,11 @@ public class TurretSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber("Target Turret Position", targetPosition);
         SmartDashboard.putNumber("Current Turret Position", getCurrentPosition());
-        turretController.setPID(
-            SmartDashboard.getNumber("Turret P", TurretConstants.KP),
-            SmartDashboard.getNumber("Turret I", TurretConstants.KI),
-            SmartDashboard.getNumber("Turret D", TurretConstants.KD)
-        );
+        // turretController.setPID(
+        //     SmartDashboard.getNumber("Turret P", TurretConstants.KP),
+        //     SmartDashboard.getNumber("Turret I", TurretConstants.KI),
+        //     SmartDashboard.getNumber("Turret D", TurretConstants.KD)
+        // );
     }
 
     public void setSpeed(double speed) {
