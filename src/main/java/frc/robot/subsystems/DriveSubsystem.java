@@ -136,18 +136,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         SystemVariables.turretAngleToGoal = getAngleToGoal();
         SystemVariables.turretZeroDirection = getTurretPose().getRotation();
 
-        seedPoseFromDash();
-        seedPoseFromOptions();
-        setLimelightMode();
-
-        if (DriverStation.isDisabled()) {
-            disabledLimelightUpdate();
-        } else {
-            if (useMT1)
-                updatePoseWithMT1();
-            else if (useMT2)
-                updatePoseWithMT2();
-        }
+        updatePoseWithLimelight();
 
         robotPosePublisher.set(getCurrentPose());
         shootTargetPublisher.set(new Pose2d(getShootTarget(), Rotation2d.kZero));
@@ -223,24 +212,6 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         resetPose(newPose);
     }
 
-    public void seedPoseFromDash() {
-        if (SmartDashboard.getBoolean("PoseSeeding/Seed Pose?", false)) {
-            SmartDashboard.putBoolean("PoseSeeding/Seed Pose?", false);
-            setPose(new Pose2d(
-                SmartDashboard.getNumber("PoseSeeding/Seed Pose X", 0),
-                SmartDashboard.getNumber("PoseSeeding/Seed Pose Y", 0),
-                Rotation2d.fromDegrees(SmartDashboard.getNumber("PoseSeeding/Seed Pose Angle", 0))
-            ));
-        }
-    }
-
-    public void seedPoseFromOptions() {
-         if (SmartDashboard.getBoolean("Pose Options/Seed Pose?", false)) {
-            SmartDashboard.putBoolean("Pose Options/Seed Pose?", false);
-            setPose(poseOptions.getSelected());
-        }
-    }
-
     ////////////////////////////////////////////////// Drive To Pose Methods //////////////////////////////////////////////////
 
     /**
@@ -280,142 +251,44 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
 
     ///////////////////////////////////////////////// Limelight Methods /////////////////////////////////////////////////
 
-    public void setLimelightMode() {
-        if (SmartDashboard.getBoolean("Match Setup/Initial Pose Setup", true) && !useMT1) {
-            SmartDashboard.putBoolean("Match Setup/Precise Pose Setup", false);
-            setUseMT1(true);
-        } else if (SmartDashboard.getBoolean("Match Setup/Precise Pose Setup", false) && !useMT2) {
-            SmartDashboard.putBoolean("Match Setup/Initial Pose Setup", false);
-            setUseMT2(true);
-        }
-    }
-
-    public void disabledLimelightUpdate() {
-        //Check MT1 Pose
-        //Check MT2 Pose
-        //If X and Y are (close to) the same, use MT2
-        //If X and Y are different, use MT1
-        Pose2d mt1Pose = getMT1Pose();
-        Pose2d mt2Pose = getMT2Pose();
-        if (mt1Pose != null) {
-            if (mt1Pose.getTranslation().getDistance(mt2Pose.getTranslation()) < 0.1) {
-                updatePoseWithMT2();
-            } else {
-                updatePoseWithMT1();
-            }
-        }
-    }
-
-    public void setUseMT1(boolean useMT1) {
-        if (useMT1)
-            useMT2 = false;
-        this.useMT1 = useMT1;
-    }
-
-    public void setUseMT2(boolean useMT2) {
-        if (useMT2)
-            useMT1 = false;
-        this.useMT2 = useMT2;
-    }
-
-    public Pose2d getMT1Pose() {
-        boolean updateVision = true;
-
-        LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-main");
-        if (mt1 != null) {
-
-            if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
-                if (mt1.rawFiducials[0].ambiguity > .7) {
-                    updateVision = false;
-                }
-                if (mt1.rawFiducials[0].distToCamera > 3) {
-                    updateVision = false;
-                }
-            }
-            if (mt1.tagCount == 0) {
-                updateVision = false;
-            }
-            if (updateVision) {
-                return mt1.pose;
-            }
-        }
-
-        return null;
-    }
-
-    public Pose2d getMT2Pose() {
+    public void updatePoseWithLimelight() {
         boolean updateVision = true;
 
         LimelightHelpers.SetRobotOrientation("limelight-main", getCurrentPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
         LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-main");
-        if (Math.abs(getPigeon2().getAngularVelocityZWorld().getValueAsDouble()) > 720) { // if our angular velocity is
-                                                                                          // greater than 720 degrees
-                                                                                          // per second, ignore vision
-                                                                                          // updates
-            updateVision = false;
-        }
-
-        if (mt2 != null) {
-            if (mt2.tagCount == 0) {
-                updateVision = false;
-            }
-            if (updateVision) {
-                return new Pose2d(mt2.pose.getTranslation(), getCurrentPose().getRotation());   
-            }
-        }
-        return null;
-    }
-
-    public void updatePoseWithMT1() {
-        boolean updateVision = true;
 
         LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-main");
-        if (mt1 != null) {
 
-            if (mt1.tagCount == 1 && mt1.rawFiducials.length == 1) {
-                if (mt1.rawFiducials[0].ambiguity > .7) {
-                    updateVision = false;
+        if (mt2 != null && Math.abs(getPigeon2().getAngularVelocityZWorld().getValueAsDouble()) < 720) {
+
+            Rotation2d currentAngle = null;
+            if (mt1 != null) {
+                if (mt1.tagCount != 0) {
+                    currentAngle = mt1.pose.getRotation();
                 }
-                if (mt1.rawFiducials[0].distToCamera > 3) {
-                    updateVision = false;
-                }
             }
-            if (mt1.tagCount == 0) {
-                updateVision = false;
+
+            if (currentAngle == null) {
+                currentAngle = getCurrentPose().getRotation();
             }
-            if (updateVision) {
-                setVisionMeasurementStdDevs(VecBuilder.fill(.5, .5, Math.toRadians(1)));
-                addVisionMeasurement(
-                        mt1.pose,
-                        Utils.fpgaToCurrentTime(mt1.timestampSeconds));
-            }
-        }
-    }
 
-    public void updatePoseWithMT2() {
-        boolean updateVision = true;
-
-        LimelightHelpers.SetRobotOrientation("limelight-main", getCurrentPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
-        LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-main");
-        if (Math.abs(getPigeon2().getAngularVelocityZWorld().getValueAsDouble()) > 720) { // if our angular velocity is
-                                                                                          // greater than 720 degrees
-                                                                                          // per second, ignore vision
-                                                                                          // updates
-            updateVision = false;
-        }
-
-        if (mt2 != null) {
+        
             if (mt2.tagCount == 0) {
                 updateVision = false;
             }
             if (updateVision) {
 
-                setVisionMeasurementStdDevs(VecBuilder.fill(0.15, 0.15, 9999999)); // x and Y were 0.7
+                setVisionMeasurementStdDevs(VecBuilder.fill(0.15, 0.15, Math.toRadians(20))); // x and Y were 0.7
                 addVisionMeasurement(
-                        new Pose2d(mt2.pose.getTranslation(), getCurrentPose().getRotation() ),
+                        new Pose2d(mt2.pose.getTranslation(), currentAngle ),
                         Utils.fpgaToCurrentTime(mt2.timestampSeconds));
             }
         }
+        
+
+        
+
+        
     }
 
     private void startSimThread() {
