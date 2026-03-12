@@ -77,8 +77,8 @@ public class ShooterSubsystem extends SubsystemBase {
         double vel = Math.sqrt(sqrtNum/sqrtDenom)
                 / (Math.cos(ShooterConstants.SHOOT_ANGLE));
 
-        vel *= 6.2;
-        vel *= ((difference / 18) / 100) +1;
-        return vel * 6.2;
+        vel *= 5; //6.2
+        vel *= ((difference / 16) / 100) + 1;
+        return vel;
     }
 }

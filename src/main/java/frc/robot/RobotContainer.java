@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.complexCommands.ClearHopper;
 import frc.robot.commands.drive.FieldCentricControl;
+import frc.robot.SystemVariables.DrivetrainConstants;
 import frc.robot.SystemVariables.LiftConstants.LiftStates;
 import frc.robot.commands.feeder.ReverseFeeder;
 import frc.robot.commands.feeder.RunFeeder;
@@ -97,7 +98,10 @@ public class RobotContainer {
         ));
         driverController.leftBumper().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.COMPACT)))
             .onFalse(new InstantCommand(() -> lift.setTargetState(LiftStates.CLIMBED)));
-        driverController.rightBumper().whileTrue(new RunFeeder(feeder));
+        //driverController.rightBumper().whileTrue(new RunFeeder(feeder));
+
+        driverController.rightBumper().onTrue(new InstantCommand(() -> {SystemVariables.currentMaxSpeed = 2;}));
+        driverController.rightBumper().onFalse(new InstantCommand(() -> {SystemVariables.currentMaxSpeed = DrivetrainConstants.MaxSpeed;}));
 
         operatorController.x().onTrue(new InstantCommand(() -> lift.deployLiftServo()));
         operatorController.b().onTrue(new InstantCommand(() -> lift.resetLiftServo()));

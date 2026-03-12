@@ -101,10 +101,10 @@ public class TurretSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Raw Turret Target", targetPositon);
 
         if (targetPositon < TurretConstants.RIGHT_LIMIT) {
-            targetPositon = TurretConstants.RIGHT_LIMIT;
+            targetPositon = getCurrentPosition();
         }
         if (targetPositon > TurretConstants.LEFT_LIMIT) {
-            targetPositon = TurretConstants.LEFT_LIMIT;
+            targetPositon = getCurrentPosition();
         }
         this.targetPosition = targetPositon;
         
