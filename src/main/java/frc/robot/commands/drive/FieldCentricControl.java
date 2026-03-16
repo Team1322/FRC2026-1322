@@ -3,7 +3,6 @@ package frc.robot.commands.drive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.SystemVariables;
-import frc.robot.SystemVariables.DrivetrainConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class FieldCentricControl extends Command {
