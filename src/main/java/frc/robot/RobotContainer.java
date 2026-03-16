@@ -15,7 +15,6 @@ import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.SystemVariables.DrivetrainConstants;
 import frc.robot.SystemVariables.LiftConstants.LiftStates;
 import frc.robot.commands.feeder.ReverseFeeder;
-import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.lift.LiftToPosition;
 import frc.robot.commands.lift.MoveLiftWithJoystick;
@@ -37,14 +36,6 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class RobotContainer {
     /*
         TODO For Comp
-
-        - ToDo on physical robot
-            - Drive To Pose PID
-            - Drive To Poes Slew Rate Limit
-            - Full system tests to find potential issues
-
-        If DONE with above and we don't have a robot, contine here
-
         - Improve code for comp
             - Create handshaking for driver shoot button
                 - Turns chassis to brake mode

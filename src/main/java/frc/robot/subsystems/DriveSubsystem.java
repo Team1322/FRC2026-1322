@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.*;
 
 import com.ctre.phoenix6.Utils;
-import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
@@ -65,7 +64,6 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
     private double m_lastSimTime;
-    private boolean useMT1, useMT2;
 
     /* Blue alliance sees forward as 0 degrees (toward red alliance wall) */
     private static final Rotation2d kBlueAlliancePerspectiveRotation = Rotation2d.kZero;
