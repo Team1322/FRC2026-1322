@@ -140,6 +140,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         SystemVariables.turretZeroDirection = getTurretPose().getRotation();
 
         updatePoseWithLimelight();
+        seedPoseFromOptions();
 
         robotPosePublisher.set(getCurrentPose());
         shootTargetPublisher.set(new Pose2d(getShootTarget(), Rotation2d.kZero));
@@ -213,6 +214,13 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     
     public void setPose(Pose2d newPose) {
         resetPose(newPose);
+    }
+
+    public void seedPoseFromOptions() {
+         if (SmartDashboard.getBoolean("Pose Options/Seed Pose?", false)) {
+            SmartDashboard.putBoolean("Pose Options/Seed Pose?", false);
+            setPose(poseOptions.getSelected());
+        }
     }
 
     ////////////////////////////////////////////////// Drive To Pose Methods //////////////////////////////////////////////////
