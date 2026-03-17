@@ -15,6 +15,7 @@ import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.SystemVariables.DrivetrainConstants;
 import frc.robot.SystemVariables.LiftConstants.LiftStates;
 import frc.robot.commands.feeder.ReverseFeeder;
+import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.lift.LiftToPosition;
 import frc.robot.commands.lift.MoveLiftWithJoystick;
@@ -62,6 +63,8 @@ public class RobotContainer {
 
     private void configureBindings() {
 
+        /////////////////////////////////// Default ////////////////////////////////////////////
+
         drive.setDefaultCommand(new FieldCentricControl(drive, driverController));
         turret.setDefaultCommand(new RunTurretToHub(turret));
         //turret.setDefaultCommand(new RunTurretToTarget(turret));
@@ -70,29 +73,38 @@ public class RobotContainer {
         lift.setDefaultCommand(new LiftToPosition(lift));
         shooter.setDefaultCommand(new AutoShooterToHub(shooter));
 
-        operatorController.leftTrigger(0.5).whileTrue(new RunIntake(intake));
-        operatorController.rightTrigger(0.5).whileTrue(new RunShooterToHub(shooter));
-
-        operatorController.povUp().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.COMPACT)));
-        operatorController.povDown().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.INTAKE)));
-
-        operatorController.a().whileTrue(new RunShooterOverride(shooter, 50).alongWith(new RunTurretToTarget(turret, 0))); //At tower override pos
-
-        operatorController.leftBumper().whileTrue(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
-        operatorController.rightBumper().whileTrue(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
-
-        driverController.rightTrigger(0.5).whileTrue(new ClearHopper(feeder, lift));
-        driverController.leftTrigger(0.5).whileTrue(new ReverseFeeder(feeder));
+        /////////////////////////////////// Driver ////////////////////////////////////////////
+        
+        //Reset Field Centric
         driverController.a().onTrue(
             new InstantCommand(() -> 
                 drive.resetPose(new Pose2d(drive.getCurrentPose().getTranslation(), DriverStation.getAlliance().get() == Alliance.Blue ? Rotation2d.kZero : Rotation2d.k180deg))
         ));
+
+        driverController.rightTrigger(0.5).whileTrue(new ClearHopper(feeder, lift));
+        driverController.leftTrigger(0.5).whileTrue(new ReverseFeeder(feeder));
+
         driverController.leftBumper().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.COMPACT)))
-            .onFalse(new InstantCommand(() -> lift.setTargetState(LiftStates.CLIMBED)));
-        //driverController.rightBumper().whileTrue(new RunFeeder(feeder));
+            .onFalse(new InstantCommand(() -> lift.setTargetState(LiftStates.INTAKE)));
+        driverController.povUp().whileTrue(new RunFeeder(feeder));
 
         driverController.rightBumper().onTrue(new InstantCommand(() -> {SystemVariables.currentMaxSpeed = 2;}));
         driverController.rightBumper().onFalse(new InstantCommand(() -> {SystemVariables.currentMaxSpeed = DrivetrainConstants.MaxSpeed;}));
+
+        /////////////////////////////////// Operator ////////////////////////////////////////////
+
+        operatorController.leftTrigger(0.5).toggleOnTrue(new RunIntake(intake));
+        operatorController.rightTrigger(0.5).toggleOnTrue(new RunShooterToHub(shooter));
+
+        operatorController.povUp().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.COMPACT)));
+        operatorController.povDown().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.INTAKE)));
+
+        
+        //Overrides
+        operatorController.a().whileTrue(new RunShooterOverride(shooter, 50).alongWith(new RunTurretToTarget(turret, 0))); //At tower override pos
+
+        operatorController.leftBumper().toggleOnTrue(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
+        operatorController.rightBumper().toggleOnTrue(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
 
         operatorController.x().onTrue(new InstantCommand(() -> lift.deployLiftServo()));
         operatorController.b().onTrue(new InstantCommand(() -> lift.resetLiftServo()));
