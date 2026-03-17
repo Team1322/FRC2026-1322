@@ -8,7 +8,6 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SystemVariables;
@@ -20,21 +19,29 @@ public class ShooterSubsystem extends SubsystemBase {
     double velo = 0;
 
     public ShooterSubsystem() {
+        //Basic Config
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+
+        //PID Values
         config.Slot0.kP = 4;
+        config.Slot0.kI = 0;
+        config.Slot0.kD = 0;
+
+        //Current Limits
         config.CurrentLimits.StatorCurrentLimit = 120;
         config.CurrentLimits.SupplyCurrentLimit = 80;
         config.CurrentLimits.SupplyCurrentLowerLimit = 40;
         config.CurrentLimits.SupplyCurrentLimitEnable = true;
         config.CurrentLimits.StatorCurrentLimitEnable = true;
+
+        //Apply Config
         shooterMotor.getConfigurator().apply(config);
         shooterFollower.getConfigurator().apply(config);
+
+        //Setup Follower
         shooterFollower.setControl(new Follower(shooterMotor.getDeviceID(), MotorAlignmentValue.Opposed));
-
-        SmartDashboard.putNumber("Shoot Velo", 0);
-
     }
 
     @Override
@@ -44,6 +51,10 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Distance to Goal", SystemVariables.turretDistanceFromGoal);
 
         SystemVariables.shooterUpToSpeed = isShooterSpunUp();
+    }
+
+    public boolean isShooterSpunUp()  {
+        return Math.abs(shooterMotor.getVelocity().getValueAsDouble() - velo) < 5 && velo > 5;
     }
 
     public void setShootFromDistance() {
@@ -59,12 +70,10 @@ public class ShooterSubsystem extends SubsystemBase {
         shooterMotor.stopMotor();
     }
     
-    public boolean isShooterSpunUp()  {
-        return Math.abs(shooterMotor.getVelocity().getValueAsDouble() - velo) < 10 && velo > 5;
-    }
 
     private double getShootVelocity() {
         double distance = SystemVariables.turretDistanceFromGoal;
+        
         if (distance < 1.25) {
             distance = 1.25;
         }

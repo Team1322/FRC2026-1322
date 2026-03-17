@@ -25,27 +25,21 @@ public class LiftSubsystem extends SubsystemBase {
     Servo servo = new Servo(0);
 
     public LiftSubsystem() {
+        //Basic Config
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+
+        //Apply Config
         liftMotor.getConfigurator().apply(config);
 
         //liftAbsoluteEncoder.setZeroHere();
-        SmartDashboard.putNumber("Lift P", LiftConstants.KP);
-        SmartDashboard.putNumber("Lift I", LiftConstants.KI);
-        SmartDashboard.putNumber("Lift D", LiftConstants.KD);
     }
 
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Target Lift Position", targetPosition);
         SmartDashboard.putNumber("Current Lift Position", getCurrentPosition());
-        //SmartDashboard.putNumber("Lift Encoder Pose", getEncoderAngle());
-        liftController.setPID(
-            SmartDashboard.getNumber("Lift P", LiftConstants.KP),
-            SmartDashboard.getNumber("Lift I", LiftConstants.KI),
-            SmartDashboard.getNumber("Lift D", LiftConstants.KD)
-        );
     }
 
     public void setSpeed(double speed) {
@@ -54,7 +48,6 @@ public class LiftSubsystem extends SubsystemBase {
 
     public double getCurrentPosition() {
         return getEncoderAngle();
-        //return liftMotor.getPosition().getValueAsDouble();
     }
 
     public void deployLiftServo() {
