@@ -67,11 +67,11 @@ public class RobotContainer {
 
         drive.setDefaultCommand(new FieldCentricControl(drive, driverController));
         turret.setDefaultCommand(new RunTurretToHub(turret));
+        lift.setDefaultCommand(new LiftToPosition(lift));
+        shooter.setDefaultCommand(new AutoShooterToHub(shooter));
         //turret.setDefaultCommand(new RunTurretToTarget(turret));
         //turret.setDefaultCommand(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
         //lift.setDefaultCommand(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
-        lift.setDefaultCommand(new LiftToPosition(lift));
-        shooter.setDefaultCommand(new AutoShooterToHub(shooter));
 
         /////////////////////////////////// Driver ////////////////////////////////////////////
         
