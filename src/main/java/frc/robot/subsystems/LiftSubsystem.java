@@ -87,7 +87,7 @@ public class LiftSubsystem extends SubsystemBase {
                 setTargetPosition(0);
                 break;
             case CLIMBED:
-                setTargetPosition(5);
+                setTargetPosition(0);
                 break;
             case DISTURB:
                 setTargetPosition(30);

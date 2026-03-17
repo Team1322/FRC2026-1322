@@ -10,10 +10,10 @@ import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 
 public class ClearHopper extends ParallelCommandGroup {
-    public ClearHopper (FeederSubsystem feeder, LiftSubsystem lift) {
+    public ClearHopper (FeederSubsystem feeder) {
         addCommands(
-            new ConditionalCommand(new RunFeeder(feeder), new WaitCommand(0), () -> SystemVariables.shooterUpToSpeed),
-            new HopperNotStill(lift)
+            new ConditionalCommand(new RunFeeder(feeder), new WaitCommand(0), () -> SystemVariables.shooterUpToSpeed)
+            //new HopperNotStill(lift)
             );
     }
 

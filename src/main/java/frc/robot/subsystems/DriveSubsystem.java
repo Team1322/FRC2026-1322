@@ -59,8 +59,8 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     SendableChooser<Pose2d> poseOptions = new SendableChooser<>();
 
     ///////////////////////////////////// Drive to Pose Controllers /////////////////////////////////////
-    private final PIDController translationalController = new PIDController(5, 0, 0.08);
-    private final SlewRateLimiter accelerationLimiter = new SlewRateLimiter(100, -4, 0); 
+    private final PIDController translationalController = new PIDController(1.5, 0, 0.08);
+    private final SlewRateLimiter accelerationLimiter = new SlewRateLimiter(100, -3, 0); 
 
     private static final double kSimLoopPeriod = 0.005; // 5 ms
     private Notifier m_simNotifier = null;
@@ -106,8 +106,6 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
             0     // Yaw (degrees)
         );
 
-        LimelightHelpers.setStreamMode_Standard("limelight-main");
-
         poseOptions.setDefaultOption("All Zeros", Pose2d.kZero);
         poseOptions.addOption("Blue Goal", new Pose2d(3.6, 4, Rotation2d.kZero));
         poseOptions.addOption("Blue Depot Side", new Pose2d(3.6, 6, Rotation2d.kZero));
@@ -127,9 +125,6 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         SmartDashboard.putNumber("PoseSeeding/Seed Pose Y", 0);
         SmartDashboard.putNumber("PoseSeeding/Seed Pose Angle", 0);
 
-        SmartDashboard.putNumber("DriveToPose/P", translationalController.getP());
-        SmartDashboard.putNumber("DriveToPose/I", translationalController.getI());
-        SmartDashboard.putNumber("DriveToPose/D", translationalController.getD());
     }
     
     @Override
@@ -212,7 +207,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         //If Shooting to Goal
         Translation2d target = DriverStation.getAlliance().get() == Alliance.Red ? FieldConstants.RED_GOAL : FieldConstants.BLUE_GOAL;
 
-        target = target.minus(new Translation2d(getState().Speeds.vxMetersPerSecond * 0.3, getState().Speeds.vyMetersPerSecond * 0.3));
+        target = target.minus(new Translation2d(getState().Speeds.vxMetersPerSecond * 1, getState().Speeds.vyMetersPerSecond * 1));
         return target;
     }
 
@@ -250,12 +245,6 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
      */
 
     public void driveToPosition(Pose2d drivingPose, Pose2d anglePose, LinearVelocity maxSpeed) {
-
-        translationalController.setPID(
-            SmartDashboard.getNumber("DriveToPose/P", translationalController.getP()),
-            SmartDashboard.getNumber("DriveToPose/I", translationalController.getI()),
-            SmartDashboard.getNumber("DriveToPose/D", translationalController.getD())
-        );
 
         double distanceAway = distanceFromPose(drivingPose, getCurrentPose()) + distanceFromPose(drivingPose, anglePose);
 
@@ -339,13 +328,24 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
             updateVision = false;
         }
 
-        if (mt2 != null) {
-            if (mt2.tagCount == 0) {
-                updateVision = false;
-            }
-            if (updateVision) {
+        LimelightHelpers.PoseEstimate mt1 = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-main");
 
-                setVisionMeasurementStdDevs(VecBuilder.fill(0.15, 0.15, 9999999)); // x and Y were 0.7
+        if (mt2 != null && Math.abs(getPigeon2().getAngularVelocityZWorld().getValueAsDouble()) < 720) {
+
+            Rotation2d currentAngle = null;
+            if (mt1 != null) {
+                if (mt1.tagCount != 0) {
+                    currentAngle = mt1.pose.getRotation();
+                }
+            }
+
+            if (currentAngle == null) {
+                currentAngle = getCurrentPose().getRotation();
+            }
+
+            if (mt2.tagCount > 1) {
+
+                setVisionMeasurementStdDevs(VecBuilder.fill(0.15, 0.15, Math.toRadians(50))); // x and Y were 0.7
                 addVisionMeasurement(
                         new Pose2d(mt2.pose.getTranslation(), getCurrentPose().getRotation() ),
                         Utils.fpgaToCurrentTime(mt2.timestampSeconds));
