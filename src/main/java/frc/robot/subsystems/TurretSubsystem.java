@@ -28,7 +28,10 @@ public class TurretSubsystem extends SubsystemBase {
         .getStructTopic("Turret Pose", Pose3d.struct).publish();
 
     public TurretSubsystem() {
+        //Initalize hardware
         turretAbsoluteEncoder = new AM_CAN_HexBoreEncoder(TurretConstants.TURRET_SENSOR_ID);
+
+        //Basic Config
         TalonFXConfiguration config = new TalonFXConfiguration();
         config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
@@ -36,17 +39,17 @@ public class TurretSubsystem extends SubsystemBase {
         config.MotorOutput.PeakReverseDutyCycle = -0.5;
         config.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = 0.05;
 
+        //Current Limits
         config.CurrentLimits.StatorCurrentLimit = 60;
         config.CurrentLimits.SupplyCurrentLimit = 40;
         config.CurrentLimits.SupplyCurrentLowerLimit = 20;
         config.CurrentLimits.SupplyCurrentLimitEnable = true;
         config.CurrentLimits.StatorCurrentLimitEnable = true;
 
+        //Apply Config
         turretMotor.getConfigurator().apply(config);
-        //SmartDashboard.putNumber("Turret P", TurretConstants.KP);
-        //SmartDashboard.putNumber("Turret I", TurretConstants.KI);
-        //SmartDashboard.putNumber("Turret D", TurretConstants.KD);
         
+        //Initialize Position
         //turretAbsoluteEncoder.setZeroHere();
         resetMotorEncoder();
     }
@@ -65,11 +68,6 @@ public class TurretSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber("Target Turret Position", targetPosition);
         SmartDashboard.putNumber("Current Turret Position", getCurrentPosition());
-        // turretController.setPID(
-        //     SmartDashboard.getNumber("Turret P", TurretConstants.KP),
-        //     SmartDashboard.getNumber("Turret I", TurretConstants.KI),
-        //     SmartDashboard.getNumber("Turret D", TurretConstants.KD)
-        // );
     }
 
     public void setSpeed(double speed) {
