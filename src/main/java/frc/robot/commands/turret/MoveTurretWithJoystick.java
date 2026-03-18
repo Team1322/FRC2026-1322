@@ -17,7 +17,7 @@ public class MoveTurretWithJoystick extends Command{
 
     @Override
     public void execute() {
-        turret.setSpeed(opRightX.getAsDouble() * 0.1);
+        turret.setSpeed(opRightX.getAsDouble() * 0.05);
     }
 
     @Override

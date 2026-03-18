@@ -12,11 +12,13 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.complexCommands.ClearHopper;
 import frc.robot.commands.drive.FieldCentricControl;
+import frc.robot.commands.drive.XFormation;
 import frc.robot.SystemVariables.DrivetrainConstants;
 import frc.robot.SystemVariables.LiftConstants.LiftStates;
 import frc.robot.commands.feeder.ReverseFeeder;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
+import frc.robot.commands.lift.HopperNotStill;
 import frc.robot.commands.lift.LiftToPosition;
 import frc.robot.commands.lift.MoveLiftWithJoystick;
 import frc.robot.commands.shoot.AutoShooterToHub;
@@ -47,12 +49,12 @@ public class RobotContainer {
     CommandXboxController driverController = new CommandXboxController(0);
     CommandXboxController operatorController = new CommandXboxController(1);
 
-    DriveSubsystem drive = TunerConstants.createDrivetrain();
-    IntakeSubsystem intake = new IntakeSubsystem();
-    FeederSubsystem feeder = new FeederSubsystem();
-    TurretSubsystem turret = new TurretSubsystem();
-    LiftSubsystem lift = new LiftSubsystem();
-    ShooterSubsystem shooter = new ShooterSubsystem();
+    public DriveSubsystem drive = TunerConstants.createDrivetrain();
+    public IntakeSubsystem intake = new IntakeSubsystem();
+    public FeederSubsystem feeder = new FeederSubsystem();
+    public TurretSubsystem turret = new TurretSubsystem();
+    public LiftSubsystem lift = new LiftSubsystem();
+    public ShooterSubsystem shooter = new ShooterSubsystem();
 
     public RobotContainer() {
 
@@ -88,6 +90,8 @@ public class RobotContainer {
             .onFalse(new InstantCommand(() -> lift.setTargetState(LiftStates.INTAKE)));
         driverController.povUp().whileTrue(new RunFeeder(feeder));
 
+        driverController.b().onTrue(new XFormation(drive, driverController));
+
         driverController.rightBumper().onTrue(new InstantCommand(() -> {SystemVariables.currentMaxSpeed = 2;}));
         driverController.rightBumper().onFalse(new InstantCommand(() -> {SystemVariables.currentMaxSpeed = DrivetrainConstants.MaxSpeed;}));
 
@@ -99,15 +103,15 @@ public class RobotContainer {
         operatorController.povUp().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.COMPACT)));
         operatorController.povDown().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.INTAKE)));
 
+        operatorController.x().toggleOnTrue(new HopperNotStill(lift));
+
         
         //Overrides
-        operatorController.a().toggleOnTrue(new RunShooterOverride(shooter, 50).alongWith(new RunTurretToTarget(turret, 0))); //At tower override pos
+        operatorController.a().toggleOnTrue(new RunShooterOverride(shooter, 20).alongWith(new RunTurretToTarget(turret, 0))); //At tower override pos
 
         operatorController.leftBumper().toggleOnTrue(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
         operatorController.rightBumper().toggleOnTrue(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
 
-        operatorController.x().onTrue(new InstantCommand(() -> lift.deployLiftServo()));
-        operatorController.b().onTrue(new InstantCommand(() -> lift.resetLiftServo()));
 
     }
 
