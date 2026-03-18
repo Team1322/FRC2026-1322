@@ -37,14 +37,6 @@ import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class RobotContainer {
-    /*
-        TODO For Comp
-        - Improve code for comp
-            - Create handshaking for driver shoot button
-                - Turns chassis to brake mode
-            
-
-    */
 
     CommandXboxController driverController = new CommandXboxController(0);
     CommandXboxController operatorController = new CommandXboxController(1);
@@ -57,9 +49,6 @@ public class RobotContainer {
     public ShooterSubsystem shooter = new ShooterSubsystem();
 
     public RobotContainer() {
-
-
-    
         configureBindings();
     }
 

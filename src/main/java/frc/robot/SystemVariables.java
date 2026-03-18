@@ -50,10 +50,10 @@ public class SystemVariables {
         public static final double KP = 0.01;
         public static final double KI = 0.00;
         public static final double KD = 0.0002;
-       public static final double RIGHT_LIMIT = -130;
-       public static final double LEFT_LIMIT = 130;
-       public static final double MOTOR_CONVERSION_FACTOR = (360.0 / 11);
-       public static final double ENCODER_CONVERSION_FACTOR = (-1.0 / 2.92); //160 to 58
+        public static final double RIGHT_LIMIT = -130;
+        public static final double LEFT_LIMIT = 130;
+        public static final double MOTOR_CONVERSION_FACTOR = (360.0 / 11);
+        public static final double ENCODER_CONVERSION_FACTOR = (-1.0 / 2.92); //160 to 58
         public static final Transform2d TURRET_LOCATION = new Transform2d(
             Units.inchesToMeters(8),
             Units.inchesToMeters(0), 
