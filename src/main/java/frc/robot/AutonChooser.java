@@ -158,7 +158,7 @@ public class AutonChooser {
                             new DriveToPose(
                                 r.drive, 
                                 new DriveToPoseObject(new Pose2d(14.3,7.375, Rotation2d.k180deg),0.5),
-                                new DriveToPoseObject(new Pose2d(15.3,7.375, Rotation2d.k180deg))
+                                new DriveToPoseObject(new Pose2d(16,7.375, Rotation2d.k180deg))
 
                             
                             ).withTimeout(3),
@@ -295,7 +295,7 @@ public class AutonChooser {
                             new DriveToPose(
                                 r.drive, 
                                   new DriveToPoseObject(new Pose2d(1.75,0.702, Rotation2d.kZero),0.5),
-                                new DriveToPoseObject(new Pose2d(.75,0.702, Rotation2d.kZero))
+                                new DriveToPoseObject(new Pose2d(.45,0.702, Rotation2d.kZero))
                             
                             ),
                             new WaitCommand(1),
