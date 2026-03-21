@@ -158,11 +158,11 @@ public class AutonChooser {
                             new DriveToPose(
                                 r.drive, 
                                 new DriveToPoseObject(new Pose2d(14.3,7.375, Rotation2d.k180deg),0.5),
-                                new DriveToPoseObject(new Pose2d(16,7.375, Rotation2d.k180deg))
+                                new DriveToPoseObject(new Pose2d(16,7.575, Rotation2d.k180deg))
 
                             
                             ).withTimeout(3),
-                            new WaitCommand(1),
+                            new WaitCommand(2),
                             new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                             new DriveToPose(
                                 r.drive,
