@@ -97,17 +97,17 @@ public class RobotContainer {
 
         /////////////////////////////////// Operator ////////////////////////////////////////////
 
-        operatorController.leftTrigger(0.5).toggleOnTrue(new RunIntake(intake));
-        operatorController.rightTrigger(0.5).toggleOnTrue(new RunShooterToHub(shooter));
+        operatorController.leftTrigger(0.5).whileTrue(new RunIntake(intake));
+        operatorController.rightTrigger(0.5).whileTrue(new RunShooterToHub(shooter));
 
         operatorController.povUp().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.COMPACT)));
         operatorController.povDown().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.INTAKE)));
 
-        operatorController.x().toggleOnTrue(new HopperNotStill(lift));
+        operatorController.x().whileTrue(new HopperNotStill(lift));
 
         
         //Overrides
-        operatorController.a().toggleOnTrue(new RunShooterOverride(shooter, 20).alongWith(new RunTurretToTarget(turret, 0))); //At tower override pos
+        operatorController.a().whileTrue(new RunShooterOverride(shooter, 20).alongWith(new RunTurretToTarget(turret, 0))); //At tower override pos
 
         operatorController.leftBumper().toggleOnTrue(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
         operatorController.rightBumper().toggleOnTrue(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));

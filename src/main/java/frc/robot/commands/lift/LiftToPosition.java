@@ -1,6 +1,7 @@
 package frc.robot.commands.lift;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.SystemVariables;
 import frc.robot.SystemVariables.LiftConstants.LiftStates;
 import frc.robot.subsystems.LiftSubsystem;
 
@@ -20,6 +21,14 @@ public class LiftToPosition extends Command {
 
     @Override
     public void execute() {
+        if (SystemVariables.runShooter) {
+            if (lift.isLiftAtDisturb()) {
+                lift.setTargetState(LiftStates.INTAKE);
+            }
+            else if (lift.isLiftAtIntake()) {
+                lift.setTargetState(LiftStates.DISTURB);
+            }
+        }
         lift.moveTowardPosition();
     }
 

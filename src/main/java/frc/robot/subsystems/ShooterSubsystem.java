@@ -25,8 +25,8 @@ public class ShooterSubsystem extends SubsystemBase {
         config.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
         //PID Values
-        config.Slot0.kP = 4;
-        config.Slot0.kI = 0;
+        config.Slot0.kP = 1;
+        config.Slot0.kI = 0.01;
         config.Slot0.kD = 0;
 
         //Current Limits
@@ -54,7 +54,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public boolean isShooterSpunUp()  {
-        return Math.abs(shooterMotor.getVelocity().getValueAsDouble() - velo) < 5 && velo > 5;
+        return Math.abs(shooterMotor.getVelocity().getValueAsDouble() - velo) < 15 && velo > 5;
     }
 
     public void setShootFromDistance() {
@@ -86,8 +86,8 @@ public class ShooterSubsystem extends SubsystemBase {
         double vel = Math.sqrt(sqrtNum/sqrtDenom)
                 / (Math.cos(ShooterConstants.SHOOT_ANGLE));
 
-        vel *= 5.95; //6.2
-        vel *= ((difference / 16) / 100) + 1;
+        vel *= 6.4; //6.2
+        vel *= ((difference / 18) / 100) + 1;
         return vel;
     }
 }
