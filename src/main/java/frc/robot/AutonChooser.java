@@ -157,7 +157,9 @@ public class AutonChooser {
                         new SequentialCommandGroup(
                             new DriveToPose(
                                 r.drive, 
+                                new DriveToPoseObject(new Pose2d(14.3,7.375, Rotation2d.k180deg),0.5),
                                 new DriveToPoseObject(new Pose2d(15.3,7.375, Rotation2d.k180deg))
+
                             
                             ).withTimeout(3),
                             new WaitCommand(1),
@@ -292,7 +294,12 @@ public class AutonChooser {
                             new WaitCommand(0.5),
                             new DriveToPose(
                                 r.drive, 
+<<<<<<< Updated upstream
                                 new DriveToPoseObject(new Pose2d(0.50,0.7, Rotation2d.kZero))
+=======
+                                  new DriveToPoseObject(new Pose2d(1.75,0.702, Rotation2d.kZero),0.5),
+                                new DriveToPoseObject(new Pose2d(.75,0.702, Rotation2d.kZero))
+>>>>>>> Stashed changes
                             
                             ),
                             new WaitCommand(1),
