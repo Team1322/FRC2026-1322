@@ -294,12 +294,8 @@ public class AutonChooser {
                             new WaitCommand(0.5),
                             new DriveToPose(
                                 r.drive, 
-<<<<<<< Updated upstream
-                                new DriveToPoseObject(new Pose2d(0.50,0.7, Rotation2d.kZero))
-=======
                                   new DriveToPoseObject(new Pose2d(1.75,0.702, Rotation2d.kZero),0.5),
                                 new DriveToPoseObject(new Pose2d(.75,0.702, Rotation2d.kZero))
->>>>>>> Stashed changes
                             
                             ),
                             new WaitCommand(1),
