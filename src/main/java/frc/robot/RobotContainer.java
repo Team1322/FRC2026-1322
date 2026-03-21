@@ -107,7 +107,7 @@ public class RobotContainer {
 
         
         //Overrides
-        operatorController.a().whileTrue(new RunShooterOverride(shooter, 20).alongWith(new RunTurretToTarget(turret, 0))); //At tower override pos
+        operatorController.a().whileTrue(new RunShooterOverride(shooter, 50).alongWith(new RunTurretToTarget(turret, 0))); //At tower override pos
 
         operatorController.leftBumper().toggleOnTrue(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
         operatorController.rightBumper().toggleOnTrue(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));

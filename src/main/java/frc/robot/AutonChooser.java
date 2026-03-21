@@ -170,7 +170,7 @@ public class AutonChooser {
 
                             ),
                             new WaitCommand(0.5),
-                            new ClearHopper(r.feeder).withTimeout(5),
+                            new ClearHopper(r.feeder).withTimeout(6),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                             
                     ));
@@ -297,7 +297,7 @@ public class AutonChooser {
                                   new DriveToPoseObject(new Pose2d(1.75,0.702, Rotation2d.kZero),0.5),
                                 new DriveToPoseObject(new Pose2d(.45,0.702, Rotation2d.kZero))
                             
-                            ),
+                            ).withTimeout(3),
                             new WaitCommand(1),
                             new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                             new DriveToPose(
@@ -306,7 +306,7 @@ public class AutonChooser {
 
                             ),
                             new WaitCommand(0.5),
-                            new ClearHopper(r.feeder).withTimeout(5),
+                            new ClearHopper(r.feeder).withTimeout(6),
                             new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -373,8 +373,8 @@ public class AutonChooser {
                     return new SequentialCommandGroup(
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
                         new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(14, 5.0, Rotation2d.k180deg)),
-                            new DriveToPoseObject(new Pose2d(15.025, 5.0, Rotation2d.k180deg), MetersPerSecond.of(0.5))
+                            new DriveToPoseObject(new Pose2d(14, 4.8, Rotation2d.k180deg)),
+                            new DriveToPoseObject(new Pose2d(15.025, 4.8, Rotation2d.k180deg), MetersPerSecond.of(0.5))
                         ).withTimeout(5),
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
                         new WaitCommand(5)
