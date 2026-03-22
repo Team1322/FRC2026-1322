@@ -162,7 +162,7 @@ public class AutonChooser {
 
                             
                             ).withTimeout(3),
-                            new WaitCommand(2),
+                            new WaitCommand(3),
                             new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                             new DriveToPose(
                                 r.drive,
@@ -170,7 +170,7 @@ public class AutonChooser {
 
                             ),
                             new WaitCommand(0.5),
-                            new ClearHopper(r.feeder).withTimeout(6),
+                            new ClearHopper(r.feeder).withTimeout(8),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                             
                     ));
@@ -298,7 +298,7 @@ public class AutonChooser {
                                 new DriveToPoseObject(new Pose2d(.45,0.702, Rotation2d.kZero))
                             
                             ).withTimeout(3),
-                            new WaitCommand(1),
+                            new WaitCommand(3),
                             new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                             new DriveToPose(
                                 r.drive,
@@ -306,7 +306,7 @@ public class AutonChooser {
 
                             ),
                             new WaitCommand(0.5),
-                            new ClearHopper(r.feeder).withTimeout(6),
+                            new ClearHopper(r.feeder).withTimeout(8),
                             new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 

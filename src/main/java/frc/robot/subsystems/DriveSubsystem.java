@@ -42,6 +42,9 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     public final SwerveRequest.FieldCentric fieldCentric = new SwerveRequest.FieldCentric()
             .withDriveRequestType(DriveRequestType.Velocity); // Use open-loop control for drive motors
 
+    public final SwerveRequest.RobotCentric robotCentric = new SwerveRequest.RobotCentric()
+            .withDriveRequestType(DriveRequestType.Velocity); // Use open-loop control for drive motors
+
     public final SwerveRequest.FieldCentricFacingAngle driveToPoseController = new SwerveRequest.FieldCentricFacingAngle()
             .withForwardPerspective(SwerveRequest.ForwardPerspectiveValue.BlueAlliance)
             .withDriveRequestType(DriveRequestType.Velocity)
