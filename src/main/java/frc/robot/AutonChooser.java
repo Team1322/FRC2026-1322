@@ -307,7 +307,13 @@ public class AutonChooser {
                             ),
                             new WaitCommand(0.5),
                             new ClearHopper(r.feeder).withTimeout(8),
-                            new InstantCommand(() -> {SystemVariables.runShooter = false;})
+                            new InstantCommand(() -> {SystemVariables.runShooter = false;}),
+
+                            new DriveToPose(r.drive, 
+                                new DriveToPoseObject(new Pose2d(3, 2.5, Rotation2d.k180deg)),
+                                new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
+                                new DriveToPoseObject(new Pose2d(7.5, 2.5, Rotation2d.k180deg))
+                            )
                     ));
 
                     autoChooser.addOption("Blue Outpost Fan Outpost", new SequentialCommandGroup(
