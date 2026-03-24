@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.LimelightHelpers;
 import frc.robot.SystemVariables;
+import frc.robot.SystemVariables.DrivetrainConstants;
 import frc.robot.SystemVariables.FieldConstants;
 import frc.robot.SystemVariables.TurretConstants;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
@@ -48,6 +49,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     public final SwerveRequest.FieldCentricFacingAngle driveToPoseController = new SwerveRequest.FieldCentricFacingAngle()
             .withForwardPerspective(SwerveRequest.ForwardPerspectiveValue.BlueAlliance)
             .withDriveRequestType(DriveRequestType.Velocity)
+            .withMaxAbsRotationalRate(DrivetrainConstants.MaxAngularRate)
             .withHeadingPID(7, 0, 0);
 
     public final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
