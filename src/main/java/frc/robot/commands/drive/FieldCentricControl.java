@@ -22,6 +22,10 @@ public class FieldCentricControl extends Command {
     @Override
     public void execute() {
         drive.setControl(
+            // drive.robotCentric.withVelocityY(0)
+            //                   .withVelocityX(joystickWithDeadband(-driverController.getLeftY(), 0.1) * SystemVariables.currentMaxSpeed)
+            //                   .withRotationalRate(joystickWithDeadband(-driverController.getRightX(), 0.1) * SystemVariables.currentMaxSpeed)
+            // );
             drive.fieldCentric.withVelocityY(joystickWithDeadband(-driverController.getLeftX(), 0.1) * SystemVariables.currentMaxSpeed)
                               .withVelocityX(joystickWithDeadband(-driverController.getLeftY(), 0.1) * SystemVariables.currentMaxSpeed)
                               .withRotationalRate(joystickWithDeadband(-driverController.getRightX(), 0.1) * SystemVariables.currentMaxSpeed)

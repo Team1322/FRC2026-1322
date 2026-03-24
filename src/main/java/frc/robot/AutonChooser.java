@@ -71,29 +71,29 @@ public class AutonChooser {
             switch (locationChooser.getSelected()) {
                 case DEPOT:
 
-                    autoChooser.addOption("Red Depot Collection", new SequentialCommandGroup(
-                        new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(15.5, 1.1,Rotation2d.fromDegrees(-90)), 0.25),
-                            new DriveToPoseObject(new Pose2d(16.100, 1.100,Rotation2d.fromDegrees(-90)))
-                        ),
+                    // autoChooser.addOption("Red Depot Collection", new SequentialCommandGroup(
+                    //     new DriveToPose(r.drive, 
+                    //         new DriveToPoseObject(new Pose2d(15.5, 1.1,Rotation2d.fromDegrees(-90)), 0.25),
+                    //         new DriveToPoseObject(new Pose2d(16.100, 1.100,Rotation2d.fromDegrees(-90)))
+                    //     ),
 
-                        new ParallelRaceGroup(
-                            new DriveToPose(r.drive, 
-                                new DriveToPoseObject(new Pose2d(16.100, 3.100,Rotation2d.fromDegrees(-90)))
-                            ),
-                            new RunIntake(r.intake)
-                        ),
+                    //     new ParallelRaceGroup(
+                    //         new DriveToPose(r.drive, 
+                    //             new DriveToPoseObject(new Pose2d(16.100, 3.100,Rotation2d.fromDegrees(-90)))
+                    //         ),
+                    //         new RunIntake(r.intake)
+                    //     ),
 
-                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
-                        new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(15.5, 3.100,Rotation2d.fromDegrees(-90)), 0.25),
-                            new DriveToPoseObject (redDepotShotLocation)
-                        ),
+                    //     new InstantCommand(() -> {SystemVariables.runShooter = true;}),
+                    //     new DriveToPose(r.drive, 
+                    //         new DriveToPoseObject(new Pose2d(15.5, 3.100,Rotation2d.fromDegrees(-90)), 0.25),
+                    //         new DriveToPoseObject (redDepotShotLocation)
+                    //     ),
 
-                        new WaitCommand(1),
-                        new ClearHopper(r.feeder).withTimeout(5),
-                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
-                    ));
+                    //     new WaitCommand(1),
+                    //     new ClearHopper(r.feeder).withTimeout(5),
+                    //     new InstantCommand(() -> {SystemVariables.runShooter = false;})
+                    // ));
 
                     autoChooser.addOption("Red Depot Fan Depot",new SequentialCommandGroup (
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
@@ -106,8 +106,8 @@ public class AutonChooser {
                     autoChooser.addOption("Red Depot Center Collection", new SequentialCommandGroup(
                         new ParallelRaceGroup(
                             new DriveToPose(r.drive, 
-                                new DriveToPoseObject(new Pose2d(13.5, 2.5, Rotation2d.k180deg)),
-                                new DriveToPoseObject(new Pose2d(10.75, 2.5, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
+                                new DriveToPoseObject(new Pose2d(13.5, 2.5, Rotation2d.kZero)),
+                                new DriveToPoseObject(new Pose2d(10.75, 2.5, Rotation2d.kZero), 0.1, MetersPerSecond.of(1)),
                                 new DriveToPoseObject(new Pose2d(9, 2.5, Rotation2d.kZero)),
                                 new DriveToPoseObject(new Pose2d(11, 2.5, Rotation2d.kZero), 0.5),
                                 new DriveToPoseObject(new Pose2d(13.5, 2.5, Rotation2d.kZero), MetersPerSecond.of(1))
@@ -157,10 +157,12 @@ public class AutonChooser {
                         new SequentialCommandGroup(
                             new DriveToPose(
                                 r.drive, 
-                                new DriveToPoseObject(new Pose2d(15.3,7.375, Rotation2d.k180deg))
+                                new DriveToPoseObject(new Pose2d(14.3,7.375, Rotation2d.k180deg),0.5),
+                                new DriveToPoseObject(new Pose2d(16,7.575, Rotation2d.k180deg))
+
                             
                             ).withTimeout(3),
-                            new WaitCommand(1),
+                            new WaitCommand(3),
                             new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                             new DriveToPose(
                                 r.drive,
@@ -168,7 +170,7 @@ public class AutonChooser {
 
                             ),
                             new WaitCommand(0.5),
-                            new ClearHopper(r.feeder).withTimeout(5),
+                            new ClearHopper(r.feeder).withTimeout(8),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                             
                     ));
@@ -184,8 +186,8 @@ public class AutonChooser {
                     autoChooser.addOption("Red Outpost Center Collection", new SequentialCommandGroup(
                         new ParallelRaceGroup(
                             new DriveToPose(r.drive, 
-                                new DriveToPoseObject(new Pose2d(13.5, 5.5, Rotation2d.k180deg)),
-                                new DriveToPoseObject(new Pose2d(10.75, 5.5, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
+                                new DriveToPoseObject(new Pose2d(13.5, 5.5, Rotation2d.kZero)),
+                                new DriveToPoseObject(new Pose2d(10.75, 5.5, Rotation2d.kZero), 0.1, MetersPerSecond.of(1)),
                                 new DriveToPoseObject(new Pose2d(9, 5.5, Rotation2d.kZero)),
                                 new DriveToPoseObject(new Pose2d(11, 5.5, Rotation2d.kZero), 0.5),
                                 new DriveToPoseObject(new Pose2d(13.5, 5.5, Rotation2d.kZero), MetersPerSecond.of(1))
@@ -207,27 +209,27 @@ public class AutonChooser {
             switch (locationChooser.getSelected()) {
                 case DEPOT:
 
-                    autoChooser.addOption("Blue Depot Collection", 
-                        new SequentialCommandGroup(
-                            new DriveToPose (r.drive, 
-                                new DriveToPoseObject(new Pose2d(1.275, 6.943, Rotation2d.kCCW_90deg),0.25),
-                                new DriveToPoseObject(new Pose2d(0.412, 6.928,Rotation2d.kCCW_90deg))
-                            ),
-                            new ParallelRaceGroup(
-                                new RunIntake (r.intake), 
-                                new DriveToPose (r.drive,
-                                new DriveToPoseObject(new Pose2d(0.421, 4.941, Rotation2d.kCCW_90deg))
-                                )
-                            ),
-                            new InstantCommand(() -> {SystemVariables.runShooter = true;}),
-                            new DriveToPose  (r.drive,
-                                new DriveToPoseObject(new Pose2d(1.509, 4.956, Rotation2d.kCCW_90deg),0.25),
-                                new DriveToPoseObject(blueDepotShotLocation)
-                            ),
-                            new WaitCommand(1),
-                            new ClearHopper(r.feeder).withTimeout(5),
-                            new InstantCommand(() -> {SystemVariables.runShooter = false;})
-                        ));
+                    // autoChooser.addOption("Blue Depot Collection", 
+                    //     new SequentialCommandGroup(
+                    //         new DriveToPose (r.drive, 
+                    //             new DriveToPoseObject(new Pose2d(1.275, 6.943, Rotation2d.kCCW_90deg),0.25),
+                    //             new DriveToPoseObject(new Pose2d(0.412, 6.928,Rotation2d.kCCW_90deg))
+                    //         ),
+                    //         new ParallelRaceGroup(
+                    //             new RunIntake (r.intake), 
+                    //             new DriveToPose (r.drive,
+                    //             new DriveToPoseObject(new Pose2d(0.421, 4.941, Rotation2d.kCCW_90deg))
+                    //             )
+                    //         ),
+                    //         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
+                    //         new DriveToPose  (r.drive,
+                    //             new DriveToPoseObject(new Pose2d(1.509, 4.956, Rotation2d.kCCW_90deg),0.25),
+                    //             new DriveToPoseObject(blueDepotShotLocation)
+                    //         ),
+                    //         new WaitCommand(1),
+                    //         new ClearHopper(r.feeder).withTimeout(5),
+                    //         new InstantCommand(() -> {SystemVariables.runShooter = false;})
+                    //     ));
 
                      autoChooser.addOption("Blue Depot Fan Depot", new SequentialCommandGroup(
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
@@ -240,8 +242,8 @@ public class AutonChooser {
                     autoChooser.addOption("Blue Depot Center Collection", new SequentialCommandGroup(
                         new ParallelRaceGroup(
                             new DriveToPose(r.drive, 
-                                new DriveToPoseObject(new Pose2d(3, 5.5, Rotation2d.kZero)),
-                                new DriveToPoseObject(new Pose2d(6, 5.5, Rotation2d.kZero), 0.1, MetersPerSecond.of(1)),
+                                new DriveToPoseObject(new Pose2d(3, 5.5, Rotation2d.k180deg)),
+                                new DriveToPoseObject(new Pose2d(6, 5.5, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
                                 new DriveToPoseObject(new Pose2d(7.5, 5.5, Rotation2d.k180deg)),
                                 new DriveToPoseObject(new Pose2d(6, 5.5, Rotation2d.k180deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(3, 5.5, Rotation2d.k180deg), MetersPerSecond.of(1))
@@ -289,21 +291,29 @@ public class AutonChooser {
                    
                     autoChooser.addOption("Blue Outpost Collection", 
                         new SequentialCommandGroup(
+                            new WaitCommand(0.5),
                             new DriveToPose(
                                 r.drive, 
-                                new DriveToPoseObject(new Pose2d(.75,0.702, Rotation2d.kZero))
+                                  new DriveToPoseObject(new Pose2d(1.75,0.702, Rotation2d.kZero),0.5),
+                                new DriveToPoseObject(new Pose2d(.45,0.702, Rotation2d.kZero))
                             
-                            ),
-                            new WaitCommand(2),
+                            ).withTimeout(3),
+                            new WaitCommand(3),
                             new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                             new DriveToPose(
                                 r.drive,
                                 new DriveToPoseObject(blueOutpostShotLocation)
 
                             ),
-                            new WaitCommand(1),
-                            new ClearHopper(r.feeder).withTimeout(5),
-                            new InstantCommand(() -> {SystemVariables.runShooter = false;})
+                            new WaitCommand(0.5),
+                            new ClearHopper(r.feeder).withTimeout(8),
+                            new InstantCommand(() -> {SystemVariables.runShooter = false;}),
+
+                            new DriveToPose(r.drive, 
+                                new DriveToPoseObject(new Pose2d(3, 2.5, Rotation2d.k180deg)),
+                                new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
+                                new DriveToPoseObject(new Pose2d(7.5, 2.5, Rotation2d.k180deg))
+                            )
                     ));
 
                     autoChooser.addOption("Blue Outpost Fan Outpost", new SequentialCommandGroup(
@@ -317,8 +327,8 @@ public class AutonChooser {
                     autoChooser.addOption("Blue Outpost Center Collection", new SequentialCommandGroup(
                         new ParallelRaceGroup(
                             new DriveToPose(r.drive, 
-                                new DriveToPoseObject(new Pose2d(3, 2.5, Rotation2d.kZero)),
-                                new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.kZero), 0.1, MetersPerSecond.of(1)),
+                                new DriveToPoseObject(new Pose2d(3, 2.5, Rotation2d.k180deg)),
+                                new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
                                 new DriveToPoseObject(new Pose2d(7.5, 2.5, Rotation2d.k180deg)),
                                 new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.k180deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(3, 2.5, Rotation2d.k180deg), MetersPerSecond.of(1))
@@ -344,8 +354,6 @@ public class AutonChooser {
     public Command getClimbCommand() {
         if (allianceChooser.getSelected().equals(AllianceColor.RED)) {
             switch (climbChooser.getSelected()) {
-                case NONE:
-                    return new WaitCommand(1);
                 case DEPOT_FRONT:
                     return new SequentialCommandGroup(
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
@@ -356,92 +364,94 @@ public class AutonChooser {
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
                         new WaitCommand(5)
                     );
-                case DEPOT_BACK: 
-                    return new SequentialCommandGroup(
-                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
-                        new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(14.75, 3.1, Rotation2d.kZero), 0.1),
-                            new DriveToPoseObject(new Pose2d(16.1, 3.1, Rotation2d.kZero), 0.1),
-                            new DriveToPoseObject(new Pose2d(16.1, 3.8, Rotation2d.kZero), 0.1, MetersPerSecond.of(1)),
-                            new DriveToPoseObject(new Pose2d(15.9, 3.8, Rotation2d.kZero), MetersPerSecond.of(0.5))
-                        ),
-                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
-                        new WaitCommand(5)
-                    );
+                // case DEPOT_BACK: 
+                //     return new SequentialCommandGroup(
+                //         new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
+                //         new DriveToPose(r.drive, 
+                //             new DriveToPoseObject(new Pose2d(14.75, 3.1, Rotation2d.kZero), 0.1),
+                //             new DriveToPoseObject(new Pose2d(16.1, 3.1, Rotation2d.kZero), 0.1),
+                //             new DriveToPoseObject(new Pose2d(16.1, 3.8, Rotation2d.kZero), 0.1, MetersPerSecond.of(1)),
+                //             new DriveToPoseObject(new Pose2d(15.9, 3.8, Rotation2d.kZero), MetersPerSecond.of(0.5))
+                //         ),
+                //         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
+                //         new WaitCommand(5)
+                //     );
                 case OUTPOST_FRONT:
                     return new SequentialCommandGroup(
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
                         new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(14, 5.0, Rotation2d.k180deg), 0.25),
-                            new DriveToPoseObject(new Pose2d(15.025, 5.0, Rotation2d.k180deg), MetersPerSecond.of(0.5))
+                            new DriveToPoseObject(new Pose2d(14, 4.8, Rotation2d.k180deg)),
+                            new DriveToPoseObject(new Pose2d(15.025, 4.8, Rotation2d.k180deg), MetersPerSecond.of(0.5))
                         ).withTimeout(5),
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
                         new WaitCommand(5)
                     );
-                case OUTPOST_BACK:
-                    return new SequentialCommandGroup(
-                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
-                        new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(14.75, 5.5, Rotation2d.kZero), 0.1),
-                            new DriveToPoseObject(new Pose2d(16.1, 5.5, Rotation2d.kZero), 0.1),
-                            new DriveToPoseObject(new Pose2d(16.1, 4.8, Rotation2d.kZero), 0.1, MetersPerSecond.of(1)),
-                            new DriveToPoseObject(new Pose2d(15.9, 4.8, Rotation2d.kZero), MetersPerSecond.of(0.5))
-                        ),
-                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
-                        new WaitCommand(5)
-                    );
+                // case OUTPOST_BACK:
+                //     return new SequentialCommandGroup(
+                //         new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
+                //         new DriveToPose(r.drive, 
+                //             new DriveToPoseObject(new Pose2d(14.75, 5.5, Rotation2d.kZero), 0.1),
+                //             new DriveToPoseObject(new Pose2d(16.1, 5.5, Rotation2d.kZero), 0.1),
+                //             new DriveToPoseObject(new Pose2d(16.1, 4.8, Rotation2d.kZero), 0.1, MetersPerSecond.of(1)),
+                //             new DriveToPoseObject(new Pose2d(15.9, 4.8, Rotation2d.kZero), MetersPerSecond.of(0.5))
+                //         ),
+                //         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
+                //         new WaitCommand(5)
+                //     );
+                default:
+                    return new WaitCommand(1);
             }
         } else {
             switch (climbChooser.getSelected()) {
-                case NONE:
-                    return new WaitCommand(1);
                 case DEPOT_FRONT:
                     return new SequentialCommandGroup(
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
                         new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(2, 4.1, Rotation2d.kZero), 0.25),
-                            new DriveToPoseObject(new Pose2d(1.4, 4.1, Rotation2d.kZero), MetersPerSecond.of(0.5))
+                            new DriveToPoseObject(new Pose2d(2, 4.07, Rotation2d.kZero), 0.25),
+                            new DriveToPoseObject(new Pose2d(1.15, 4.07, Rotation2d.kZero), MetersPerSecond.of(0.5))
                         ),
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
                         new WaitCommand(5)
                     );
-                case DEPOT_BACK:
-                    return new SequentialCommandGroup(
-                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
-                        new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(1.5, 5, Rotation2d.k180deg), 0.1),
-                            new DriveToPoseObject(new Pose2d(0.4, 5, Rotation2d.k180deg), 0.1),
-                            new DriveToPoseObject(new Pose2d(0.4, 4.1, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
-                            new DriveToPoseObject(new Pose2d(0.7, 4.1, Rotation2d.k180deg), MetersPerSecond.of(0.5))
-                        ),
-                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
-                        new WaitCommand(5)
-                    );
+                // case DEPOT_BACK:
+                //     return new SequentialCommandGroup(
+                //         new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
+                //         new DriveToPose(r.drive, 
+                //             new DriveToPoseObject(new Pose2d(1.5, 5, Rotation2d.k180deg), 0.1),
+                //             new DriveToPoseObject(new Pose2d(0.4, 5, Rotation2d.k180deg), 0.1),
+                //             new DriveToPoseObject(new Pose2d(0.4, 4.1, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
+                //             new DriveToPoseObject(new Pose2d(0.7, 4.1, Rotation2d.k180deg), MetersPerSecond.of(0.5))
+                //         ),
+                //         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
+                //         new WaitCommand(5)
+                //     );
                 case OUTPOST_FRONT:
                     return new SequentialCommandGroup(
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
                         new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(2, 3.3, Rotation2d.kZero), 0.25),
-                            new DriveToPoseObject(new Pose2d(1.4, 3.3, Rotation2d.kZero), MetersPerSecond.of(0.5))
+                            new DriveToPoseObject(new Pose2d(2, 3.4, Rotation2d.kZero), 0.25),
+                            new DriveToPoseObject(new Pose2d(1.5, 3.4, Rotation2d.kZero), MetersPerSecond.of(0.5))
                         ),
                         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
                         new WaitCommand(5)
                     );
-                case OUTPOST_BACK:
-                    return new SequentialCommandGroup(
-                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
-                        new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(1.5, 2.5, Rotation2d.k180deg), 0.1),
-                            new DriveToPoseObject(new Pose2d(0.4, 2.5, Rotation2d.k180deg), 0.1),
-                            new DriveToPoseObject(new Pose2d(0.4, 3.3, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
-                            new DriveToPoseObject(new Pose2d(0.7, 3.3, Rotation2d.k180deg), MetersPerSecond.of(0.5))
-                        ),
-                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
-                        new WaitCommand(5)
-                    );
+                // case OUTPOST_BACK:
+                //     return new SequentialCommandGroup(
+                //         new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
+                //         new DriveToPose(r.drive, 
+                //             new DriveToPoseObject(new Pose2d(1.5, 2.5, Rotation2d.k180deg), 0.1),
+                //             new DriveToPoseObject(new Pose2d(0.4, 2.5, Rotation2d.k180deg), 0.1),
+                //             new DriveToPoseObject(new Pose2d(0.4, 3.3, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
+                //             new DriveToPoseObject(new Pose2d(0.7, 3.3, Rotation2d.k180deg), MetersPerSecond.of(0.5))
+                //         ),
+                //         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
+                //         new WaitCommand(5)
+                //     );
+                
+                default:
+                    return new WaitCommand(1);
             }
         }
-        return new WaitCommand(1);
     }
 
 
