@@ -94,6 +94,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
 
         if (Utils.isSimulation()) {
             startSimThread();
+            translationalController.setP(5);
         }
 
         //configNeutralMode(NeutralModeValue.Coast);

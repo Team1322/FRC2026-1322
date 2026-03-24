@@ -333,6 +333,7 @@ public class AutonChooser {
                                 new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.k180deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(3, 2.5, Rotation2d.k180deg), MetersPerSecond.of(1))
                             ),
+                            
                             new RunIntake(r.intake)
                         ),
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
