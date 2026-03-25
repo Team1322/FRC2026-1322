@@ -14,13 +14,9 @@ import frc.robot.commands.complexCommands.ClearHopper;
 import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.commands.drive.XFormation;
 import frc.robot.SystemVariables.DrivetrainConstants;
-import frc.robot.SystemVariables.LiftConstants.LiftStates;
 import frc.robot.commands.feeder.ReverseFeeder;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
-import frc.robot.commands.lift.HopperNotStill;
-import frc.robot.commands.lift.LiftToPosition;
-import frc.robot.commands.lift.MoveLiftWithJoystick;
 import frc.robot.commands.shoot.AutoShooterToHub;
 import frc.robot.commands.shoot.RunShooterOverride;
 import frc.robot.commands.shoot.RunShooterToHub;
@@ -33,7 +29,6 @@ import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
-import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class RobotContainer {
@@ -45,7 +40,6 @@ public class RobotContainer {
     public IntakeSubsystem intake = new IntakeSubsystem();
     public FeederSubsystem feeder = new FeederSubsystem();
     public TurretSubsystem turret = new TurretSubsystem();
-    public LiftSubsystem lift = new LiftSubsystem();
     public ShooterSubsystem shooter = new ShooterSubsystem();
 
     public RobotContainer() {
@@ -58,7 +52,6 @@ public class RobotContainer {
 
         drive.setDefaultCommand(new FieldCentricControl(drive, driverController));
         turret.setDefaultCommand(new RunTurretToHub(turret));
-        lift.setDefaultCommand(new LiftToPosition(lift));
         shooter.setDefaultCommand(new AutoShooterToHub(shooter));
         //turret.setDefaultCommand(new RunTurretToTarget(turret));
         //turret.setDefaultCommand(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
@@ -75,10 +68,6 @@ public class RobotContainer {
         driverController.rightTrigger(0.5).whileTrue(new ClearHopper(feeder));
         driverController.leftTrigger(0.5).whileTrue(new ReverseFeeder(feeder));
 
-        driverController.leftBumper().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.COMPACT)))
-            .onFalse(new InstantCommand(() -> lift.setTargetState(LiftStates.INTAKE)));
-        driverController.povUp().whileTrue(new RunFeeder(feeder));
-
         driverController.b().onTrue(new XFormation(drive, driverController));
 
         driverController.rightBumper().onTrue(new InstantCommand(() -> {SystemVariables.currentMaxSpeed = 2;}));
@@ -89,16 +78,10 @@ public class RobotContainer {
         operatorController.leftTrigger(0.5).whileTrue(new RunIntake(intake));
         operatorController.rightTrigger(0.5).whileTrue(new RunShooterToHub(shooter));
 
-        operatorController.povUp().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.COMPACT)));
-        operatorController.povDown().onTrue(new InstantCommand(() -> lift.setTargetState(LiftStates.INTAKE)));
-
-        operatorController.x().whileTrue(new HopperNotStill(lift));
-
         
         //Overrides
         operatorController.a().whileTrue(new RunShooterOverride(shooter, 50).alongWith(new RunTurretToTarget(turret, 0))); //At tower override pos
 
-        operatorController.leftBumper().toggleOnTrue(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
         operatorController.rightBumper().toggleOnTrue(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
 
 
