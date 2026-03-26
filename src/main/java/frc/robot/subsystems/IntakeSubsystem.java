@@ -1,37 +1,38 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.PersistMode;
-import com.revrobotics.ResetMode;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.SystemVariables.FeederConstants;
 import frc.robot.SystemVariables.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
-  SparkMax intakeMotor0;
-  SparkMax intakeMotor1;
+  TalonFX intakeMotor0;
 
   public IntakeSubsystem() {
-    intakeMotor0 = new SparkMax(IntakeConstants.INTAKE_MOTOR_0, MotorType.kBrushless);
-    intakeMotor1 = new SparkMax(IntakeConstants.INTAKE_MOTOR_1, MotorType.kBrushless);
+    TalonFX intakeMotor0 = new TalonFX(IntakeConstants.INTAKE_MOTOR_ID);
 
-    SparkMaxConfig config0 = new SparkMaxConfig();
-    config0.inverted(true);
-    config0.smartCurrentLimit(40, 20);
-    intakeMotor0.configure(config0, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+     TalonFXConfiguration config = new TalonFXConfiguration();
+    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
-    
-    SparkMaxConfig config1 = new SparkMaxConfig();
-    config1.inverted(false);
-    //config1.follow(intakeMotor0.getDeviceId(), true);
-    config1.smartCurrentLimit(40, 20);
-    intakeMotor1.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    //Current Limits
+    config.CurrentLimits.StatorCurrentLimit = 120;
+    config.CurrentLimits.SupplyCurrentLimit = 80;
+    config.CurrentLimits.SupplyCurrentLowerLimit = 40;
+    config.CurrentLimits.SupplyCurrentLimitEnable = true;
+    config.CurrentLimits.StatorCurrentLimitEnable = true;
+
+    //Applying Configs
+    intakeMotor0.getConfigurator().apply(config);
   }
-
-  public void setSpeed(double speed) {
+    public void setSpeed(double speed) {
     intakeMotor0.set(speed);
-    intakeMotor1.set(speed);
-  }
+    }
 }
