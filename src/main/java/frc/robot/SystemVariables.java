@@ -32,10 +32,9 @@ public class SystemVariables {
     public static final class IntakeSquashConstants {
         public static final int INTAKE_SQUASH_MOTOR_0 = 67;
         public static final int INTAKE_SQUASH_MOTOR_1 = 68;
-        public static Object getPosition() {
-            // TODO Auto-generated method stub
-            throw new UnsupportedOperationException("Unimplemented method 'getPosition'");
-        }
+        public static final double KP = 0.01;
+        public static final double KI = 0.0;
+        public static final double KD = 0.0;
     }
 
     public static final class FeederConstants {
