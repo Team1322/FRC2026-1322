@@ -29,6 +29,14 @@ public class SystemVariables {
     public static final class IntakeConstants {
         public static final int INTAKE_MOTOR_ID = 20;
     }
+    public static final class IntakeSquashConstants {
+        public static final int INTAKE_SQUASH_MOTOR_0 = 67;
+        public static final int INTAKE_SQUASH_MOTOR_1 = 68;
+        public static Object getPosition() {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'getPosition'");
+        }
+    }
 
     public static final class FeederConstants {
         public static final int FEEDER_MOTOR_ID = 30;
@@ -60,21 +68,6 @@ public class SystemVariables {
         );
     }
 
-    public static final class LiftConstants {
-        public static final int LIFT_MOTOR_ID = 50;
-        public static final int LIFT_SENSOR_ID = 50;
-        public static final double KP = 0.06;
-        public static final double KI = 0.0;
-        public static final double KD = 0.003;
-        public static final double POSE_TOLERANCE = .25;
-
-        public static enum LiftStates{
-            COMPACT,
-            INTAKE,
-            CLIMBED,
-            DISTURB
-        }
-    }
 
     public static final class FieldConstants{
         public static final Translation2d RED_GOAL = new Translation2d(Units.inchesToMeters(650.12 - 181.56), Units.inchesToMeters(158.32));
