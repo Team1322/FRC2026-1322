@@ -13,10 +13,9 @@ import frc.robot.SystemVariables.FeederConstants;
 import frc.robot.SystemVariables.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
-  TalonFX intakeMotor0;
+  TalonFX intakeMotor = new TalonFX(IntakeConstants.INTAKE_MOTOR_ID);
 
   public IntakeSubsystem() {
-    TalonFX intakeMotor0 = new TalonFX(IntakeConstants.INTAKE_MOTOR_ID);
 
      TalonFXConfiguration config = new TalonFXConfiguration();
     config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
@@ -30,9 +29,9 @@ public class IntakeSubsystem extends SubsystemBase {
     config.CurrentLimits.StatorCurrentLimitEnable = true;
 
     //Applying Configs
-    intakeMotor0.getConfigurator().apply(config);
+    intakeMotor.getConfigurator().apply(config);
   }
     public void setSpeed(double speed) {
-    intakeMotor0.set(speed);
+    intakeMotor.set(speed);
     }
 }
