@@ -23,7 +23,6 @@ public class AutonChooser {
     public enum StartingLocations { DEPOT, CENTER, OUTPOST }
     public enum ClimbLocations { NONE, DEPOT_FRONT, DEPOT_BACK, OUTPOST_FRONT, OUTPOST_BACK }
     
-    
     private final SendableChooser<AllianceColor> allianceChooser = new SendableChooser<>();
     private final SendableChooser<StartingLocations> locationChooser = new SendableChooser<>();
     private final SendableChooser<ClimbLocations> climbChooser = new SendableChooser<>();
