@@ -17,6 +17,7 @@ import frc.robot.SystemVariables.DrivetrainConstants;
 import frc.robot.commands.feeder.ReverseFeeder;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
+import frc.robot.commands.intakeSquasher.MoveSquasherByJoystick;
 import frc.robot.commands.shoot.AutoShooterToHub;
 import frc.robot.commands.shoot.RunShooterOverride;
 import frc.robot.commands.shoot.RunShooterToHub;
@@ -26,6 +27,7 @@ import frc.robot.commands.turret.RunTurretToTarget;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.FredTheFrogsIntakeSquasherSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
@@ -41,6 +43,7 @@ public class RobotContainer {
     public FeederSubsystem feeder = new FeederSubsystem();
     public TurretSubsystem turret = new TurretSubsystem();
     public ShooterSubsystem shooter = new ShooterSubsystem();
+    public FredTheFrogsIntakeSquasherSubsystem intakeSquasher = new FredTheFrogsIntakeSquasherSubsystem();
 
     public RobotContainer() {
         configureBindings();
@@ -83,6 +86,7 @@ public class RobotContainer {
         operatorController.a().whileTrue(new RunShooterOverride(shooter, 50).alongWith(new RunTurretToTarget(turret, 0))); //At tower override pos
 
         operatorController.rightBumper().toggleOnTrue(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
+        operatorController.leftBumper().toggleOnTrue(new MoveSquasherByJoystick(intakeSquasher, () -> operatorController.getLeftX()));
 
 
     }

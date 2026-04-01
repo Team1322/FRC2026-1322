@@ -14,7 +14,7 @@ import frc.robot.SystemVariables.IntakeConstants;
 import frc.robot.SystemVariables.IntakeSquashConstants;
 import frc.robot.SystemVariables.TurretConstants;
 
-public class FredTheFrogsIntakeSquasherSubsystem {
+public class FredTheFrogsIntakeSquasherSubsystem extends SubsystemBase {
  
     
       PIDController fredTheFrogsIntakeSquasherController = new PIDController(IntakeSquashConstants.KP, IntakeSquashConstants.KI, IntakeSquashConstants.KD);
@@ -29,14 +29,14 @@ public class FredTheFrogsIntakeSquasherSubsystem {
 
     SparkMaxConfig config0 = new SparkMaxConfig();
     config0.inverted(true);
-    config0.smartCurrentLimit(40, 20);
+    config0.smartCurrentLimit(60);
     intakeSquasherMotor.configure(config0, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     
     SparkMaxConfig config1 = new SparkMaxConfig();
     config1.inverted(false);
     //config1.follow(intakeMotor0.getDeviceId(), true);
-    config1.smartCurrentLimit(40, 20);
+    config1.smartCurrentLimit(60);
     config1.follow(IntakeSquashConstants.INTAKE_SQUASH_MOTOR_0, true);
     intakeSquasherFollower.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
