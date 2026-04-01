@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.SystemVariables.LiftConstants.LiftStates;
 import frc.robot.commands.complexCommands.ClearHopper;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.intake.RunIntake;
@@ -23,7 +22,6 @@ public class AutonChooser {
     public enum AllianceColor { RED, BLUE }
     public enum StartingLocations { DEPOT, CENTER, OUTPOST }
     public enum ClimbLocations { NONE, DEPOT_FRONT, DEPOT_BACK, OUTPOST_FRONT, OUTPOST_BACK }
-    
     
     private final SendableChooser<AllianceColor> allianceChooser = new SendableChooser<>();
     private final SendableChooser<StartingLocations> locationChooser = new SendableChooser<>();
@@ -351,109 +349,6 @@ public class AutonChooser {
 
         }
     }
-    public Command getClimbCommand() {
-        if (allianceChooser.getSelected().equals(AllianceColor.RED)) {
-            switch (climbChooser.getSelected()) {
-                case DEPOT_FRONT:
-                    return new SequentialCommandGroup(
-                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
-                        new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(14, 4.07, Rotation2d.k180deg)),
-                            new DriveToPoseObject(new Pose2d(15.025, 4.07, Rotation2d.k180deg), MetersPerSecond.of(0.5))
-                        ).withTimeout(7),
-                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
-                        new WaitCommand(5)
-                    );
-                // case DEPOT_BACK: 
-                //     return new SequentialCommandGroup(
-                //         new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
-                //         new DriveToPose(r.drive, 
-                //             new DriveToPoseObject(new Pose2d(14.75, 3.1, Rotation2d.kZero), 0.1),
-                //             new DriveToPoseObject(new Pose2d(16.1, 3.1, Rotation2d.kZero), 0.1),
-                //             new DriveToPoseObject(new Pose2d(16.1, 3.8, Rotation2d.kZero), 0.1, MetersPerSecond.of(1)),
-                //             new DriveToPoseObject(new Pose2d(15.9, 3.8, Rotation2d.kZero), MetersPerSecond.of(0.5))
-                //         ),
-                //         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
-                //         new WaitCommand(5)
-                //     );
-                case OUTPOST_FRONT:
-                    return new SequentialCommandGroup(
-                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
-                        new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(14, 4.8, Rotation2d.k180deg)),
-                            new DriveToPoseObject(new Pose2d(15.025, 4.8, Rotation2d.k180deg), MetersPerSecond.of(0.5))
-                        ).withTimeout(5),
-                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
-                        new WaitCommand(5)
-                    );
-                // case OUTPOST_BACK:
-                //     return new SequentialCommandGroup(
-                //         new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
-                //         new DriveToPose(r.drive, 
-                //             new DriveToPoseObject(new Pose2d(14.75, 5.5, Rotation2d.kZero), 0.1),
-                //             new DriveToPoseObject(new Pose2d(16.1, 5.5, Rotation2d.kZero), 0.1),
-                //             new DriveToPoseObject(new Pose2d(16.1, 4.8, Rotation2d.kZero), 0.1, MetersPerSecond.of(1)),
-                //             new DriveToPoseObject(new Pose2d(15.9, 4.8, Rotation2d.kZero), MetersPerSecond.of(0.5))
-                //         ),
-                //         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
-                //         new WaitCommand(5)
-                //     );
-                default:
-                    return new WaitCommand(1);
-            }
-        } else {
-            switch (climbChooser.getSelected()) {
-                case DEPOT_FRONT:
-                    return new SequentialCommandGroup(
-                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
-                        new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(2, 4.07, Rotation2d.kZero), 0.25),
-                            new DriveToPoseObject(new Pose2d(1.15, 4.07, Rotation2d.kZero), MetersPerSecond.of(0.5))
-                        ),
-                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
-                        new WaitCommand(5)
-                    );
-                // case DEPOT_BACK:
-                //     return new SequentialCommandGroup(
-                //         new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
-                //         new DriveToPose(r.drive, 
-                //             new DriveToPoseObject(new Pose2d(1.5, 5, Rotation2d.k180deg), 0.1),
-                //             new DriveToPoseObject(new Pose2d(0.4, 5, Rotation2d.k180deg), 0.1),
-                //             new DriveToPoseObject(new Pose2d(0.4, 4.1, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
-                //             new DriveToPoseObject(new Pose2d(0.7, 4.1, Rotation2d.k180deg), MetersPerSecond.of(0.5))
-                //         ),
-                //         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
-                //         new WaitCommand(5)
-                //     );
-                case OUTPOST_FRONT:
-                    return new SequentialCommandGroup(
-                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
-                        new DriveToPose(r.drive, 
-                            new DriveToPoseObject(new Pose2d(2, 3.4, Rotation2d.kZero), 0.25),
-                            new DriveToPoseObject(new Pose2d(1.5, 3.4, Rotation2d.kZero), MetersPerSecond.of(0.5))
-                        ),
-                        new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
-                        new WaitCommand(5)
-                    );
-                // case OUTPOST_BACK:
-                //     return new SequentialCommandGroup(
-                //         new InstantCommand(() -> r.lift.setTargetState(LiftStates.COMPACT)),
-                //         new DriveToPose(r.drive, 
-                //             new DriveToPoseObject(new Pose2d(1.5, 2.5, Rotation2d.k180deg), 0.1),
-                //             new DriveToPoseObject(new Pose2d(0.4, 2.5, Rotation2d.k180deg), 0.1),
-                //             new DriveToPoseObject(new Pose2d(0.4, 3.3, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
-                //             new DriveToPoseObject(new Pose2d(0.7, 3.3, Rotation2d.k180deg), MetersPerSecond.of(0.5))
-                //         ),
-                //         new InstantCommand(() -> r.lift.setTargetState(LiftStates.CLIMBED)),
-                //         new WaitCommand(5)
-                //     );
-                
-                default:
-                    return new WaitCommand(1);
-            }
-        }
-    }
-
 
     public void updateClass() {
         if (SmartDashboard.getBoolean("Auton/Build Chooser?", false)) {
@@ -469,6 +364,5 @@ public class AutonChooser {
             System.out.println("\n=================================\nAuto selection failed to get auto\n=================================\n");
             return null;
         }
-        return selectedAuto.andThen(getClimbCommand());
-    }
-}
+                return selectedAuto;
+    }}

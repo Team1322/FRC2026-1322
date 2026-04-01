@@ -94,17 +94,17 @@ public class TurretSubsystem extends SubsystemBase {
         turretMotor.setPosition(turretAngle / TurretConstants.MOTOR_CONVERSION_FACTOR);
     }
 
-    public void setTargetPosition(double targetPositon) {
+    public void setTargetPosition(double targetPosition) {
 
-        SmartDashboard.putNumber("Raw Turret Target", targetPositon);
+        SmartDashboard.putNumber("Raw Turret Target", targetPosition);
 
-        if (targetPositon < TurretConstants.RIGHT_LIMIT) {
-            targetPositon = getCurrentPosition();
+        if (targetPosition < TurretConstants.RIGHT_LIMIT) {
+            targetPosition = getCurrentPosition();
         }
-        if (targetPositon > TurretConstants.LEFT_LIMIT) {
-            targetPositon = getCurrentPosition();
+        if (targetPosition > TurretConstants.LEFT_LIMIT) {
+            targetPosition = getCurrentPosition();
         }
-        this.targetPosition = targetPositon;
+        this.targetPosition = targetPosition;
         
     }
 
