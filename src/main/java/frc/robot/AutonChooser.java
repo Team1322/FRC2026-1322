@@ -77,14 +77,15 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
-                    autoChooser.addOption("Red Depot Center Collection", new SequentialCommandGroup(
+                    autoChooser.addOption("Red Depot Center haff Collection", new SequentialCommandGroup(
                         new ParallelRaceGroup(
-                            new DriveToPose(r.drive, 
-                                new DriveToPoseObject(new Pose2d(13.5, 2.5, Rotation2d.kZero)),
-                                new DriveToPoseObject(new Pose2d(10.75, 2.5, Rotation2d.kZero), 0.1, MetersPerSecond.of(1)),
-                                new DriveToPoseObject(new Pose2d(9, 2.5, Rotation2d.kZero)),
-                                new DriveToPoseObject(new Pose2d(11, 2.5, Rotation2d.kZero), 0.5),
-                                new DriveToPoseObject(new Pose2d(13.5, 2.5, Rotation2d.kZero), MetersPerSecond.of(1))
+                            new DriveToPose(r.drive,
+                                new DriveToPoseObject(new Pose2d(13.50,2.5, Rotation2d.kZero)),
+                                new DriveToPoseObject(new Pose2d(10.75,2.5, Rotation2d.kZero), 0.3, MetersPerSecond.of(1)), 
+                                new DriveToPoseObject(new Pose2d(8.745,1.000, Rotation2d.kCW_90deg)),
+                                new DriveToPoseObject(new Pose2d(8.800,3.580, Rotation2d.kCW_90deg)),
+                                new DriveToPoseObject(new Pose2d(9.841,2.157, Rotation2d.kCW_90deg)),
+                                new DriveToPoseObject(new Pose2d(12.90,2.700, Rotation2d.kCW_90deg), MetersPerSecond.of(1))
                             ),
                             new RunIntake(r.intake)
                         ),
