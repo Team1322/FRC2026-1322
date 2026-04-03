@@ -31,27 +31,38 @@ PIDController rightMotorController = new PIDController(IntakeSquashConstants.KP,
     SparkMaxConfig config0 = new SparkMaxConfig();
     config0.inverted(true);
     config0.smartCurrentLimit(60);
+    config0.openLoopRampRate(0.1);
     leftIntakeMotor.configure(config0, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     
     SparkMaxConfig config1 = new SparkMaxConfig();
     config1.inverted(false);
     config1.smartCurrentLimit(60);
-    rightIntakeMotor.configure(config0, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    config1.openLoopRampRate(0.1);
+    rightIntakeMotor.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+rightIntakeMotor.getEncoder().setPosition(0);
+leftIntakeMotor.getEncoder().setPosition(0);
 
   }
-
+  @Override
+public void periodic() {
+    SmartDashboard.putNumber("Current intake left Position", getFredTheFrogsIntakeSquasherPositionL());
+      SmartDashboard.putNumber("Current intake right  Position", getFredTheFrogsIntakeSquasherPositionR());
+}
   public void setSpeed(double speed) {
+    if (Math.abs(speed) > 0.5) speed = Math.copySign(0.5, speed);
     leftIntakeMotor.set(speed);
   }
  public void setSpeed2(double speed) {
+    if (Math.abs(speed) > 0.5) speed = Math.copySign(0.5, speed);
     rightIntakeMotor.set(speed);
   }
   public double getFredTheFrogsIntakeSquasherPositionL () {
-    return leftIntakeMotor.getAlternateEncoder().getPosition();
+    return leftIntakeMotor.getEncoder().getPosition();
   }
    public double getFredTheFrogsIntakeSquasherPositionR () {
-    return rightIntakeMotor.getAlternateEncoder().getPosition();
+    return rightIntakeMotor.getEncoder().getPosition();
   }
   public void setTargetPosition (double targetPosition) {
         SmartDashboard.putNumber("Raw Intake Squasher Target", targetPosition);
@@ -62,8 +73,8 @@ PIDController rightMotorController = new PIDController(IntakeSquashConstants.KP,
 
    public void runFredTheFrogsIntakeSquasherToTarget() {
         setSpeed(leftMotorController.calculate(getFredTheFrogsIntakeSquasherPositionL(), targetPosition));
-         setSpeed(rightMotorController.calculate(getFredTheFrogsIntakeSquasherPositionR(), targetPosition));
-            }
+         setSpeed2(rightMotorController.calculate(getFredTheFrogsIntakeSquasherPositionR(), targetPosition));
+    }
   
    
 }
