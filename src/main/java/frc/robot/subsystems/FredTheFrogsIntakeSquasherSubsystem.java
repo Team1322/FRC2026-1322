@@ -17,50 +17,53 @@ import frc.robot.SystemVariables.TurretConstants;
 public class FredTheFrogsIntakeSquasherSubsystem extends SubsystemBase {
  
     
-      PIDController fredTheFrogsIntakeSquasherController = new PIDController(IntakeSquashConstants.KP, IntakeSquashConstants.KI, IntakeSquashConstants.KD);
+      PIDController leftMotorController = new PIDController(IntakeSquashConstants.KP, IntakeSquashConstants.KI, IntakeSquashConstants.KD);
+PIDController rightMotorController = new PIDController(IntakeSquashConstants.KP, IntakeSquashConstants.KI, IntakeSquashConstants.KD);
 
-  SparkMax intakeSquasherMotor;
-  SparkMax intakeSquasherFollower;
+  SparkMax leftIntakeMotor;
   double targetPosition = 0;
-  
+  SparkMax rightIntakeMotor;
   public FredTheFrogsIntakeSquasherSubsystem() {
-    intakeSquasherMotor = new SparkMax(IntakeSquashConstants.INTAKE_SQUASH_MOTOR_0, MotorType.kBrushless);
-    intakeSquasherFollower = new SparkMax(IntakeSquashConstants.INTAKE_SQUASH_MOTOR_1, MotorType.kBrushless);
+    leftIntakeMotor = new SparkMax(IntakeSquashConstants.INTAKE_SQUASH_MOTOR_0, MotorType.kBrushless);
+    rightIntakeMotor = new SparkMax(IntakeSquashConstants.INTAKE_SQUASH_MOTOR_1, MotorType.kBrushless);
+
 
     SparkMaxConfig config0 = new SparkMaxConfig();
     config0.inverted(true);
     config0.smartCurrentLimit(60);
-    intakeSquasherMotor.configure(config0, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    leftIntakeMotor.configure(config0, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     
     SparkMaxConfig config1 = new SparkMaxConfig();
     config1.inverted(false);
-    //config1.follow(intakeMotor0.getDeviceId(), true);
     config1.smartCurrentLimit(60);
-    config1.follow(IntakeSquashConstants.INTAKE_SQUASH_MOTOR_0, true);
-    intakeSquasherFollower.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    rightIntakeMotor.configure(config0, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
   }
 
   public void setSpeed(double speed) {
-    intakeSquasherMotor.set(speed);
+    leftIntakeMotor.set(speed);
   }
-
-  public double getFredTheFrogsIntakeSquasherPosition () {
-    return intakeSquasherMotor.getAlternateEncoder().getPosition();
+ public void setSpeed2(double speed) {
+    rightIntakeMotor.set(speed);
+  }
+  public double getFredTheFrogsIntakeSquasherPositionL () {
+    return leftIntakeMotor.getAlternateEncoder().getPosition();
+  }
+   public double getFredTheFrogsIntakeSquasherPositionR () {
+    return rightIntakeMotor.getAlternateEncoder().getPosition();
   }
   public void setTargetPosition (double targetPosition) {
         SmartDashboard.putNumber("Raw Intake Squasher Target", targetPosition);
 
-        if (targetPosition < TurretConstants.RIGHT_LIMIT) {
-            targetPosition = getFredTheFrogsIntakeSquasherPosition();
-        }
-        if (targetPosition > TurretConstants.LEFT_LIMIT) {
-            targetPosition = getFredTheFrogsIntakeSquasherPosition();
-        }
+        
         this.targetPosition = targetPosition;
   }
 
    public void runFredTheFrogsIntakeSquasherToTarget() {
-        setSpeed(fredTheFrogsIntakeSquasherController.calculate(getFredTheFrogsIntakeSquasherPosition(), targetPosition));
+        setSpeed(leftMotorController.calculate(getFredTheFrogsIntakeSquasherPositionL(), targetPosition));
+         setSpeed(rightMotorController.calculate(getFredTheFrogsIntakeSquasherPositionR(), targetPosition));
             }
+  
+   
 }
