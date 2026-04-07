@@ -49,7 +49,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     public final SwerveRequest.FieldCentricFacingAngle driveToPoseController = new SwerveRequest.FieldCentricFacingAngle()
             .withForwardPerspective(SwerveRequest.ForwardPerspectiveValue.BlueAlliance)
             .withDriveRequestType(DriveRequestType.Velocity)
-            .withMaxAbsRotationalRate(RotationsPerSecond.of(0.25).in(RadiansPerSecond))
+            .withMaxAbsRotationalRate(RotationsPerSecond.of(0.75).in(RadiansPerSecond))
             .withHeadingPID(7, 0, 0);
 
     public final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
