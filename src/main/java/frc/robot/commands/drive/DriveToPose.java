@@ -52,7 +52,8 @@ public class DriveToPose extends Command {
         if(targetPose.isFineMove() || stepsCompleted >= targetPoses.length - 1) {
             //Drive to target pose and move on once reached
             drive.driveToPosition(targetPose.getPose(), targetPose.getPose(), targetPose.getMaxSpeed());
-            if (drive.distanceFromPose(targetPose.getPose(), drive.getCurrentPose()) < DrivetrainConstants.DRIVE_TO_POSE_TOLERANCE) stepsCompleted++;
+            if (drive.distanceFromPose(targetPose.getPose(), drive.getCurrentPose()) < DrivetrainConstants.DRIVE_TO_POSE_TOLERANCE
+                && Math.abs(drive.getCurrentPose().getRotation().minus(targetPose.getPose().getRotation()).getDegrees()) < 1) stepsCompleted++;
         } else {
             //Angle to target pose and move once once within bypass range
             drive.driveToPosition(endPose.getPose(), targetPose.getPose(), targetPose.getMaxSpeed());
