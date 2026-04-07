@@ -18,6 +18,7 @@ import frc.robot.commands.feeder.ReverseFeeder;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.intakeSquasher.MoveSquasherByJoystick;
+import frc.robot.commands.intakeSquasher.RunIntakeToTarget;
 import frc.robot.commands.shoot.AutoShooterToHub;
 import frc.robot.commands.shoot.RunShooterOverride;
 import frc.robot.commands.shoot.RunShooterToHub;
@@ -52,7 +53,7 @@ public class RobotContainer {
     private void configureBindings() {
 
         /////////////////////////////////// Default ////////////////////////////////////////////
-
+intakeSquasher.setDefaultCommand(new RunIntakeToTarget(intakeSquasher));
         drive.setDefaultCommand(new FieldCentricControl(drive, driverController));
         turret.setDefaultCommand(new RunTurretToHub(turret));
         shooter.setDefaultCommand(new AutoShooterToHub(shooter));
@@ -87,6 +88,9 @@ public class RobotContainer {
 
         operatorController.rightBumper().toggleOnTrue(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
         operatorController.leftBumper().toggleOnTrue(new MoveSquasherByJoystick(intakeSquasher, () -> operatorController.getLeftX()));
+
+        operatorController.x().onTrue(new InstantCommand(() -> intakeSquasher.setTargetPosition(-15)));
+        operatorController.b().onTrue(new InstantCommand(() -> intakeSquasher.setTargetPosition(0)));
 
 
     }

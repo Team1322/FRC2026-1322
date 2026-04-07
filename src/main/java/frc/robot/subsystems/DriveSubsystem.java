@@ -49,7 +49,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     public final SwerveRequest.FieldCentricFacingAngle driveToPoseController = new SwerveRequest.FieldCentricFacingAngle()
             .withForwardPerspective(SwerveRequest.ForwardPerspectiveValue.BlueAlliance)
             .withDriveRequestType(DriveRequestType.Velocity)
-            .withMaxAbsRotationalRate(DrivetrainConstants.MaxAngularRate)
+            .withMaxAbsRotationalRate(RotationsPerSecond.of(0.25).in(RadiansPerSecond))
             .withHeadingPID(7, 0, 0);
 
     public final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
@@ -142,7 +142,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         seedPoseFromOptions();
 
         robotPosePublisher.set(getCurrentPose());
-        shootTargetPublisher.set(new Pose2d(getShootTarget(), Rotation2d.kZero));
+        shootTargetPublisher.set(new Pose2d(getDynamicShootTarget(), Rotation2d.kZero));
         SystemVariables.turretPose = getTurretPose();
 
         /*
@@ -178,34 +178,49 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     }
 
     public double getDistanceFromShot() {
-        return getShootTarget().getDistance(getTurretPose().getTranslation());
+        return getStaticShootTarget().getDistance(getTurretPose().getTranslation());
     }
 
     public Rotation2d getAngleToGoal() {
-        return absoluteAngleFromPose(getShootTarget(), getTurretPose().getTranslation());
+        return absoluteAngleFromPose(getDynamicShootTarget(), getTurretPose().getTranslation());
     }
 
-    private Translation2d getShootTarget() {
+    private Translation2d getStaticShootTarget() {
+        Translation2d target = DriverStation.getAlliance().get() == Alliance.Red ? FieldConstants.RED_GOAL : FieldConstants.BLUE_GOAL;
         
         if (DriverStation.getAlliance().get() == Alliance.Red && getCurrentPose().getX() < 11.9) {
             // 3 Main Targets: Goal, Outpost Side Feed, Depot Side Feed
             if (getCurrentPose().getY() < 4) {
-                return FieldConstants.RED_FEED_DEPOT_SIDE;
+                target = FieldConstants.RED_FEED_DEPOT_SIDE;
             } else {
-                return FieldConstants.RED_FEED_OUTPOST_SIDE;
+                target = FieldConstants.RED_FEED_OUTPOST_SIDE;
             }
         } else if (DriverStation.getAlliance().get() == Alliance.Blue && getCurrentPose().getX() > 4.6) {
             if (getCurrentPose().getY() > 4) {
-                return FieldConstants.BLUE_FEED_DEPOT_SIDE;
+                target = FieldConstants.BLUE_FEED_DEPOT_SIDE;
             } else {
-                return FieldConstants.BLUE_FEED_OUTPOST_SIDE;
+                target = FieldConstants.BLUE_FEED_OUTPOST_SIDE;
             }
         }
+        return target;
+    }
 
-        //If Shooting to Goal
-        Translation2d target = DriverStation.getAlliance().get() == Alliance.Red ? FieldConstants.RED_GOAL : FieldConstants.BLUE_GOAL;
+    private Translation2d getDynamicShootTarget() {
+        Translation2d target = getStaticShootTarget();
 
-        target = target.minus(new Translation2d(getState().Speeds.vxMetersPerSecond * 1, getState().Speeds.vyMetersPerSecond * 1));
+        double currentVeloX = getState().Speeds.vxMetersPerSecond;
+        double currentVeloY = getState().Speeds.vyMetersPerSecond;
+
+        double rotationalToLinearVelo = getPigeon2().getAngularVelocityZWorld().getValueAsDouble() * (Math.PI / 180.0);
+        rotationalToLinearVelo *= distanceFromPose(getTurretPose(), getCurrentPose());
+
+        double poseAngle = absoluteAngleFromPose(getTurretPose(), getCurrentPose()).getRadians();
+        
+        currentVeloX += rotationalToLinearVelo * Math.cos(poseAngle);
+        currentVeloY += rotationalToLinearVelo * Math.sin(poseAngle);
+        
+        //Translational Adjustment
+        target = target.minus(new Translation2d(currentVeloX * 1, currentVeloY * 1));
         return target;
     }
 

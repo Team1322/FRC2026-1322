@@ -24,7 +24,7 @@ public class IntakeSubsystem extends SubsystemBase {
     //Current Limits
     config.CurrentLimits.StatorCurrentLimit = 120;
     config.CurrentLimits.SupplyCurrentLimit = 80;
-    config.CurrentLimits.SupplyCurrentLowerLimit = 40;
+    config.CurrentLimits.SupplyCurrentLowerLimit = 60;
     config.CurrentLimits.SupplyCurrentLimitEnable = true;
     config.CurrentLimits.StatorCurrentLimitEnable = true;
 
