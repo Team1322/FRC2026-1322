@@ -76,6 +76,8 @@ public class ShooterSubsystem extends SubsystemBase {
         
         if (distance < 1.25) {
             distance = 1.25;
+        } else if (distance > 10) {
+            distance = 10;
         }
 
         double difference = Math.abs(SystemVariables.turretZeroDirection.minus(SystemVariables.turretAngleToGoal).getDegrees());
