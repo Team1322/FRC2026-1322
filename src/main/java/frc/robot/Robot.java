@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    LimelightHelpers.SetThrottle("limelight", 200);
+    LimelightHelpers.SetThrottle("limelight-main", 200);
   }
 
   @Override
@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledExit() {
-    LimelightHelpers.SetThrottle("limelight", 0);
+    LimelightHelpers.SetThrottle("limelight-main", 0);
   }
 
   @Override
