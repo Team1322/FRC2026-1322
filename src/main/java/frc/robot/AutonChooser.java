@@ -96,7 +96,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (redDepotShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder).withTimeout(5),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(5),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -179,7 +179,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (redOutpostShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder).withTimeout(5),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(5),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -236,7 +236,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (blueDepotShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder).withTimeout(5),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(5),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -320,7 +320,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (blueOutpostShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder).withTimeout(5),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(5),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
                     
