@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.complexCommands.ClearHopper;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.intake.RunIntake;
+import frc.robot.commands.intakeSquasher.DeployIntakeCommand;
 
 public class AutonChooser {
 
@@ -69,29 +70,58 @@ public class AutonChooser {
             switch (locationChooser.getSelected()) {
                 case DEPOT:
 
-                    autoChooser.addOption("Red Depot Fan Depot",new SequentialCommandGroup (
+                    autoChooser.addOption("Red Depot Just Shoot",new SequentialCommandGroup (
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (redDepotShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(5),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
-                    autoChooser.addOption("Red Depot Center Collection", new SequentialCommandGroup(
+                    autoChooser.addOption("Red Depot Center Full Collection", new SequentialCommandGroup(
                         new ParallelRaceGroup(
-                            new DriveToPose(r.drive, 
-                                new DriveToPoseObject(new Pose2d(13.5, 2.5, Rotation2d.kZero)),
-                                new DriveToPoseObject(new Pose2d(10.75, 2.5, Rotation2d.kZero), 0.1, MetersPerSecond.of(1)),
-                                new DriveToPoseObject(new Pose2d(9, 2.5, Rotation2d.kZero)),
-                                new DriveToPoseObject(new Pose2d(11, 2.5, Rotation2d.kZero), 0.5),
-                                new DriveToPoseObject(new Pose2d(13.5, 2.5, Rotation2d.kZero), MetersPerSecond.of(1))
+                            new DriveToPose(r.drive,
+                                new DriveToPoseObject(new Pose2d(13.50,2.5, Rotation2d.kZero)),
+                                new DriveToPoseObject(new Pose2d(10.75,2.5, Rotation2d.kZero), 0.3, MetersPerSecond.of(1)), 
+
+                                new DriveToPoseObject(new Pose2d(9.75,0.75, Rotation2d.kCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(9,0.5, Rotation2d.kCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8.8,0.75, Rotation2d.kCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8.800,3.580, Rotation2d.kCW_90deg), 0.5),
+
+                                new DriveToPoseObject(new Pose2d(10.5,2.5, Rotation2d.kZero), 0.5),
+                                new DriveToPoseObject(new Pose2d(13.2,2.500, Rotation2d.kZero), MetersPerSecond.of(1))
                             ),
                             new RunIntake(r.intake)
                         ),
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (redDepotShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(5),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
+                    ));
+
+                    autoChooser.addOption("Red Depot Center Partial Collection", new SequentialCommandGroup(
+                        new ParallelRaceGroup(
+                            new DriveToPose(r.drive,
+                                new DriveToPoseObject(new Pose2d(13.50,2.5, Rotation2d.kZero)),
+                                new DriveToPoseObject(new Pose2d(10.75,2.5, Rotation2d.kZero), 0.3, MetersPerSecond.of(1)), 
+
+                                
+                                new DriveToPoseObject(new Pose2d(9.75,3.25, Rotation2d.kZero), 0.5),
+                                new DriveToPoseObject(new Pose2d(9.25,3.5, Rotation2d.kZero), 0.5),
+                                new DriveToPoseObject(new Pose2d(8.745,3.5, Rotation2d.kZero)),
+                                new DriveToPoseObject(new Pose2d(9.75,3.5, Rotation2d.kZero), 0.5),
+
+                                new DriveToPoseObject(new Pose2d(10.5,2.5, Rotation2d.kZero), 0.5),
+                                new DriveToPoseObject(new Pose2d(13.2,2.500, Rotation2d.kZero), MetersPerSecond.of(1))
+                            ),
+                            new RunIntake(r.intake)
+                        ),
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
+                        new DriveToPose(r.drive, new DriveToPoseObject (redDepotShotLocation)),
+                        new WaitCommand(1),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -103,7 +133,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(redDepotShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(5),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -111,7 +141,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(redOutpostShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(5),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -119,7 +149,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive,new DriveToPoseObject(redCenterShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(5),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -127,20 +157,25 @@ public class AutonChooser {
 
                 case OUTPOST:
 
-                    autoChooser.addOption("Red Outpost Fan Outpost",new SequentialCommandGroup (
+                    autoChooser.addOption("Red Outpost Just Shoot",new SequentialCommandGroup (
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (redOutpostShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(5),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
-                    autoChooser.addOption("Red Outpost Center Collection", new SequentialCommandGroup(
+                    autoChooser.addOption("Red Outpost Center Full Collection", new SequentialCommandGroup(
                         new ParallelRaceGroup(
                             new DriveToPose(r.drive, 
                                 new DriveToPoseObject(new Pose2d(13.5, 5.5, Rotation2d.kZero)),
-                                new DriveToPoseObject(new Pose2d(10.75, 5.5, Rotation2d.kZero), 0.1, MetersPerSecond.of(1)),
-                                new DriveToPoseObject(new Pose2d(9, 5.5, Rotation2d.kZero)),
+                                new DriveToPoseObject(new Pose2d(10.75, 5.5, Rotation2d.kZero), 0.3, MetersPerSecond.of(1)),
+
+                                new DriveToPoseObject(new Pose2d(10, 7, Rotation2d.kCCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(9, 7.5, Rotation2d.kCCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8.5, 7, Rotation2d.kCCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8.5, 4.5, Rotation2d.kCCW_90deg), 0.5),
+
                                 new DriveToPoseObject(new Pose2d(11, 5.5, Rotation2d.kZero), 0.5),
                                 new DriveToPoseObject(new Pose2d(13.5, 5.5, Rotation2d.kZero), MetersPerSecond.of(1))
                             ),
@@ -149,7 +184,30 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (redOutpostShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(5),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
+                    ));
+
+                    autoChooser.addOption("Red Outpost Center Partial Collection", new SequentialCommandGroup(
+                        new ParallelRaceGroup(
+                            new DriveToPose(r.drive, 
+                                new DriveToPoseObject(new Pose2d(13.5, 5.5, Rotation2d.kZero)),
+                                new DriveToPoseObject(new Pose2d(10.75, 5.5, Rotation2d.kZero), 0.3, MetersPerSecond.of(1)),
+
+                                new DriveToPoseObject(new Pose2d(9.75, 4.9, Rotation2d.kZero), 0.5),
+                                new DriveToPoseObject(new Pose2d(9.25, 4.75, Rotation2d.kZero), 0.75),
+                                new DriveToPoseObject(new Pose2d(8.5, 4.75, Rotation2d.kZero)),
+                                new DriveToPoseObject(new Pose2d(10, 5, Rotation2d.kZero), 0.5),
+
+                                new DriveToPoseObject(new Pose2d(11, 5.5, Rotation2d.kZero), 0.5),
+                                new DriveToPoseObject(new Pose2d(13.5, 5.5, Rotation2d.kZero), MetersPerSecond.of(1))
+                            ),
+                            new RunIntake(r.intake)
+                        ),
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
+                        new DriveToPose(r.drive, new DriveToPoseObject (redOutpostShotLocation)),
+                        new WaitCommand(1),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -161,20 +219,25 @@ public class AutonChooser {
             switch (locationChooser.getSelected()) {
                 case DEPOT:
 
-                     autoChooser.addOption("Blue Depot Fan Depot", new SequentialCommandGroup(
+                     autoChooser.addOption("Blue Depot Just Shoot", new SequentialCommandGroup(
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(blueDepotShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(5),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
-                    autoChooser.addOption("Blue Depot Center Collection", new SequentialCommandGroup(
+                    autoChooser.addOption("Blue Depot Center Full Collection", new SequentialCommandGroup(
                         new ParallelRaceGroup(
                             new DriveToPose(r.drive, 
                                 new DriveToPoseObject(new Pose2d(3, 5.5, Rotation2d.k180deg)),
                                 new DriveToPoseObject(new Pose2d(6, 5.5, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
-                                new DriveToPoseObject(new Pose2d(7.5, 5.5, Rotation2d.k180deg)),
+
+                                new DriveToPoseObject(new Pose2d(6.5, 7, Rotation2d.kCCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(7.5, 8, Rotation2d.kCCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8, 7.5, Rotation2d.kCCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8, 4.5, Rotation2d.kCCW_90deg), 0.5),
+
                                 new DriveToPoseObject(new Pose2d(6, 5.5, Rotation2d.k180deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(3, 5.5, Rotation2d.k180deg), MetersPerSecond.of(1))
                             ),
@@ -183,7 +246,29 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (blueDepotShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(5),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
+                    ));
+
+                    autoChooser.addOption("Blue Depot Center Partial Collection", new SequentialCommandGroup(
+                        new ParallelRaceGroup(
+                            new DriveToPose(r.drive, 
+                                new DriveToPoseObject(new Pose2d(3, 5.5, Rotation2d.k180deg)),
+                                new DriveToPoseObject(new Pose2d(6, 5.5, Rotation2d.k180deg), 0.3, MetersPerSecond.of(1)),
+
+                                new DriveToPoseObject(new Pose2d(7.25, 4.75, Rotation2d.k180deg), 0.75),
+                                new DriveToPoseObject(new Pose2d(8, 4.5, Rotation2d.k180deg)),
+                                new DriveToPoseObject(new Pose2d(7.25, 4.75, Rotation2d.k180deg), 0.75),
+
+                                new DriveToPoseObject(new Pose2d(6, 5.5, Rotation2d.k180deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(3, 5.5, Rotation2d.k180deg), MetersPerSecond.of(1))
+                            ),
+                            new RunIntake(r.intake)
+                        ),
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
+                        new DriveToPose(r.drive, new DriveToPoseObject (blueDepotShotLocation)),
+                        new WaitCommand(1),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -195,7 +280,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(blueDepotShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(5),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -203,7 +288,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(blueOutpostShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(5),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -211,7 +296,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(blueCenterShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(5),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
                     
@@ -219,20 +304,25 @@ public class AutonChooser {
 
                 case OUTPOST:
 
-                    autoChooser.addOption("Blue Outpost Fan Outpost", new SequentialCommandGroup(
+                    autoChooser.addOption("Blue Outpost Just Shoot", new SequentialCommandGroup(
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(blueOutpostShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(5),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
                     
-                    autoChooser.addOption("Blue Outpost Center Collection", new SequentialCommandGroup(
+                    autoChooser.addOption("Blue Outpost Center Full Collection", new SequentialCommandGroup(
                         new ParallelRaceGroup(
                             new DriveToPose(r.drive, 
                                 new DriveToPoseObject(new Pose2d(3, 2.5, Rotation2d.k180deg)),
-                                new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
-                                new DriveToPoseObject(new Pose2d(7.5, 2.5, Rotation2d.k180deg)),
+                                new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.k180deg), 0.3, MetersPerSecond.of(1)),
+
+                                new DriveToPoseObject(new Pose2d(6.5, 1, Rotation2d.kCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(7.25, 0.5, Rotation2d.kCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(7.75, 1, Rotation2d.kCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8, 4.25, Rotation2d.kCW_90deg), 0.5),
+
                                 new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.k180deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(3, 2.5, Rotation2d.k180deg), MetersPerSecond.of(1))
                             ),
@@ -242,7 +332,31 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (blueOutpostShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(5),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
+                    ));
+                    
+                    autoChooser.addOption("Blue Outpost Center Partial Collection", new SequentialCommandGroup(
+                        new ParallelRaceGroup(
+                            new DriveToPose(r.drive, 
+                                new DriveToPoseObject(new Pose2d(3, 2.5, Rotation2d.k180deg)),
+                                new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.k180deg), 0.3, MetersPerSecond.of(1)),
+
+                                new DriveToPoseObject(new Pose2d(7, 3.25, Rotation2d.k180deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(7.5, 3.5, Rotation2d.k180deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8, 3.5, Rotation2d.k180deg)),
+                                new DriveToPoseObject(new Pose2d(7.5, 3.25, Rotation2d.k180deg), 0.5),
+
+                                new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.k180deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(3, 2.5, Rotation2d.k180deg), MetersPerSecond.of(1))
+                            ),
+                            
+                            new RunIntake(r.intake)
+                        ),
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
+                        new DriveToPose(r.drive, new DriveToPoseObject (blueOutpostShotLocation)),
+                        new WaitCommand(1),
+                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 

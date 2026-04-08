@@ -26,6 +26,11 @@ public class DeployIntakeCommand extends Command {
     }
 
     @Override
+    public boolean isFinished() {
+        return intakeSquasher.getFredTheFrogsIntakeSquasherPositionL() < -13.5 &&intakeSquasher.getFredTheFrogsIntakeSquasherPositionR() < -13.5;
+    }
+
+    @Override
     public void end(boolean finished) {
         intake.setSpeed(0);
         intakeSquasher.setSpeed(0);

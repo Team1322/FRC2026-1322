@@ -49,7 +49,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     public final SwerveRequest.FieldCentricFacingAngle driveToPoseController = new SwerveRequest.FieldCentricFacingAngle()
             .withForwardPerspective(SwerveRequest.ForwardPerspectiveValue.BlueAlliance)
             .withDriveRequestType(DriveRequestType.Velocity)
-            .withMaxAbsRotationalRate(RotationsPerSecond.of(0.25).in(RadiansPerSecond))
+            .withMaxAbsRotationalRate(RotationsPerSecond.of(0.75).in(RadiansPerSecond))
             .withHeadingPID(7, 0, 0);
 
     public final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
@@ -217,10 +217,10 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         double poseAngle = absoluteAngleFromPose(getTurretPose(), getCurrentPose()).getRadians();
         
         currentVeloX += rotationalToLinearVelo * Math.cos(poseAngle);
-        currentVeloY += rotationalToLinearVelo * Math.sin(poseAngle);
+        currentVeloY -= rotationalToLinearVelo * Math.sin(poseAngle);
         
         //Translational Adjustment
-        target = target.minus(new Translation2d(currentVeloX * 1, currentVeloY * 1));
+        target = target.plus(new Translation2d(currentVeloX * 1, currentVeloY * 1));
         return target;
     }
 
