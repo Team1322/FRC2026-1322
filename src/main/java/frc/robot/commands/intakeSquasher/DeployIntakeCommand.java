@@ -16,7 +16,7 @@ public class DeployIntakeCommand extends Command {
 
     @Override
     public void initialize() {
-        intakeSquasher.setTargetPosition(-15);
+        intakeSquasher.setTargetPosition(-14);
     }
 
     @Override

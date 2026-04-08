@@ -28,7 +28,7 @@ public class JostleIntakeCommand extends Command{
         }
 
         if (intakeSquasher.getFredTheFrogsIntakeSquasherPositionL() > -10 &&intakeSquasher.getFredTheFrogsIntakeSquasherPositionR() > -10 && moveOut == false) {
-            intakeSquasher.setTargetPosition(-15);
+            intakeSquasher.setTargetPosition(-14);
             moveOut = true;
         }
 
