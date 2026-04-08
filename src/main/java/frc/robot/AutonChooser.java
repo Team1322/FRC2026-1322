@@ -233,13 +233,13 @@ public class AutonChooser {
                                 new DriveToPoseObject(new Pose2d(3, 5.5, Rotation2d.k180deg)),
                                 new DriveToPoseObject(new Pose2d(6, 5.5, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
 
-                                new DriveToPoseObject(new Pose2d(6.5, 7, Rotation2d.kCCW_90deg), 0.5),
-                                new DriveToPoseObject(new Pose2d(7.5, 8, Rotation2d.kCCW_90deg), 0.5),
-                                new DriveToPoseObject(new Pose2d(8, 7.5, Rotation2d.kCCW_90deg), 0.5),
-                                new DriveToPoseObject(new Pose2d(8, 4.5, Rotation2d.kCCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(6.5, 6.5, Rotation2d.kCCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(7.5, 7.25, Rotation2d.kCCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8, 7, Rotation2d.kCCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8, 4.5, Rotation2d.kCCW_90deg)),
 
-                                new DriveToPoseObject(new Pose2d(6, 5.5, Rotation2d.k180deg), 0.5),
-                                new DriveToPoseObject(new Pose2d(3, 5.5, Rotation2d.k180deg), MetersPerSecond.of(1))
+                                new DriveToPoseObject(new Pose2d(6, 5.75, Rotation2d.k180deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(3, 5.75, Rotation2d.k180deg), MetersPerSecond.of(1))
                             ),
                             new RunIntake(r.intake)
                         ),

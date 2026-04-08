@@ -15,6 +15,12 @@ public class RunIntakeToTarget extends Command {
     }
 
     @Override
+    public void initialize() {
+        opositeturret.setTargetPosition(-14);
+
+    }
+
+    @Override
     public void execute() {
         opositeturret.runFredTheFrogsIntakeSquasherToTarget();
     }

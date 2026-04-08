@@ -41,8 +41,13 @@ PIDController rightMotorController = new PIDController(IntakeSquashConstants.KP,
     config1.openLoopRampRate(0.1);
     rightIntakeMotor.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-rightIntakeMotor.getEncoder().setPosition(0);
-leftIntakeMotor.getEncoder().setPosition(0);
+    // TODO Comp Code 
+    // rightIntakeMotor.getEncoder().setPosition(0);
+    // leftIntakeMotor.getEncoder().setPosition(0);
+    
+    // Temp Code 
+    rightIntakeMotor.getEncoder().setPosition(-14);
+    leftIntakeMotor.getEncoder().setPosition(-14);
 
   }
   @Override

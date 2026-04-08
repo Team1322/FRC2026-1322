@@ -26,11 +26,11 @@ public class JostleIntakeCommand extends Command{
 
         if (intakeSquasher.getFredTheFrogsIntakeSquasherPositionL() < -13.5 &&intakeSquasher.getFredTheFrogsIntakeSquasherPositionR() < -13.5 && moveOut == true) {
             Timer.delay(1);
-            intakeSquasher.setTargetPosition(-8);
+            intakeSquasher.setTargetPosition(-10);
             moveOut = false;
         }
 
-        if (intakeSquasher.getFredTheFrogsIntakeSquasherPositionL() > -10 &&intakeSquasher.getFredTheFrogsIntakeSquasherPositionR() > -10 && moveOut == false) {
+        if (intakeSquasher.getFredTheFrogsIntakeSquasherPositionL() > -11 &&intakeSquasher.getFredTheFrogsIntakeSquasherPositionR() > -11 && moveOut == false) {
             intakeSquasher.setTargetPosition(-14);
             moveOut = true;
         }
