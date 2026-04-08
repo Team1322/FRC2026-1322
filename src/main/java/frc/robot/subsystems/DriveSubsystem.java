@@ -217,10 +217,10 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         double poseAngle = absoluteAngleFromPose(getTurretPose(), getCurrentPose()).getRadians();
         
         currentVeloX += rotationalToLinearVelo * Math.cos(poseAngle);
-        currentVeloY += rotationalToLinearVelo * Math.sin(poseAngle);
+        currentVeloY -= rotationalToLinearVelo * Math.sin(poseAngle);
         
         //Translational Adjustment
-        target = target.minus(new Translation2d(currentVeloX * 1, currentVeloY * 1));
+        target = target.plus(new Translation2d(currentVeloX * 1, currentVeloY * 1));
         return target;
     }
 
