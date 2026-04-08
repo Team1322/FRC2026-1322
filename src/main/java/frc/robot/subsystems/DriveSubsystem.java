@@ -297,7 +297,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
             }
             if (updateVision) {
 
-                setVisionMeasurementStdDevs(VecBuilder.fill(0.15, 0.15, Math.toRadians(20))); // x and Y were 0.7
+                setVisionMeasurementStdDevs(VecBuilder.fill(0.15, 0.15, 1)); // x and Y were 0.7
                 addVisionMeasurement(
                         new Pose2d(mt2.pose.getTranslation(), currentAngle ),
                         Utils.fpgaToCurrentTime(mt2.timestampSeconds));
