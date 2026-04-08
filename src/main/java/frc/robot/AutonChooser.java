@@ -217,12 +217,37 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
-                    autoChooser.addOption("Blue Depot Center Collection", new SequentialCommandGroup(
+                    autoChooser.addOption("Blue Depot Center Full Collection", new SequentialCommandGroup(
                         new ParallelRaceGroup(
                             new DriveToPose(r.drive, 
                                 new DriveToPoseObject(new Pose2d(3, 5.5, Rotation2d.k180deg)),
                                 new DriveToPoseObject(new Pose2d(6, 5.5, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
-                                new DriveToPoseObject(new Pose2d(7.5, 5.5, Rotation2d.k180deg)),
+
+                                new DriveToPoseObject(new Pose2d(6.5, 7.5, Rotation2d.kCCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8, 8, Rotation2d.kCCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8.5, 7.5, Rotation2d.kCCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8.5, 5, Rotation2d.kCCW_90deg), 0.5),
+
+                                new DriveToPoseObject(new Pose2d(6, 5.5, Rotation2d.k180deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(3, 5.5, Rotation2d.k180deg), MetersPerSecond.of(1))
+                            ),
+                            new RunIntake(r.intake)
+                        ),
+                        new InstantCommand(() -> {SystemVariables.runShooter = true;}),
+                        new DriveToPose(r.drive, new DriveToPoseObject (blueDepotShotLocation)),
+                        new WaitCommand(1),
+                        new ClearHopper(r.feeder).withTimeout(5),
+                        new InstantCommand(() -> {SystemVariables.runShooter = false;})
+                    ));
+
+                    autoChooser.addOption("Blue Depot Center Partial Collection", new SequentialCommandGroup(
+                        new ParallelRaceGroup(
+                            new DriveToPose(r.drive, 
+                                new DriveToPoseObject(new Pose2d(3, 5.5, Rotation2d.k180deg)),
+                                new DriveToPoseObject(new Pose2d(6, 5.5, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
+
+                                new DriveToPoseObject(new Pose2d(7.5, 4.5, Rotation2d.k180deg)),
+
                                 new DriveToPoseObject(new Pose2d(6, 5.5, Rotation2d.k180deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(3, 5.5, Rotation2d.k180deg), MetersPerSecond.of(1))
                             ),
@@ -281,10 +306,10 @@ public class AutonChooser {
                                 new DriveToPoseObject(new Pose2d(3, 2.5, Rotation2d.k180deg)),
                                 new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.k180deg), 0.3, MetersPerSecond.of(1)),
 
-                                new DriveToPoseObject(new Pose2d(7.5, 1, Rotation2d.kCW_90deg), 1),
-                                new DriveToPoseObject(new Pose2d(8, 0.5, Rotation2d.kCW_90deg), 1),
-                                new DriveToPoseObject(new Pose2d(8.25, 1, Rotation2d.kCW_90deg), 1),
-                                new DriveToPoseObject(new Pose2d(8.25, 5, Rotation2d.kCW_90deg), 1),
+                                new DriveToPoseObject(new Pose2d(6.5, 1, Rotation2d.kCW_90deg), 1),
+                                new DriveToPoseObject(new Pose2d(7.25, 0.5, Rotation2d.kCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8, 1, Rotation2d.kCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8.25, 4.5, Rotation2d.kCW_90deg), 0.5),
 
                                 new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.k180deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(3, 2.5, Rotation2d.k180deg), MetersPerSecond.of(1))
