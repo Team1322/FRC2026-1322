@@ -272,6 +272,11 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
 
     public void updatePoseWithLimelight() {
         boolean updateVision = true;
+        int minTagCount = 1;
+
+        if (DriverStation.isAutonomous()) {
+            minTagCount = 2;
+        }
 
         LimelightHelpers.SetRobotOrientation("limelight-main", getCurrentPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
         LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-main");
@@ -282,7 +287,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
 
             Rotation2d currentAngle = null;
             if (mt1 != null) {
-                if (mt1.tagCount != 0) {
+                if (mt1.tagCount >= 2) {
                     currentAngle = mt1.pose.getRotation();
                 }
             }
@@ -292,7 +297,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
             }
 
         
-            if (mt2.tagCount == 0) {
+            if (mt2.tagCount >= minTagCount) {
                 updateVision = false;
             }
             if (updateVision) {

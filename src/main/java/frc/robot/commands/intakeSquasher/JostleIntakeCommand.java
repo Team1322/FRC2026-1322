@@ -7,7 +7,6 @@ import frc.robot.subsystems.FredTheFrogsIntakeSquasherSubsystem;
 public class JostleIntakeCommand extends Command{
     FredTheFrogsIntakeSquasherSubsystem intakeSquasher;
     boolean moveOut = false;
-    Timer currentTime = new Timer();
    
 
     public JostleIntakeCommand(FredTheFrogsIntakeSquasherSubsystem intakeSquasher) {
@@ -25,7 +24,6 @@ public class JostleIntakeCommand extends Command{
     public void execute() {
 
         if (intakeSquasher.getFredTheFrogsIntakeSquasherPositionL() < -13.5 &&intakeSquasher.getFredTheFrogsIntakeSquasherPositionR() < -13.5 && moveOut == true) {
-            Timer.delay(1);
             intakeSquasher.setTargetPosition(-10);
             moveOut = false;
         }

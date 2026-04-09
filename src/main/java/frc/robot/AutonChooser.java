@@ -87,7 +87,7 @@ public class AutonChooser {
                                 new DriveToPoseObject(new Pose2d(9.75,0.75, Rotation2d.kCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(9,0.5, Rotation2d.kCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(8.8,0.75, Rotation2d.kCW_90deg), 0.5),
-                                new DriveToPoseObject(new Pose2d(8.800,3.580, Rotation2d.kCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8.800,3.580, Rotation2d.kCW_90deg)),
 
                                 new DriveToPoseObject(new Pose2d(10.5,2.5, Rotation2d.kZero), 0.5),
                                 new DriveToPoseObject(new Pose2d(13.2,2.500, Rotation2d.kZero), MetersPerSecond.of(1))
@@ -174,7 +174,7 @@ public class AutonChooser {
                                 new DriveToPoseObject(new Pose2d(10, 7, Rotation2d.kCCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(9, 7.5, Rotation2d.kCCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(8.5, 7, Rotation2d.kCCW_90deg), 0.5),
-                                new DriveToPoseObject(new Pose2d(8.5, 4.5, Rotation2d.kCCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8.5, 4.5, Rotation2d.kCCW_90deg)),
 
                                 new DriveToPoseObject(new Pose2d(11, 5.5, Rotation2d.kZero), 0.5),
                                 new DriveToPoseObject(new Pose2d(13.5, 5.5, Rotation2d.kZero), MetersPerSecond.of(1))
@@ -321,7 +321,7 @@ public class AutonChooser {
                                 new DriveToPoseObject(new Pose2d(6.5, 1, Rotation2d.kCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(7.25, 0.5, Rotation2d.kCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(7.75, 1, Rotation2d.kCW_90deg), 0.5),
-                                new DriveToPoseObject(new Pose2d(8, 4.25, Rotation2d.kCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8, 4.25, Rotation2d.kCW_90deg)),
 
                                 new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.k180deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(3, 2.5, Rotation2d.k180deg), MetersPerSecond.of(1))
