@@ -75,8 +75,8 @@ public class RobotContainer {
 
         driverController.b().onTrue(new XFormation(drive, driverController));
 
-        driverController.rightBumper().onTrue(new InstantCommand(() -> {SystemVariables.currentMaxSpeed = 2;}));
-        driverController.rightBumper().onFalse(new InstantCommand(() -> {SystemVariables.currentMaxSpeed = DrivetrainConstants.MaxSpeed;}));
+        driverController.rightTrigger(0.5).onTrue(new InstantCommand(() -> {SystemVariables.currentMaxSpeed = 2;}));
+        driverController.rightTrigger(0.5).onFalse(new InstantCommand(() -> {SystemVariables.currentMaxSpeed = DrivetrainConstants.MaxSpeed;}));
 
         /////////////////////////////////// Operator ////////////////////////////////////////////
 

@@ -40,6 +40,7 @@ public class SystemVariables {
     public static final class FeederConstants {
         public static final int FEEDER_MOTOR_ID = 30;
         public static final int FEEDER_FOLLOWER_ID = 31;
+          public static final int KICKER_MOTOR_ID = 32;
     }
 
     public static final class ShooterConstants {

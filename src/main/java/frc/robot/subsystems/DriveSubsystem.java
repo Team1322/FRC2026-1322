@@ -178,7 +178,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
     }
 
     public double getDistanceFromShot() {
-        return getStaticShootTarget().getDistance(getTurretPose().getTranslation());
+        return getDynamicShootTarget().getDistance(getTurretPose().getTranslation());
     }
 
     public Rotation2d getAngleToGoal() {
@@ -220,7 +220,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
         currentVeloY -= rotationalToLinearVelo * Math.sin(poseAngle);
         
         //Translational Adjustment
-        target = target.plus(new Translation2d(currentVeloX * 1, currentVeloY * 1));
+        target = target.minus(new Translation2d(currentVeloX * 1.3, currentVeloY * 1.3));
         return target;
     }
 
@@ -297,7 +297,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
             }
             if (updateVision) {
 
-                setVisionMeasurementStdDevs(VecBuilder.fill(0.15, 0.15, Math.toRadians(20))); // x and Y were 0.7
+                setVisionMeasurementStdDevs(VecBuilder.fill(0.3, 0.3, 1)); // x and Y were 0.7
                 addVisionMeasurement(
                         new Pose2d(mt2.pose.getTranslation(), currentAngle ),
                         Utils.fpgaToCurrentTime(mt2.timestampSeconds));
