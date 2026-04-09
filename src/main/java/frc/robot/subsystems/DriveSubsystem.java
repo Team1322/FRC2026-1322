@@ -29,7 +29,6 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.LimelightHelpers;
 import frc.robot.SystemVariables;
-import frc.robot.SystemVariables.DrivetrainConstants;
 import frc.robot.SystemVariables.FieldConstants;
 import frc.robot.SystemVariables.TurretConstants;
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;

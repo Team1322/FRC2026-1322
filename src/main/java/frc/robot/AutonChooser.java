@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.complexCommands.ClearHopper;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.intake.RunIntake;
-import frc.robot.commands.intakeSquasher.DeployIntakeCommand;
 
 public class AutonChooser {
 

@@ -4,7 +4,6 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.units.measure.LinearVelocity;
-import frc.robot.SystemVariables.DrivetrainConstants;
 
 /**
  * Defines the way drive to pose works by using 3 possible parameters
