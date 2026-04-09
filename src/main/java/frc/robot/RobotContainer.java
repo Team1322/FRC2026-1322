@@ -15,7 +15,6 @@ import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.commands.drive.XFormation;
 import frc.robot.SystemVariables.DrivetrainConstants;
 import frc.robot.commands.feeder.ReverseFeeder;
-import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.intakeSquasher.DeployIntakeCommand;
 import frc.robot.commands.intakeSquasher.MoveSquasherByJoystick;
@@ -92,6 +91,8 @@ public class RobotContainer {
 
         operatorController.x().whileTrue(new DeployIntakeCommand(intakeSquasher, intake));
         operatorController.b().onTrue(new InstantCommand(() -> intakeSquasher.setTargetPosition(0)));
+
+        operatorController.y().onTrue(new InstantCommand(() -> intakeSquasher.resetPosition()));
 
 
     }

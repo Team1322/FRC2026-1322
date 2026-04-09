@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.complexCommands.ClearHopper;
 import frc.robot.commands.drive.DriveToPose;
 import frc.robot.commands.intake.RunIntake;
-import frc.robot.commands.intakeSquasher.DeployIntakeCommand;
 
 public class AutonChooser {
 
@@ -87,10 +86,10 @@ public class AutonChooser {
                                 new DriveToPoseObject(new Pose2d(9.75,0.75, Rotation2d.kCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(9,0.5, Rotation2d.kCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(8.8,0.75, Rotation2d.kCW_90deg), 0.5),
-                                new DriveToPoseObject(new Pose2d(8.800,3.580, Rotation2d.kCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8.800,3.580, Rotation2d.kCW_90deg)),
 
-                                new DriveToPoseObject(new Pose2d(10.5,2.5, Rotation2d.kZero), 0.5),
-                                new DriveToPoseObject(new Pose2d(13.2,2.500, Rotation2d.kZero), MetersPerSecond.of(1))
+                                new DriveToPoseObject(new Pose2d(10.5,2.5, Rotation2d.k180deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(13.2,2.500, Rotation2d.k180deg), MetersPerSecond.of(1))
                             ),
                             new RunIntake(r.intake)
                         ),
@@ -174,10 +173,10 @@ public class AutonChooser {
                                 new DriveToPoseObject(new Pose2d(10, 7, Rotation2d.kCCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(9, 7.5, Rotation2d.kCCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(8.5, 7, Rotation2d.kCCW_90deg), 0.5),
-                                new DriveToPoseObject(new Pose2d(8.5, 4.5, Rotation2d.kCCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8.5, 4.5, Rotation2d.kCCW_90deg)),
 
-                                new DriveToPoseObject(new Pose2d(11, 5.5, Rotation2d.kZero), 0.5),
-                                new DriveToPoseObject(new Pose2d(13.5, 5.5, Rotation2d.kZero), MetersPerSecond.of(1))
+                                new DriveToPoseObject(new Pose2d(11, 5.5, Rotation2d.k180deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(13.5, 5.5, Rotation2d.k180deg), MetersPerSecond.of(1))
                             ),
                             new RunIntake(r.intake)
                         ),
@@ -238,8 +237,8 @@ public class AutonChooser {
                                 new DriveToPoseObject(new Pose2d(8, 7, Rotation2d.kCCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(8, 4.5, Rotation2d.kCCW_90deg)),
 
-                                new DriveToPoseObject(new Pose2d(6, 5.75, Rotation2d.k180deg), 0.5),
-                                new DriveToPoseObject(new Pose2d(3, 5.75, Rotation2d.k180deg), MetersPerSecond.of(1))
+                                new DriveToPoseObject(new Pose2d(6, 5.75, Rotation2d.kZero), 0.5),
+                                new DriveToPoseObject(new Pose2d(3, 5.75, Rotation2d.kZero), MetersPerSecond.of(1))
                             ),
                             new RunIntake(r.intake)
                         ),
@@ -321,10 +320,10 @@ public class AutonChooser {
                                 new DriveToPoseObject(new Pose2d(6.5, 1, Rotation2d.kCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(7.25, 0.5, Rotation2d.kCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(7.75, 1, Rotation2d.kCW_90deg), 0.5),
-                                new DriveToPoseObject(new Pose2d(8, 4.25, Rotation2d.kCW_90deg), 0.5),
+                                new DriveToPoseObject(new Pose2d(8, 4.25, Rotation2d.kCW_90deg)),
 
-                                new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.k180deg), 0.5),
-                                new DriveToPoseObject(new Pose2d(3, 2.5, Rotation2d.k180deg), MetersPerSecond.of(1))
+                                new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.kZero), 0.5),
+                                new DriveToPoseObject(new Pose2d(3, 2.5, Rotation2d.kZero), MetersPerSecond.of(1))
                             ),
                             
                             new RunIntake(r.intake)

@@ -14,7 +14,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SystemVariables.FeederConstants;
-import frc.robot.SystemVariables.IntakeSquashConstants;
 
 public class FeederSubsystem extends SubsystemBase {
   TalonFX feederMotor = new TalonFX(FeederConstants.FEEDER_MOTOR_ID);
