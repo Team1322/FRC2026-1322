@@ -31,7 +31,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
         //Current Limits
         config.CurrentLimits.StatorCurrentLimit = 80;
-        config.CurrentLimits.SupplyCurrentLimit = 60;
+        config.CurrentLimits.SupplyCurrentLimit = 50;
         config.CurrentLimits.SupplyCurrentLowerLimit = 40;
         config.CurrentLimits.SupplyCurrentLimitEnable = true;
         config.CurrentLimits.StatorCurrentLimitEnable = true;

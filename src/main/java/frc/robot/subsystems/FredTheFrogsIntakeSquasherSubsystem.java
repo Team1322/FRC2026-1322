@@ -43,8 +43,8 @@ public class FredTheFrogsIntakeSquasherSubsystem extends SubsystemBase {
     rightIntakeMotor.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     // Comp Code 
-    rightIntakeMotor.getEncoder().setPosition(1);
-    leftIntakeMotor.getEncoder().setPosition(1);
+    rightIntakeMotor.getEncoder().setPosition(3);
+    leftIntakeMotor.getEncoder().setPosition(3);
 
     // Temp Code 
     // rightIntakeMotor.getEncoder().setPosition(-14);

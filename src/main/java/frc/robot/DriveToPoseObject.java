@@ -29,7 +29,7 @@ public class DriveToPoseObject {
     }
 
     public DriveToPoseObject(Pose2d pose, double distanceUntilBypass) {
-        this(pose, distanceUntilBypass, MetersPerSecond.of(2));//MetersPerSecond.of(DrivetrainConstants.MaxSpeed));
+        this(pose, distanceUntilBypass, MetersPerSecond.of(3));//MetersPerSecond.of(DrivetrainConstants.MaxSpeed));
     }
 
     public DriveToPoseObject(Pose2d pose, LinearVelocity stepSpeed) {

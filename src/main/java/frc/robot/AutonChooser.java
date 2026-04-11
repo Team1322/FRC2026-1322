@@ -87,12 +87,12 @@ public class AutonChooser {
                         ),
                         new ParallelRaceGroup(
                             new DriveToPose(r.drive,
-                                new DriveToPoseObject(new Pose2d(10.75,2.5, Rotation2d.kZero), 0.3, MetersPerSecond.of(1)),
+                                new DriveToPoseObject(new Pose2d(10.75,2.5, Rotation2d.kZero), 0.3, MetersPerSecond.of(1.25)),
 
                                 new DriveToPoseObject(new Pose2d(9.75,0.75, Rotation2d.kCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(9,0.5, Rotation2d.kCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(8.8,0.75, Rotation2d.kCW_90deg), 0.5),
-                                new DriveToPoseObject(new Pose2d(8.800,3.580, Rotation2d.kCW_90deg)),
+                                new DriveToPoseObject(new Pose2d(8.800,3.580, Rotation2d.kCW_90deg), MetersPerSecond.of(1.5)),
 
                                 new DriveToPoseObject(new Pose2d(10.5,2.5, Rotation2d.k180deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(13.2,2.500, Rotation2d.k180deg), MetersPerSecond.of(1))
@@ -110,7 +110,7 @@ public class AutonChooser {
                         new ParallelRaceGroup(
                             new DriveToPose(r.drive,
                                 new DriveToPoseObject(new Pose2d(13.50,2.5, Rotation2d.kZero)),
-                                new DriveToPoseObject(new Pose2d(10.75,2.5, Rotation2d.kZero), 0.3, MetersPerSecond.of(1)), 
+                                new DriveToPoseObject(new Pose2d(10.75,2.5, Rotation2d.kZero), 0.3, MetersPerSecond.of(1.25)), 
 
                                 
                                 new DriveToPoseObject(new Pose2d(9.75,3.25, Rotation2d.kZero), 0.5),
@@ -179,12 +179,12 @@ public class AutonChooser {
                         ),
                         new ParallelRaceGroup(
                             new DriveToPose(r.drive, 
-                                new DriveToPoseObject(new Pose2d(10.75, 5.5, Rotation2d.kZero), 0.3, MetersPerSecond.of(1)),
+                                new DriveToPoseObject(new Pose2d(10.75, 5.5, Rotation2d.kZero), 0.3, MetersPerSecond.of(1.25)),
 
                                 new DriveToPoseObject(new Pose2d(10, 7, Rotation2d.kCCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(9, 7.5, Rotation2d.kCCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(8.5, 7, Rotation2d.kCCW_90deg), 0.5),
-                                new DriveToPoseObject(new Pose2d(8.5, 4.5, Rotation2d.kCCW_90deg)),
+                                new DriveToPoseObject(new Pose2d(8.5, 4.5, Rotation2d.kCCW_90deg), MetersPerSecond.of(1.5)),
 
                                 new DriveToPoseObject(new Pose2d(11, 5.5, Rotation2d.k180deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(13.5, 5.5, Rotation2d.k180deg), MetersPerSecond.of(1))
@@ -202,7 +202,7 @@ public class AutonChooser {
                         new ParallelRaceGroup(
                             new DriveToPose(r.drive, 
                                 new DriveToPoseObject(new Pose2d(13.5, 5.5, Rotation2d.kZero)),
-                                new DriveToPoseObject(new Pose2d(10.75, 5.5, Rotation2d.kZero), 0.3, MetersPerSecond.of(1)),
+                                new DriveToPoseObject(new Pose2d(10.75, 5.5, Rotation2d.kZero), 0.3, MetersPerSecond.of(1.25)),
 
                                 new DriveToPoseObject(new Pose2d(9.75, 4.9, Rotation2d.kZero), 0.5),
                                 new DriveToPoseObject(new Pose2d(9.25, 4.75, Rotation2d.kZero), 0.75),
@@ -246,12 +246,12 @@ public class AutonChooser {
                     
                                 new ParallelRaceGroup(
                                     new DriveToPose(r.drive,
-                                new DriveToPoseObject(new Pose2d(6, 5.5, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1)),
+                                new DriveToPoseObject(new Pose2d(6, 5.5, Rotation2d.k180deg), 0.1, MetersPerSecond.of(1.25)),
                            
                                 new DriveToPoseObject(new Pose2d(6.5, 6.5, Rotation2d.kCCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(7.5, 7.25, Rotation2d.kCCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(8, 7, Rotation2d.kCCW_90deg), 0.5),
-                                new DriveToPoseObject(new Pose2d(8, 4.5, Rotation2d.kCCW_90deg)),
+                                new DriveToPoseObject(new Pose2d(8, 4.5, Rotation2d.kCCW_90deg), MetersPerSecond.of(1.5)),
 
                                 new DriveToPoseObject(new Pose2d(6, 5.75, Rotation2d.kZero), 0.5),
                                 new DriveToPoseObject(new Pose2d(3, 5.75, Rotation2d.kZero), MetersPerSecond.of(1))
@@ -269,7 +269,7 @@ public class AutonChooser {
                         new ParallelRaceGroup(
                             new DriveToPose(r.drive, 
                                 new DriveToPoseObject(new Pose2d(3, 5.5, Rotation2d.k180deg)),
-                                new DriveToPoseObject(new Pose2d(6, 5.5, Rotation2d.k180deg), 0.3, MetersPerSecond.of(1)),
+                                new DriveToPoseObject(new Pose2d(6, 5.5, Rotation2d.k180deg), 0.3, MetersPerSecond.of(1.25)),
 
                                 new DriveToPoseObject(new Pose2d(7.25, 4.75, Rotation2d.k180deg), 0.75),
                                 new DriveToPoseObject(new Pose2d(8, 4.5, Rotation2d.k180deg)),
@@ -335,12 +335,12 @@ public class AutonChooser {
                         ),
                                 new ParallelRaceGroup(
                                     new DriveToPose(r.drive,
-                                new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.k180deg), 0.3, MetersPerSecond.of(1)),
+                                new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.k180deg), 0.3, MetersPerSecond.of(1.25)),
 
                                 new DriveToPoseObject(new Pose2d(6.5, 1, Rotation2d.kCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(7.25, 0.5, Rotation2d.kCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(7.75, 1, Rotation2d.kCW_90deg), 0.5),
-                                new DriveToPoseObject(new Pose2d(8, 4.25, Rotation2d.kCW_90deg)),
+                                new DriveToPoseObject(new Pose2d(8, 4.25, Rotation2d.kCW_90deg), MetersPerSecond.of(1.5)),
 
                                 new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.kZero), 0.5),
                                 new DriveToPoseObject(new Pose2d(3, 2.5, Rotation2d.kZero), MetersPerSecond.of(1))
@@ -359,7 +359,7 @@ public class AutonChooser {
                         new ParallelRaceGroup(
                             new DriveToPose(r.drive, 
                                 new DriveToPoseObject(new Pose2d(3, 2.5, Rotation2d.k180deg)),
-                                new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.k180deg), 0.3, MetersPerSecond.of(1)),
+                                new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.k180deg), 0.3, MetersPerSecond.of(1.25)),
 
                                 new DriveToPoseObject(new Pose2d(7, 3.25, Rotation2d.k180deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(7.5, 3.5, Rotation2d.k180deg), 0.5),

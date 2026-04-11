@@ -40,9 +40,9 @@ public class TurretSubsystem extends SubsystemBase {
         config.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = 0.05;
 
         //Current Limits
-        config.CurrentLimits.StatorCurrentLimit = 60;
-        config.CurrentLimits.SupplyCurrentLimit = 30;
-        config.CurrentLimits.SupplyCurrentLowerLimit = 20;
+        config.CurrentLimits.StatorCurrentLimit = 40;
+        config.CurrentLimits.SupplyCurrentLimit = 20;
+        config.CurrentLimits.SupplyCurrentLowerLimit = 15;
         config.CurrentLimits.SupplyCurrentLimitEnable = true;
         config.CurrentLimits.StatorCurrentLimitEnable = true;
 
