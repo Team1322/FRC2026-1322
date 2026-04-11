@@ -16,6 +16,7 @@ public class SystemVariables {
     public static double turretDistanceFromGoal = 0;
     public static Rotation2d turretAngleToGoal = Rotation2d.kZero, turretZeroDirection = Rotation2d.kZero;
     public static boolean shooterUpToSpeed = false, runShooter = false;
+    public static boolean reverseIntake = true;
     public static Pose2d turretPose = Pose2d.kZero;
     public static double currentMaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
 
@@ -32,9 +33,9 @@ public class SystemVariables {
     public static final class IntakeSquashConstants {
         public static final int INTAKE_SQUASH_MOTOR_0 = 50;
         public static final int INTAKE_SQUASH_MOTOR_1 = 51;
-        public static final double KP = 0.03;
+        public static final double KP = 0.05;
         public static final double KI = 0.0;
-        public static final double KD = 0.0;
+        public static final double KD = 0.001;
     }
 
     public static final class FeederConstants {

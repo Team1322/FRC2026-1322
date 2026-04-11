@@ -19,9 +19,9 @@ public class FeederSubsystem extends SubsystemBase {
   TalonFX feederMotor = new TalonFX(FeederConstants.FEEDER_MOTOR_ID);
   TalonFX feederFollower = new TalonFX(FeederConstants.FEEDER_FOLLOWER_ID);
 
-SparkMax kickerMotor;
+// SparkMax kickerMotor;
   public FeederSubsystem() {
-    kickerMotor = new SparkMax(FeederConstants.KICKER_MOTOR_ID, MotorType.kBrushless);
+    // kickerMotor = new SparkMax(FeederConstants.KICKER_MOTOR_ID, MotorType.kBrushless);
 
     // Basic Config
     TalonFXConfiguration config = new TalonFXConfiguration();
@@ -42,15 +42,15 @@ SparkMax kickerMotor;
     // Setting up the follower
     feederFollower.setControl(new Follower(feederMotor.getDeviceID(), MotorAlignmentValue.Opposed));
 
-     SparkMaxConfig config0 = new SparkMaxConfig();
-    config0.inverted(true);
-    config0.smartCurrentLimit(10);
-    kickerMotor.configure(config0, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    //  SparkMaxConfig config0 = new SparkMaxConfig();
+    // config0.inverted(true);
+    // config0.smartCurrentLimit(10);
+    // kickerMotor.configure(config0, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
   }
 
   public void setSpeed(double speed) {
     feederMotor.set(speed);
-    kickerMotor.set(speed/3);
+    //kickerMotor.set(speed/3);
   }
 }

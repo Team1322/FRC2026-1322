@@ -5,6 +5,7 @@ import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,19 +30,21 @@ public class FredTheFrogsIntakeSquasherSubsystem extends SubsystemBase {
     SparkMaxConfig config0 = new SparkMaxConfig();
     config0.inverted(true);
     config0.smartCurrentLimit(60);
-    config0.openLoopRampRate(0.1);
+    config0.idleMode(IdleMode.kCoast);
+    //config0.openLoopRampRate(0.1);
     leftIntakeMotor.configure(config0, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
 
     SparkMaxConfig config1 = new SparkMaxConfig();
     config1.inverted(false);
     config1.smartCurrentLimit(60);
-    config1.openLoopRampRate(0.1);
+    config0.idleMode(IdleMode.kCoast);
+    //config1.openLoopRampRate(0.1);
     rightIntakeMotor.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     // Comp Code 
-    rightIntakeMotor.getEncoder().setPosition(0);
-    leftIntakeMotor.getEncoder().setPosition(-0.8);
+    rightIntakeMotor.getEncoder().setPosition(1);
+    leftIntakeMotor.getEncoder().setPosition(1);
 
     // Temp Code 
     // rightIntakeMotor.getEncoder().setPosition(-14);
@@ -56,12 +59,12 @@ public class FredTheFrogsIntakeSquasherSubsystem extends SubsystemBase {
   }
 
   public void setSpeed(double speed) {
-    if (Math.abs(speed) > 0.5) speed = Math.copySign(0.5, speed);
+    if (Math.abs(speed) > 0.75) speed = Math.copySign(0.75, speed);
     leftIntakeMotor.set(speed);
   }
 
   public void setSpeed2(double speed) {
-    if (Math.abs(speed) > 0.5) speed = Math.copySign(0.5, speed);
+    if (Math.abs(speed) > 0.75) speed = Math.copySign(0.75, speed);
     rightIntakeMotor.set(speed);
   }
 

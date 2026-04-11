@@ -271,10 +271,10 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
 
     public void updatePoseWithLimelight() {
         boolean updateVision = true;
-        int minTagCount = 1;
+        int minTagCount = 2;
 
-        if (DriverStation.isAutonomous()) {
-            minTagCount = 2;
+        if (DriverStation.isDisabled()) {
+            minTagCount = 1;
         }
 
         LimelightHelpers.SetRobotOrientation("limelight-main", getCurrentPose().getRotation().getDegrees(), 0, 0, 0, 0, 0);
@@ -286,7 +286,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
 
             Rotation2d currentAngle = null;
             if (mt1 != null) {
-                if (mt1.tagCount >= 2) {
+                if (mt1.tagCount >= minTagCount) {
                     currentAngle = mt1.pose.getRotation();
                 }
             }
@@ -296,7 +296,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
             }
 
         
-            if (mt2.tagCount >= minTagCount) {
+            if (mt2.tagCount < minTagCount) {
                 updateVision = false;
             }
             if (updateVision) {

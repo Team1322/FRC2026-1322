@@ -1,6 +1,7 @@
 package frc.robot.commands.intakeSquasher;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.SystemVariables;
 import frc.robot.subsystems.FredTheFrogsIntakeSquasherSubsystem;
 
 public class RunIntakeToTarget extends Command {
@@ -22,6 +23,9 @@ public class RunIntakeToTarget extends Command {
     @Override
     public void execute() {
         opositeturret.runFredTheFrogsIntakeSquasherToTarget();
+        if (opositeturret.getFredTheFrogsIntakeSquasherPositionL() < -13 && opositeturret.getFredTheFrogsIntakeSquasherPositionR() < -13){
+            SystemVariables.reverseIntake = false;
+        }
     }
 
     @Override

@@ -30,8 +30,8 @@ public class ShooterSubsystem extends SubsystemBase {
         config.Slot0.kD = 0;
 
         //Current Limits
-        config.CurrentLimits.StatorCurrentLimit = 120;
-        config.CurrentLimits.SupplyCurrentLimit = 80;
+        config.CurrentLimits.StatorCurrentLimit = 80;
+        config.CurrentLimits.SupplyCurrentLimit = 60;
         config.CurrentLimits.SupplyCurrentLowerLimit = 40;
         config.CurrentLimits.SupplyCurrentLimitEnable = true;
         config.CurrentLimits.StatorCurrentLimitEnable = true;
@@ -88,7 +88,7 @@ public class ShooterSubsystem extends SubsystemBase {
         double vel = Math.sqrt(sqrtNum/sqrtDenom)
                 / (Math.cos(ShooterConstants.SHOOT_ANGLE));
 
-        vel *= 6.3; //6.2
+        vel *= 6.2; //6.2
         vel *= ((difference / 18) / 100) + 1;
         return vel;
     }

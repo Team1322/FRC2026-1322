@@ -15,7 +15,9 @@ import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.commands.drive.XFormation;
 import frc.robot.SystemVariables.DrivetrainConstants;
 import frc.robot.commands.feeder.ReverseFeeder;
+import frc.robot.commands.intake.IntakeDefault;
 import frc.robot.commands.intake.RunIntake;
+import frc.robot.commands.intake.RunIntakeReverse;
 import frc.robot.commands.intakeSquasher.DeployIntakeCommand;
 import frc.robot.commands.intakeSquasher.MoveSquasherByJoystick;
 import frc.robot.commands.intakeSquasher.RunIntakeToTarget;
@@ -57,6 +59,7 @@ public class RobotContainer {
         drive.setDefaultCommand(new FieldCentricControl(drive, driverController));
         turret.setDefaultCommand(new RunTurretToHub(turret));
         shooter.setDefaultCommand(new AutoShooterToHub(shooter));
+        //intake.setDefaultCommand(new IntakeDefault(intake));
         //turret.setDefaultCommand(new RunTurretToTarget(turret));
         //turret.setDefaultCommand(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
         //lift.setDefaultCommand(new MoveLiftWithJoystick(lift, () -> operatorController.getLeftY()));
@@ -84,7 +87,7 @@ public class RobotContainer {
 
         
         //Overrides
-        operatorController.a().whileTrue(new RunShooterOverride(shooter, 50).alongWith(new RunTurretToTarget(turret, 0))); //At tower override pos
+        operatorController.a().whileTrue(new RunShooterOverride(shooter, 45).alongWith(new RunTurretToTarget(turret, 0))); //At tower override pos
 
         operatorController.rightBumper().toggleOnTrue(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
         operatorController.leftBumper().toggleOnTrue(new MoveSquasherByJoystick(intakeSquasher, () -> operatorController.getLeftX()));
@@ -93,6 +96,7 @@ public class RobotContainer {
         operatorController.b().onTrue(new InstantCommand(() -> intakeSquasher.setTargetPosition(0)));
 
         operatorController.y().onTrue(new InstantCommand(() -> intakeSquasher.resetPosition()));
+        operatorController.povDown().whileTrue(new RunIntakeReverse(intake));
 
 
     }

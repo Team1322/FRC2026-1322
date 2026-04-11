@@ -41,7 +41,7 @@ public class TurretSubsystem extends SubsystemBase {
 
         //Current Limits
         config.CurrentLimits.StatorCurrentLimit = 60;
-        config.CurrentLimits.SupplyCurrentLimit = 40;
+        config.CurrentLimits.SupplyCurrentLimit = 30;
         config.CurrentLimits.SupplyCurrentLowerLimit = 20;
         config.CurrentLimits.SupplyCurrentLimitEnable = true;
         config.CurrentLimits.StatorCurrentLimitEnable = true;
