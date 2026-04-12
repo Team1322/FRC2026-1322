@@ -194,7 +194,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
             } else {
                 target = FieldConstants.RED_FEED_OUTPOST_SIDE;
             }
-        } else if (DriverStation.getAlliance().get() == Alliance.Blue && getCurrentPose().getX() > 4.6) {
+        } else if (DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Blue && getCurrentPose().getX() > 4.6) {
             if (getCurrentPose().getY() > 4) {
                 target = FieldConstants.BLUE_FEED_DEPOT_SIDE;
             } else {

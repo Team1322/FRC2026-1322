@@ -340,7 +340,7 @@ public class AutonChooser {
                                 new DriveToPoseObject(new Pose2d(6.5, 1, Rotation2d.kCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(7.25, 0.5, Rotation2d.kCW_90deg), 0.5),
                                 new DriveToPoseObject(new Pose2d(7.75, 1, Rotation2d.kCW_90deg), 0.5),
-                                new DriveToPoseObject(new Pose2d(8, 4.25, Rotation2d.kCW_90deg), MetersPerSecond.of(1.5)),
+                                new DriveToPoseObject(new Pose2d(8, 3.80, Rotation2d.kCW_90deg), MetersPerSecond.of(1.5)),
 
                                 new DriveToPoseObject(new Pose2d(6, 2.5, Rotation2d.kZero), 0.5),
                                 new DriveToPoseObject(new Pose2d(3, 2.5, Rotation2d.kZero), MetersPerSecond.of(1))

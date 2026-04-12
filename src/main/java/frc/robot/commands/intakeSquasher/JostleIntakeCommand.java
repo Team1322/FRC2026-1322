@@ -22,12 +22,12 @@ public class JostleIntakeCommand extends Command{
     @Override
     public void execute() {
 
-        if (intakeSquasher.getFredTheFrogsIntakeSquasherPositionL() < -13.5 &&intakeSquasher.getFredTheFrogsIntakeSquasherPositionR() < -13.5 && moveOut == true) {
+        if (intakeSquasher.getFredTheFrogsIntakeSquasherPositionL() < -13.5 &&intakeSquasher.getFredTheFrogsIntakeSquasherPositionR() < -13.5) {
             intakeSquasher.setTargetPosition(-10);
             moveOut = false;
         }
 
-        if (intakeSquasher.getFredTheFrogsIntakeSquasherPositionL() > -11 &&intakeSquasher.getFredTheFrogsIntakeSquasherPositionR() > -11 && moveOut == false) {
+        if (intakeSquasher.getFredTheFrogsIntakeSquasherPositionL() > -13 &&intakeSquasher.getFredTheFrogsIntakeSquasherPositionR() > -13) {
             intakeSquasher.setTargetPosition(-14);
             moveOut = true;
         }

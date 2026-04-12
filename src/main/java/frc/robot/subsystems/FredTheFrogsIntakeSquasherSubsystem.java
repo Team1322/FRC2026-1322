@@ -29,7 +29,7 @@ public class FredTheFrogsIntakeSquasherSubsystem extends SubsystemBase {
 
     SparkMaxConfig config0 = new SparkMaxConfig();
     config0.inverted(true);
-    config0.smartCurrentLimit(60);
+    config0.smartCurrentLimit(20);
     config0.idleMode(IdleMode.kCoast);
     //config0.openLoopRampRate(0.1);
     leftIntakeMotor.configure(config0, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -37,10 +37,11 @@ public class FredTheFrogsIntakeSquasherSubsystem extends SubsystemBase {
 
     SparkMaxConfig config1 = new SparkMaxConfig();
     config1.inverted(false);
-    config1.smartCurrentLimit(60);
+    config1.smartCurrentLimit(20);
     config0.idleMode(IdleMode.kCoast);
     //config1.openLoopRampRate(0.1);
     rightIntakeMotor.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    rightIntakeMotor.getOutputCurrent();
 
     // Comp Code 
     rightIntakeMotor.getEncoder().setPosition(3);
@@ -60,11 +61,13 @@ public class FredTheFrogsIntakeSquasherSubsystem extends SubsystemBase {
 
   public void setSpeed(double speed) {
     if (Math.abs(speed) > 0.75) speed = Math.copySign(0.75, speed);
+
     leftIntakeMotor.set(speed);
   }
 
   public void setSpeed2(double speed) {
     if (Math.abs(speed) > 0.75) speed = Math.copySign(0.75, speed);
+
     rightIntakeMotor.set(speed);
   }
 
