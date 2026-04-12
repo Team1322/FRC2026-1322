@@ -60,13 +60,13 @@ public class FredTheFrogsIntakeSquasherSubsystem extends SubsystemBase {
   }
 
   public void setSpeed(double speed) {
-    if (Math.abs(speed) > 0.75) speed = Math.copySign(0.75, speed);
+    //if (Math.abs(speed) > 0.75) speed = Math.copySign(0.75, speed);
 
     leftIntakeMotor.set(speed);
   }
 
   public void setSpeed2(double speed) {
-    if (Math.abs(speed) > 0.75) speed = Math.copySign(0.75, speed);
+    //if (Math.abs(speed) > 0.75) speed = Math.copySign(0.75, speed);
 
     rightIntakeMotor.set(speed);
   }

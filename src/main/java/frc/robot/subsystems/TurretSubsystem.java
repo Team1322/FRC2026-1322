@@ -76,12 +76,13 @@ public class TurretSubsystem extends SubsystemBase {
     }
 
     public double getEncoderAngle() {
-        turretAbsoluteEncoder.getTelemetry();
-        double angle = turretAbsoluteEncoder.getAngleDegrees();
-        if (angle > 180) {
-            angle -= 360;
-        }
-        return angle * TurretConstants.ENCODER_CONVERSION_FACTOR;
+         turretAbsoluteEncoder.getTelemetry();
+         double angle = turretAbsoluteEncoder.getAngleDegrees();
+         if (angle > 180) {
+             angle -= 360;
+         }
+         return angle * TurretConstants.ENCODER_CONVERSION_FACTOR;
+
     }
 
     public double getCurrentPosition() {
