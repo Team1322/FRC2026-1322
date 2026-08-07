@@ -19,7 +19,6 @@ public class MoveSquasherByJoystick extends Command {
     @Override
     public void execute() {
         intakeSquahser.setSpeed(joystickSpeed.getAsDouble());
-        intakeSquahser.setSpeed2(joystickSpeed.getAsDouble());
     }
 
     @Override

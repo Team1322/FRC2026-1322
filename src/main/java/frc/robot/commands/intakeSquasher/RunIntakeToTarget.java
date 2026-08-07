@@ -23,7 +23,7 @@ public class RunIntakeToTarget extends Command {
     @Override
     public void execute() {
         opositeturret.runFredTheFrogsIntakeSquasherToTarget();
-        if (opositeturret.getFredTheFrogsIntakeSquasherPositionL() < -13 && opositeturret.getFredTheFrogsIntakeSquasherPositionR() < -13){
+        if (opositeturret.getFredTheFrogsIntakeSquasherPositionL() < -13 ){
             SystemVariables.reverseIntake = false;
         }
     }
