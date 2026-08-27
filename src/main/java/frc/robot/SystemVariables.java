@@ -32,8 +32,7 @@ public class SystemVariables {
         public static final int INTAKE_FOLLOWER_ID = 21;
     }
     public static final class IntakeSquashConstants {
-        public static final int INTAKE_SQUASH_MOTOR_0 = 50;
-        public static final int INTAKE_SQUASH_MOTOR_1 = 51;
+        public static final int INTAKE_SQUASH_MOTOR = 50;
         public static final double KP = 0.2;
         public static final double KI = 0.0;
         public static final double KD = 0.001;

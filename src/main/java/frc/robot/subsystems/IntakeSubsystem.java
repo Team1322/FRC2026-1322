@@ -8,7 +8,6 @@ import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.SystemVariables.FeederConstants;
 import frc.robot.SystemVariables.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
