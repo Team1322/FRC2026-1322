@@ -10,15 +10,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.complexCommands.ClearHopper;
 import frc.robot.commands.drive.FieldCentricControl;
 import frc.robot.commands.drive.XFormation;
 import frc.robot.SystemVariables.DrivetrainConstants;
 import frc.robot.commands.feeder.ReverseFeeder;
+import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.intake.RunIntakeReverse;
-import frc.robot.commands.intakeSquasher.DeployIntakeCommand;
-import frc.robot.commands.intakeSquasher.MoveSquasherByJoystick;
 import frc.robot.commands.shoot.AutoShooterToHub;
 import frc.robot.commands.shoot.RunShooterOverride;
 import frc.robot.commands.shoot.RunShooterToHub;
@@ -28,7 +26,6 @@ import frc.robot.commands.turret.RunTurretToTarget;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
-import frc.robot.subsystems.FredTheFrogsIntakeSquasherSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 
@@ -44,7 +41,6 @@ public class RobotContainer {
     public FeederSubsystem feeder = new FeederSubsystem();
     public TurretSubsystem turret = new TurretSubsystem();
     public ShooterSubsystem shooter = new ShooterSubsystem();
-    public FredTheFrogsIntakeSquasherSubsystem intakeSquasher = new FredTheFrogsIntakeSquasherSubsystem();
 
     public RobotContainer() {
         configureBindings();
@@ -70,10 +66,11 @@ public class RobotContainer {
                 drive.resetPose(new Pose2d(drive.getCurrentPose().getTranslation(), DriverStation.getAlliance().get() == Alliance.Blue ? Rotation2d.kZero : Rotation2d.k180deg))
         ));
 
-        driverController.rightTrigger(0.5).whileTrue(new ClearHopper(feeder, intakeSquasher));
         driverController.leftTrigger(0.5).whileTrue(new ReverseFeeder(feeder));
 
         driverController.b().onTrue(new XFormation(drive, driverController));
+
+        driverController.rightTrigger().whileTrue(new RunFeeder(feeder));
 
         driverController.rightTrigger(0.5).onTrue(new InstantCommand(() -> {SystemVariables.currentMaxSpeed = 2;}));
         driverController.rightTrigger(0.5).onFalse(new InstantCommand(() -> {SystemVariables.currentMaxSpeed = DrivetrainConstants.MaxSpeed;}));
@@ -88,12 +85,7 @@ public class RobotContainer {
         operatorController.a().whileTrue(new RunShooterOverride(shooter, 45).alongWith(new RunTurretToTarget(turret, 0))); //At tower override pos
 
         operatorController.rightBumper().toggleOnTrue(new MoveTurretWithJoystick(turret, () -> operatorController.getRightX()));
-        operatorController.leftBumper().toggleOnTrue(new MoveSquasherByJoystick(intakeSquasher, () -> operatorController.getLeftX()));
 
-        operatorController.x().whileTrue(new DeployIntakeCommand(intakeSquasher, intake));
-        operatorController.b().onTrue(new InstantCommand(() -> intakeSquasher.setTargetPosition(0)));
-
-        operatorController.y().onTrue(new InstantCommand(() -> intakeSquasher.resetPosition()));
         operatorController.povDown().whileTrue(new RunIntakeReverse(intake));
 
 

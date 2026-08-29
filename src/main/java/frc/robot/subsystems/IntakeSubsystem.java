@@ -7,12 +7,16 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.SystemVariables;
 import frc.robot.SystemVariables.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
   TalonFX intakeMotor = new TalonFX(IntakeConstants.INTAKE_MOTOR_ID);
   TalonFX intakeFollower = new TalonFX(IntakeConstants.INTAKE_FOLLOWER_ID);
+  DigitalInput magSensor = new DigitalInput(0);
 
   public IntakeSubsystem() {
 
@@ -34,7 +38,15 @@ public class IntakeSubsystem extends SubsystemBase {
     //Follower setup
      intakeFollower.setControl(new Follower(intakeMotor.getDeviceID(), MotorAlignmentValue.Opposed));
   }
-    public void setSpeed(double speed) {
-    intakeMotor.set(speed);
-    }
+
+  @Override
+  public void periodic() {
+    if (!magSensor.get()) SystemVariables.intakeDeployed = true;
+    else SystemVariables.intakeDeployed = false;
+    SmartDashboard.putBoolean("Sensor", !magSensor.get());
+  }
+
+  public void setSpeed(double speed) {
+    intakeMotor.set(speed * (SystemVariables.intakeDeployed ? 1 : 0));
+  }
 }

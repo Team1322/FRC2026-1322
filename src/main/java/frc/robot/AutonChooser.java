@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.complexCommands.ClearHopper;
 import frc.robot.commands.drive.DriveToPose;
+import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.intake.RunIntakeReverse;
 
@@ -74,7 +74,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (redDepotShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new RunFeeder(r.feeder).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -102,7 +102,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (redDepotShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new RunFeeder(r.feeder).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -126,7 +126,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (redDepotShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new RunFeeder(r.feeder).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -138,7 +138,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(redDepotShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new RunFeeder(r.feeder).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -146,7 +146,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(redOutpostShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new RunFeeder(r.feeder).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -154,7 +154,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive,new DriveToPoseObject(redCenterShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new RunFeeder(r.feeder).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -166,7 +166,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (redOutpostShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new RunFeeder(r.feeder).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -194,7 +194,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (redOutpostShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new RunFeeder(r.feeder).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -217,7 +217,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (redOutpostShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new RunFeeder(r.feeder).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -233,7 +233,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(blueDepotShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new RunFeeder(r.feeder).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -261,7 +261,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (blueDepotShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new RunFeeder(r.feeder).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -283,7 +283,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (blueDepotShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new RunFeeder(r.feeder).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -295,7 +295,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(blueDepotShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new RunFeeder(r.feeder).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -303,7 +303,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(blueOutpostShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new RunFeeder(r.feeder).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
@@ -311,7 +311,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(blueCenterShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new RunFeeder(r.feeder).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
                     
@@ -323,7 +323,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject(blueOutpostShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new RunFeeder(r.feeder).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
                     
@@ -351,7 +351,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (blueOutpostShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new RunFeeder(r.feeder).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
                     
@@ -375,7 +375,7 @@ public class AutonChooser {
                         new InstantCommand(() -> {SystemVariables.runShooter = true;}),
                         new DriveToPose(r.drive, new DriveToPoseObject (blueOutpostShotLocation)),
                         new WaitCommand(1),
-                        new ClearHopper(r.feeder, r.intakeSquasher).withTimeout(8).asProxy(),
+                        new RunFeeder(r.feeder).withTimeout(8).asProxy(),
                         new InstantCommand(() -> {SystemVariables.runShooter = false;})
                     ));
 
