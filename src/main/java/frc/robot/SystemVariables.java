@@ -20,6 +20,7 @@ public class SystemVariables {
     public static Pose2d turretPose = Pose2d.kZero;
     public static double currentMaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
     public static boolean intakeDeployed = false;
+    public static boolean intakeHasReversed = false;
 
     //public static boolean 
     public static final class DrivetrainConstants {

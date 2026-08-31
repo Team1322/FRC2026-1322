@@ -271,7 +271,7 @@ public class DriveSubsystem extends TunerSwerveDrivetrain implements Subsystem {
 
     public void updatePoseWithLimelight() {
         boolean updateVision = true;
-        int minTagCount = 1;
+        int minTagCount = 2;
 
         if (DriverStation.isDisabled()) {
             minTagCount = 1;

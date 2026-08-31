@@ -15,6 +15,7 @@ import frc.robot.commands.drive.XFormation;
 import frc.robot.SystemVariables.DrivetrainConstants;
 import frc.robot.commands.feeder.ReverseFeeder;
 import frc.robot.commands.feeder.RunFeeder;
+import frc.robot.commands.feeder.RunFeederOverride;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.intake.RunIntakeReverse;
 import frc.robot.commands.shoot.AutoShooterToHub;
@@ -69,6 +70,8 @@ public class RobotContainer {
         driverController.leftTrigger(0.5).whileTrue(new ReverseFeeder(feeder));
 
         driverController.b().onTrue(new XFormation(drive, driverController));
+
+        driverController.rightBumper().whileTrue(new RunFeederOverride(feeder));
 
         driverController.rightTrigger().whileTrue(new RunFeeder(feeder));
 

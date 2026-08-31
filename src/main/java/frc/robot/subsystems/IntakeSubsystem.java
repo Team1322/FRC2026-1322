@@ -42,11 +42,11 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     if (!magSensor.get()) SystemVariables.intakeDeployed = true;
-    else SystemVariables.intakeDeployed = false;
+    // else SystemVariables.intakeDeployed = false;
     SmartDashboard.putBoolean("Sensor", !magSensor.get());
   }
 
   public void setSpeed(double speed) {
-    intakeMotor.set(speed * (SystemVariables.intakeDeployed ? 1 : 0));
+    intakeMotor.set(speed);
   }
 }
