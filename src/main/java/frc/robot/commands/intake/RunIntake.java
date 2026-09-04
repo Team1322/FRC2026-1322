@@ -22,7 +22,9 @@ public class RunIntake extends Command{
             } else {
                 intake.setSpeed(-1);
                 if (timerStarted) SystemVariables.intakeHasReversed = timer.get() > 0.1;
-                else timer.start();
+                else { timerStarted = true;
+                    timer.start();
+                }
             }
         }
 
