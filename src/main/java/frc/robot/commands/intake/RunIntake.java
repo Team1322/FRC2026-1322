@@ -21,13 +21,14 @@ public class RunIntake extends Command{
                 intake.setSpeed(1);
             } else {
                 intake.setSpeed(-1);
-                if (timerStarted) SystemVariables.intakeHasReversed = timer.get() > 0.1;
-                else { timerStarted = true;
+                if (timerStarted) {
+                    SystemVariables.intakeHasReversed = timer.get() > 0.1;
+                } else { 
+                    timerStarted = true;
                     timer.start();
                 }
             }
         }
-
     }
 
     @Override

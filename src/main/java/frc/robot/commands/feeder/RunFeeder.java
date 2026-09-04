@@ -24,16 +24,12 @@ public class RunFeeder extends Command {
                 if (timer.get() > 3.2) {
                     timer.reset();
                 }
-
-            } else feeder.setSpeed(1);
+            } else {
+                feeder.setSpeed(1);
+            }
         } else {
             feeder.setSpeed(0);
         }
-
-        
-        
-        
-
     }
 
     @Override
